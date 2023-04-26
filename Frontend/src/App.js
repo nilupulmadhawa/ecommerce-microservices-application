@@ -66,7 +66,7 @@ function App() {
       setCartItem(CartItem.map((item) => (item.id === product.id ? { ...productExit, qty: productExit.qty - 1 } : item)))
     }
   }
-
+ 
   return (
     <>
       <Router>

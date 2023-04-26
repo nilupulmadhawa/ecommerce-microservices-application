@@ -34,10 +34,10 @@ export default function Router() {
       path: '/',
       element: <SimpleLayout />,
       children: [
-      {
-      path: '/',
-      element: <HomePage />,
-    },
+        {
+          path: '/',
+          element: <HomePage />,
+        },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
