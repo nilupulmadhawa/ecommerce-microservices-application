@@ -8,6 +8,8 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
+import HomePage from './pages/HomePage';
+import Cart from './components/newarrivals/Cart';
 
 // ----------------------------------------------------------------------
 
@@ -29,12 +31,20 @@ export default function Router() {
       element: <LoginPage />,
     },
     {
+      path: '/',
       element: <SimpleLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
+      {
+      path: '/',
+      element: <HomePage />,
+    },
         { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" /> },
+        { path: '*', element: <Navigate to="/404" replace /> },
       ],
+    },
+    {
+      path: '/cart',
+      element: <Cart />,
     },
     {
       path: '*',
