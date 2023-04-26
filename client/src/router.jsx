@@ -9,7 +9,7 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
-import Cart from './components/newarrivals/Cart';
+import Cart from './common/Cart/Cart';
 
 // ----------------------------------------------------------------------
 
@@ -38,14 +38,16 @@ export default function Router() {
           path: '/',
           element: <HomePage />,
         },
+        {
+          path: '/cart',
+          element: <Cart />,
+        },
+
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
-    {
-      path: '/cart',
-      element: <Cart />,
-    },
+
     {
       path: '*',
       element: <Navigate to="/404" replace />,
