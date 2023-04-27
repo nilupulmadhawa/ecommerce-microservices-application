@@ -1,47 +1,47 @@
 const Ddata = [
   {
     cover: "./images/discount/12.jpg",
-    name: "BenuX 2022",
+    name: "Aplha Lipocid Acid",
     price: "$250",
   },
   {
     cover: "./images/discount/10.png",
-    name: "Sony TV 1080p",
+    name: "Only Natural for Women",
     price: "$450",
   },
   {
     cover: "./images/discount/20.png",
-    name: "Sony PS4",
+    name: "Himalaya",
     price: "$50",
   },
   {
     cover: "./images/discount/11.jpg",
-    name: "Setgearr 2022",
+    name: "Only Natural for Men",
     price: "$100",
   },
   {
     cover: "./images/discount/23.jpg",
-    name: "Tony BGB",
+    name: "Fermented Herbals",
     price: "$20",
   },
   {
     cover: "./images/discount/24.jpg",
-    name: "RG products",
+    name: "Multi Collagen Protein",
     price: "$200",
   },
   {
     cover: "./images/discount/4.png",
-    name: "Ranasonic 2022",
+    name: "Goli Nutritions",
     price: "$300",
   },
   {
     cover: "./images/discount/25.jpg",
-    name: "Pune HD",
+    name: "Whey Protien",
     price: "$30",
   },
   {
     cover: "./images/discount/13.png",
-    name: "Sony CCTV",
+    name: "Ashwagandha",
     price: "$80",
   },
 ]
