@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rating-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rating
+  template:
+    metadata:
+      labels:
+        app: rating
+    spec:
+      containers:
+        - name: rating
+          image: nilupulmadhawa/ema-rating-service # us.gcr.io/microservices-333218/rating
+          env:
+            - name: JWT_SECRET
+              value: secret
+            - name: MONGO_URI
+              value: "mongodb://rating-mongo-service:27017/rating"
+            - name: JWT_EXPIRE
+              value: "20h"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rating-service
+spec:
+  selector:
+    app: rating
+  ports:
+    - name: rating
+      protocol: TCP
+      port: 3001
+      targetPort: 3001

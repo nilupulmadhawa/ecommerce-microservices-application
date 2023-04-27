@@ -16,7 +16,7 @@ export const create = asyncHandler(async (req, res) => {
 
 export const getAll = asyncHandler(async (req, res) => {
     try {
-        const orders = await Order.find().select("-password");
+        const orders = await Order.find();
         return makeResponse({ res, status: 200, data: orders, message: 'Order retrieved succesfully' })
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });
@@ -25,7 +25,7 @@ export const getAll = asyncHandler(async (req, res) => {
 
 export const getById = asyncHandler(async (req, res) => {
     try {
-        const order = await Order.find({ _id: req.params.id }).select("-password");
+        const order = await Order.find({ _id: req.params.id });
         if (order.length == 0) return makeResponse({ res, status: 404, message: 'Order Not found' })
         return makeResponse({ res, status: 200, data: order, message: 'Device retrieved succesfully' })
     } catch (error) {
@@ -57,3 +57,23 @@ export const remove = asyncHandler(async (req, res) => {
     }
 })
 
+
+export const getBuyerOrders = asyncHandler(async (req, res) => {
+    try {
+        const order = await Order.find({ buyer_id: req.params.id });
+        if (order.length == 0) return makeResponse({ res, status: 404, message: 'Order Not found' })
+        return makeResponse({ res, status: 200, data: order, message: 'Device retrieved succesfully' })
+    } catch (error) {
+        return makeResponse({ res, status: 500, message: error.message });
+    }
+})
+
+export const getSellerOrders = asyncHandler(async (req, res) => {
+    try {
+        const order = await Order.find({ seller_id: req.params.id });
+        if (order.length == 0) return makeResponse({ res, status: 404, message: 'Order Not found' })
+        return makeResponse({ res, status: 200, data: order, message: 'Device retrieved succesfully' })
+    } catch (error) {
+        return makeResponse({ res, status: 500, message: error.message });
+    }
+})

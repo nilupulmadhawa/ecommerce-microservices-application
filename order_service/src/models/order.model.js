@@ -3,7 +3,7 @@ import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
 
 const OrderSchema = new mongoose.Schema(
     {
-        customer_id: {
+        buyer_id: {
             type: mongoose.Schema.Types.ObjectId,
             required: true
         },

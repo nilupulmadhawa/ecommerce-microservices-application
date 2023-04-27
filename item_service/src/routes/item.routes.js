@@ -1,5 +1,5 @@
 import express from 'express';
-import { create, getAll, getById, remove, update, } from '../controllers/item';
+import { create, getAll, getById, remove, update, getsellerItems } from '../controllers/item';
 import { celebrate, Segments } from 'celebrate'
 
 import { protect } from '../middleware/auth'
@@ -11,6 +11,7 @@ itemRouter.get('/', getAll);
 itemRouter.get('/:id', getById);
 itemRouter.patch('/:id', update);
 itemRouter.delete('/:id', remove);
+itemRouter.get('/seller/:id', getsellerItems);
 
 // itemRouter.post('/', celebrate({ [Segments.BODY]: addLocationSchema }), create);
 // itemRouter.get('/', celebrate({ [Segments.QUERY]: itemViewSchema }), getAll);

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+        - name: orders
+          image: nilupulmadhawa/ema-order-service # us.gcr.io/microservices-333218/orders
+          env:
+            - name: JWT_SECRET
+              value: secret
+            - name: MONGO_URI
+              value: "mongodb://orders-mongo-service:27017/order"
+            - name: JWT_EXPIRE
+              value: "20h"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3001
+      targetPort: 3001

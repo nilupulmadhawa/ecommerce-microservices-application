@@ -16,7 +16,7 @@ export const create = asyncHandler(async (req, res) => {
 
 export const getAll = asyncHandler(async (req, res) => {
     try {
-        const items = await Item.find().select("-password");
+        const items = await Item.find();
         return makeResponse({ res, status: 200, data: items, message: 'Item retrieved succesfully' })
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });
@@ -25,7 +25,7 @@ export const getAll = asyncHandler(async (req, res) => {
 
 export const getById = asyncHandler(async (req, res) => {
     try {
-        const item = await Item.find({ _id: req.params.id }).select("-password");
+        const item = await Item.find({ _id: req.params.id });
         if (item.length == 0) return makeResponse({ res, status: 404, message: 'Item Not found' })
         return makeResponse({ res, status: 200, data: item, message: 'Device retrieved succesfully' })
     } catch (error) {
@@ -57,3 +57,12 @@ export const remove = asyncHandler(async (req, res) => {
     }
 })
 
+export const getsellerItems = asyncHandler(async (req, res) => {
+    try {
+        const item = await Item.find({ seller_id: req.params.id });
+        if (item.length == 0) return makeResponse({ res, status: 404, message: 'Item Not found' })
+        return makeResponse({ res, status: 200, data: item, message: 'Device retrieved succesfully' })
+    } catch (error) {
+        return makeResponse({ res, status: 500, message: error.message });
+    }
+})

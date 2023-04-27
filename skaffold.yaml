@@ -1,0 +1,47 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  # googleCloudBuild:
+  #     projectId: microservices-333218
+  artifacts:
+    - image: nilupulmadhawa/ema-auth-service # us.gcr.io/microservices-333218/auth
+      context: auth_service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: "."
+
+    - image: nilupulmadhawa/ema-item-service # us.gcr.io/microservices-333218/client
+      context: item_service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: "."
+
+    - image: nilupulmadhawa/ema-order-service # us.gcr.io/microservices-333218/orders
+      context: order_service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: "."
+
+    - image: nilupulmadhawa/ema-rating-service # us.gcr.io/microservices-333218/expiration
+      context: rating_service
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: "."
