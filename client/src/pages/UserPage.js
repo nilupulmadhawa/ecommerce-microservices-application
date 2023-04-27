@@ -36,11 +36,13 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
+  { id: 'avatarUrl', label: 'Image', alignRight: false },
+  { id: 'firstName', label: 'First Name', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'orders', label: 'Orders', alignRight: true },
+  { id: 'isVerified', label: 'Verified', alignRight: true },
+  { id: 'status', label: 'Status', alignRight: true },
   { id: '' },
 ];
 
@@ -218,14 +220,16 @@ export default function UserPage() {
                     .map((row) => {
                       const {
                         id,
-                        name,
+                        firstName,
+                        email,
                         role,
+                        orders,
                         status,
-                        company,
                         avatarUrl,
                         isVerified,
                       } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
+
+                      const selectedUser = selected.indexOf(firstName) !== -1;
 
                       return (
                         <TableRow
@@ -238,7 +242,9 @@ export default function UserPage() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) =>
+                                handleClick(event, firstName)
+                              }
                             />
                           </TableCell>
 
@@ -248,16 +254,15 @@ export default function UserPage() {
                               alignItems="center"
                               spacing={2}
                             >
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
+                              <Avatar alt={firstName} src={avatarUrl} />
                             </Stack>
                           </TableCell>
 
-                          <TableCell align="left">{company}</TableCell>
-
+                          <TableCell align="left">{firstName}</TableCell>
+                          <TableCell align="left">{email}</TableCell>
                           <TableCell align="left">{role}</TableCell>
+
+                          <TableCell align="left">{orders}</TableCell>
 
                           <TableCell align="left">
                             {isVerified ? 'Yes' : 'No'}
