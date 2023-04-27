@@ -3,26 +3,20 @@ import { sample } from 'lodash';
 
 const orders = [...Array(8)].map((_, index) => ({
   id: faker.datatype.uuid(),
-
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
-  email: faker.internet.email(),
-  phone: faker.phone.phoneNumber(),
-  avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
-
-  name: faker.commerce.productName(),
-  color: 'White/Black-Volt-Pure Platinum',
-  imageUrl: `/assets/images/products/product_${faker.datatype.number({
-    min: 1,
-    max: 8,
-  })}.jpg`,
-  price: 150,
-  quantity: faker.datatype.number({ min: 1, max: 5 }),
-
-  address: '1935 Haul Road, San Francisco, California (CA), 94108',
-  total: 250,
-  createdAt: faker.date.past(),
-  status: sample(['processing', 'shipped', 'delivered']),
+  buyer_id: 'B111',
+  seller_id: 'S222',
+  items: faker.commerce.productName(),
+  total: 50000,
+  commission: '5000',
+  seller_profit: '10000',
+  status: sample([
+    'Pending',
+    'Accept',
+    'Reject',
+    'Cancel',
+    'Delivered',
+    'Completed',
+  ]),
 }));
 
 export default orders;

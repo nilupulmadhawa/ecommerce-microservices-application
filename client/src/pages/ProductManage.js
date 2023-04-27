@@ -41,8 +41,7 @@ const TABLE_HEAD = [
   { id: 'imageUrl', label: 'Image', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'catagory', label: 'Catagory', alignRight: false },
-  { id: 'quantity', label: 'Quantity', alignRight: false },
-  { id: 'price', label: 'Address', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
   { id: 'status', label: 'Status', alignRight: true },
   { id: '' },
@@ -231,7 +230,6 @@ export default function ProductManage() {
                         name,
                         catagory,
                         price,
-                        quantity,
                         description,
                         status,
                         imageUrl,
@@ -266,7 +264,6 @@ export default function ProductManage() {
                           <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{catagory}</TableCell>
                           <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{quantity}</TableCell>
                           <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">

@@ -37,14 +37,12 @@ import USERLIST from '../_mock/order';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'imageUrl', label: 'Image', alignRight: false },
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'price', label: 'Price', alignRight: false },
-  { id: 'quantity', label: 'Quantity', alignRight: false },
-  { id: 'firstName', label: 'Customer', alignRight: false },
-  { id: 'phone', label: 'Phone', alignRight: false },
-  { id: 'address', label: 'Address', alignRight: false },
+  { id: 'buyer_id', label: 'Buyer', alignRight: false },
+  { id: 'seller_id', label: 'Seller', alignRight: false },
+  { id: 'items', label: 'Products', alignRight: false },
   { id: 'total', label: 'Total', alignRight: false },
+  { id: 'commission', label: 'Commision', alignRight: false },
+  { id: 'seller_profit', label: 'Seller Profit', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
@@ -223,17 +221,15 @@ export default function OrderPage() {
                     .map((row) => {
                       const {
                         id,
-                        imageUrl,
-                        name,
-                        price,
-                        quantity,
-                        firstName,
-                        phone,
-                        address,
+                        buyer_id,
+                        seller_id,
+                        items,
                         total,
+                        commission,
+                        seller_profit,
                         status,
                       } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
+                      const selectedUser = selected.indexOf(buyer_id) !== -1;
 
                       return (
                         <TableRow
@@ -246,33 +242,21 @@ export default function OrderPage() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) => handleClick(event, buyer_id)}
                             />
                           </TableCell>
 
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={name} src={imageUrl} />
-                            </Stack>
-                          </TableCell>
+                          <TableCell align="left">{buyer_id}</TableCell>
 
-                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{seller_id}</TableCell>
 
-                          <TableCell align="left">${price}</TableCell>
+                          <TableCell align="left">{items}</TableCell>
 
-                          <TableCell align="left">{quantity}</TableCell>
+                          <TableCell align="left">{`${total}`}</TableCell>
 
-                          <TableCell align="left">{`${firstName}`}</TableCell>
+                          <TableCell align="left">{`${commission}`}</TableCell>
 
-                          <TableCell align="left">{`${phone}`}</TableCell>
-
-                          <TableCell align="left">{address}</TableCell>
-
-                          <TableCell align="left">${total}</TableCell>
+                          <TableCell align="left">{seller_profit}</TableCell>
 
                           <TableCell align="left">
                             <Label
