@@ -12,6 +12,9 @@ import HomePage from './pages/HomePage';
 import Cart from './common/Cart/Cart';
 import ReviewPage from './pages/ReviewPage';
 import OrderPage from './pages/OrderPage';
+import PaymentPortalHome from './components/payments/PaymentPortalHome';
+import PaymentPortal from './components/payments/PaymentPortal';
+import Payments from './components/payments/Payments';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +48,18 @@ export default function Router() {
         {
           path: '/cart',
           element: <Cart />,
+        },
+        {
+          path: '/paymentportal',
+          element: <PaymentPortalHome />,
+        },
+        {
+          path: '/paymentportal/pay',
+          element: <PaymentPortal />,
+        },
+        {
+          path: '/payments',
+          element: <Payments />,
         },
 
         { path: '404', element: <Page404 /> },
