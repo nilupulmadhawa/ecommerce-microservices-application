@@ -22,68 +22,68 @@ import ProductViewPage from './pages/ProductViewPage';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const routes = useRoutes([
-    {
-      path: '/dashboard',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'users', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'manageproducts', element: <ProductManage /> },
-        { path: 'blogs', element: <BlogPage /> },
-        { path: 'ratings', element: <ReviewPage /> },
-        { path: 'orders', element: <OrderPage /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      path: 'signup',
-      element: <SignInSide />,
-    },
-    {
-      path: '/',
-      element: <SimpleLayout />,
-      children: [
+    const routes = useRoutes([
         {
-          path: '/',
-          element: <HomePage />,
+            path: '/dashboard',
+            element: <DashboardLayout />,
+            children: [
+                { element: <Navigate to="/dashboard/app" />, index: true },
+                { path: 'app', element: <DashboardAppPage /> },
+                { path: 'users', element: <UserPage /> },
+                { path: 'products', element: <ProductsPage /> },
+                { path: 'manageproducts', element: <ProductManage /> },
+                { path: 'blogs', element: <BlogPage /> },
+                { path: 'ratings', element: <ReviewPage /> },
+                { path: 'orders', element: <OrderPage /> },
+            ],
         },
         {
-          path: '/cart',
-          element: <Cart />,
+            path: 'login',
+            element: <LoginPage />,
         },
         {
-          path: '/paymentportal',
-          element: <PaymentPortalHome />,
+            path: 'signup',
+            element: <SignInSide />,
         },
         {
-          path: '/paymentportal/pay',
-          element: <PaymentPortal />,
-        },
-        {
-          path: '/payments',
-          element: <Payments />,
+            path: '/',
+            element: <SimpleLayout />,
+            children: [
+                {
+                    path: '/',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/cart',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/paymentportal',
+                    element: <PaymentPortalHome />,
+                },
+                {
+                    path: '/paymentportal/pay',
+                    element: <PaymentPortal />,
+                },
+                {
+                    path: '/payments',
+                    element: <Payments />,
+                },
+
+                { path: '404', element: <Page404 /> },
+                { path: '*', element: <Navigate to="/404" replace /> },
+            ],
         },
         {
           path: '/productview/',
           element: <ProductViewPage />,
         },
 
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
+        {
+            path: '*',
+            element: <Navigate to="/404" replace />,
+        },
+    ]);
 
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    },
-  ]);
-
-  return routes;
+    return routes;
 }

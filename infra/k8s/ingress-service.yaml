@@ -34,7 +34,7 @@ spec:
                 port:
                   number: 3001
 
-          - path: /
+          - path: /api/user/?(.*)
             pathType: Prefix
             backend:
               service:
