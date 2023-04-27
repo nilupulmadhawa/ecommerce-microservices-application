@@ -12,7 +12,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { SelectActionTypes } from '@mui/base';
+import { MenuItem, Select } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -55,8 +55,9 @@ export default function SignInSide() {
           md={7}
           sx={{
             backgroundImage:
-              'url(https://img.freepik.com/free-photo/cannabis-cannabis-seeds-cannabis-oil-placed-wooden-floor-with-green-tree-background_1150-18861.jpg?w=996&t=st=1682593364~exp=1682593964~hmac=b2df77c323a0b9679d1830e4b9ff244e4d958377025914940850c2d3878bb62f)',
+              'url(https://t3.ftcdn.net/jpg/01/57/23/14/360_F_157231432_VL92w7yQpCh8GqGMezjTFJhYrYt1eMk0.jpg)',
             backgroundRepeat: 'no-repeat',
+            width: '100%',
             backgroundColor: (t) =>
               t.palette.mode === 'light'
                 ? t.palette.grey[50]
@@ -136,19 +137,25 @@ export default function SignInSide() {
                 name="role"
                 autoComplete="address"
                 autoFocus
-              />
+                select
+              >
+                {/* Add options to the Select component using MenuItem */}
+                <MenuItem value="admin">Admin</MenuItem>
+                <MenuItem value="user">User</MenuItem>
+                <MenuItem value="guest">Guest</MenuItem>
+              </TextField>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign Up
-              </Button>
+              <Link href="/login">
+                {
+                  <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    Sign Up
+                  </Button>
+                }
+              </Link>
+
               <Grid container>
                 <Grid item xs></Grid>
                 <Grid item>
