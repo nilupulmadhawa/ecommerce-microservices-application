@@ -7,7 +7,7 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
-import SimpleLayout from './layout/simple/SimpleLayout';
+import GestLayout from './layout/GestLayout';
 import HomePage from './pages/HomePage';
 import Cart from './common/Cart/Cart';
 import ReviewPage from './pages/ReviewPage';
@@ -17,68 +17,70 @@ import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
 import ProductManage from './pages/ProductManage';
+import { Page } from '@react-pdf/renderer';
+import Pages from './pages/Pages';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const routes = useRoutes([
-    {
-      path: '/dashboard',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'users', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'manageproducts', element: <ProductManage /> },
-        { path: 'blogs', element: <BlogPage /> },
-        { path: 'ratings', element: <ReviewPage /> },
-        { path: 'orders', element: <OrderPage /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      path: 'signup',
-      element: <SignInSide />,
-    },
-    {
-      path: '/',
-      element: <SimpleLayout />,
-      children: [
+    const routes = useRoutes([
         {
-          path: '/',
-          element: <HomePage />,
+            path: '/dashboard',
+            element: <DashboardLayout />,
+            children: [
+                { element: <Navigate to="/dashboard/app" />, index: true },
+                { path: 'app', element: <DashboardAppPage /> },
+                { path: 'users', element: <UserPage /> },
+                { path: 'products', element: <ProductsPage /> },
+                { path: 'manageproducts', element: <ProductManage /> },
+                { path: 'blogs', element: <BlogPage /> },
+                { path: 'ratings', element: <ReviewPage /> },
+                { path: 'orders', element: <OrderPage /> },
+            ],
         },
         {
-          path: '/cart',
-          element: <Cart />,
+            path: 'login',
+            element: <LoginPage />,
         },
         {
-          path: '/paymentportal',
-          element: <PaymentPortalHome />,
+            path: 'signup',
+            element: <SignInSide />,
         },
         {
-          path: '/paymentportal/pay',
-          element: <PaymentPortal />,
-        },
-        {
-          path: '/payments',
-          element: <Payments />,
+            path: '/',
+            element: <GestLayout />,
+            children: [
+                {
+                    path: '/',
+                    element: <Pages />,
+                },
+                {
+                    path: '/cart',
+                    element: <Cart />,
+                },
+                {
+                    path: '/paymentportal',
+                    element: <PaymentPortalHome />,
+                },
+                {
+                    path: '/paymentportal/pay',
+                    element: <PaymentPortal />,
+                },
+                {
+                    path: '/payments',
+                    element: <Payments />,
+                },
+
+                { path: '404', element: <Page404 /> },
+                { path: '*', element: <Navigate to="/404" replace /> },
+            ],
         },
 
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
+        {
+            path: '*',
+            element: <Navigate to="/404" replace />,
+        },
+    ]);
 
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    },
-  ]);
-
-  return routes;
+    return routes;
 }

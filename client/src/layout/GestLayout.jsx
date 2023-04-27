@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import Pages from './Pages';
 import Data from '../components/Data';
 import Sdata from '../components/shops/Sdata';
 import './Home.css';
 
-import { useLocation } from 'react-router-dom'; // add this import
+import { Outlet, useLocation } from 'react-router-dom'; // add this import
 import Footer from '../common/footer/Footer';
 import Header from '../common/header/Header';
 import Cart from '../common/Cart/Cart';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Pages from '../pages/Pages';
 
-const HomePage = () => {
+const GestLayout = () => {
     /*
     step1 :  const { productItems } = Data 
     lai pass garne using props
@@ -80,15 +81,23 @@ const HomePage = () => {
         }
     };
     const location = useLocation(); // get the current location
-
+    console.log(location.pathname);
     return (
         <>
             <Header CartItem={CartItem} />
-            <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+            {location.pathname === '/' && (
+                <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} />
+            )}
+
+            {location.pathname === '/cart' && (
+                <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+            )}
+
+
             <Footer />
 
         </>
     );
 };
 
-export default HomePage;
+export default GestLayout;
