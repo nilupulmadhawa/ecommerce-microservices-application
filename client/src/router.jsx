@@ -10,6 +10,8 @@ import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
 import Cart from './common/Cart/Cart';
+import ReviewPage from './pages/ReviewPage';
+import OrderPage from './pages/OrderPage';
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +23,11 @@ export default function Router() {
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
-        { path: 'user', element: <UserPage /> },
+        { path: 'users', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        { path: 'blogs', element: <BlogPage /> },
+        { path: 'ratings', element: <ReviewPage /> },
+        { path: 'orders', element: <OrderPage /> },
       ],
     },
     {

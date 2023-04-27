@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../components/assets/images/logo.svg';
+import { Button } from '@mui/material';
 
 const Search = ({ CartItem }) => {
   // fixed Header
@@ -24,6 +25,9 @@ const Search = ({ CartItem }) => {
           </div>
 
           <div className="icon f_flex width">
+            <Link to="/login">
+              <Button variant="contained">Login</Button>
+            </Link>
             <i className="fa fa-user icon-circle"></i>
             <div className="cart">
               <Link to="/cart">
