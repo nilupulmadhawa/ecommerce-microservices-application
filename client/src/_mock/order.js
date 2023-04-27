@@ -10,9 +10,12 @@ const orders = [...Array(8)].map((_, index) => ({
   phone: faker.phone.phoneNumber(),
   avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
 
-  name: 'Nike Air Zoom Pegasus 37 Premium',
+  name: faker.commerce.productName(),
   color: 'White/Black-Volt-Pure Platinum',
-  imageUrl: '/assets/images/products/product_2.jpg',
+  imageUrl: `/assets/images/products/product_${faker.datatype.number({
+    min: 1,
+    max: 8,
+  })}.jpg`,
   price: 150,
   quantity: faker.datatype.number({ min: 1, max: 5 }),
 

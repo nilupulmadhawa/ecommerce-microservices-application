@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+
 // @mui
 import {
   Card,
@@ -9,7 +10,6 @@ import {
   Stack,
   Paper,
   Avatar,
-  Button,
   Popover,
   Checkbox,
   TableRow,
@@ -18,27 +18,30 @@ import {
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
+  Rating,
+  Box,
+  IconButton,
 } from '@mui/material';
 // components
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../_mock/review';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'avatarUrl', label: 'Avatar', alignRight: false },
+  { id: 'firstName', label: 'Name', alignRight: false },
+  { id: 'productName', label: 'Product Name', alignRight: false },
+  { id: 'imageUrl', label: 'Image', alignRight: false },
+  { id: 'rating', label: 'Rating', alignRight: false },
+  { id: 'description', label: 'Description', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -200,14 +203,15 @@ export default function ReviewPage() {
                     .map((row) => {
                       const {
                         id,
-                        name,
-                        role,
-                        status,
-                        company,
+                        firstName,
                         avatarUrl,
+                        imageUrl,
+                        productName,
+                        rating,
+                        description,
                         isVerified,
                       } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
+                      const selectedUser = selected.indexOf(firstName) !== -1;
 
                       return (
                         <TableRow
@@ -220,7 +224,9 @@ export default function ReviewPage() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
+                              onChange={(event) =>
+                                handleClick(event, firstName)
+                              }
                             />
                           </TableCell>
 
@@ -230,29 +236,34 @@ export default function ReviewPage() {
                               alignItems="center"
                               spacing={2}
                             >
-                              <Avatar alt={name} src={avatarUrl} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
+                              <Avatar alt={firstName} src={avatarUrl} />
                             </Stack>
                           </TableCell>
 
-                          <TableCell align="left">{company}</TableCell>
-
-                          <TableCell align="left">{role}</TableCell>
+                          <TableCell align="left">{`${firstName}`}</TableCell>
+                          <TableCell align="left">{`${productName}`}</TableCell>
 
                           <TableCell align="left">
-                            {isVerified ? 'Yes' : 'No'}
+                            <Box sx={{ width: 80 }}>
+                              <Avatar alt={productName} src={imageUrl} />
+                            </Box>
                           </TableCell>
 
                           <TableCell align="left">
-                            <Label
-                              color={
-                                (status === 'banned' && 'error') || 'success'
-                              }
+                            <Rating value={rating} readOnly />
+                          </TableCell>
+
+                          <TableCell align="left">
+                            <Typography
+                              variant="body2"
+                              sx={{ color: 'text.secondary' }}
                             >
-                              {sentenceCase(status)}
-                            </Label>
+                              {`${description}`}
+                            </Typography>
+                          </TableCell>
+
+                          <TableCell align="left">
+                            {isVerified ? 'Yes' : 'No'}
                           </TableCell>
 
                           <TableCell align="right">
