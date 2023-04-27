@@ -175,8 +175,11 @@ export default function ProductManage() {
   const isNotFound = !filteredUsers.length && !!filterName;
 
   const [openModal, setOpenModal] = React.useState(false);
+  const [openModalAdd, setOpenModalAdd] = React.useState(false);
   const handleOpen = () => setOpenModal(true);
+  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleClose = () => setOpenModal(false);
+  const handleCloseAdd = () => setOpenModalAdd(false);
 
   return (
     <>
@@ -195,12 +198,69 @@ export default function ProductManage() {
             Manage Products
           </Typography>
           <Button
+            onClick={handleOpenAdd}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             New Products
           </Button>
         </Stack>
+
+        <Modal
+          open={openModalAdd}
+          onClose={handleCloseAdd}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h5" component="h2">
+              Edit Details
+            </Typography>
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="name"
+              value=""
+              label="Product Name"
+              variant="outlined"
+            />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="catagory"
+              value=""
+              label="Catagory"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="price"
+              value=""
+              label="Price"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="quantity"
+              value=""
+              label="quantity"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="description"
+              value=""
+              label="Description"
+              variant="outlined"
+            />
+
+            <Button type="submit" color="inherit" variant="outlined">
+              Submit
+            </Button>
+          </Box>
+        </Modal>
 
         <Card>
           <UserListToolbar
@@ -379,47 +439,41 @@ export default function ProductManage() {
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
             id="name"
             value=""
-            label="Name"
+            label="Product Name"
             variant="outlined"
           />
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="email"
+            id="catagory"
             value=""
-            label="Email"
+            label="Catagory"
             variant="outlined"
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="phone"
+            id="price"
             value=""
-            label="Contact Number"
+            label="Price"
             variant="outlined"
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="role"
+            id="quantity"
             value=""
-            label="Role"
+            label="quantity"
             variant="outlined"
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="address"
+            id="description"
             value=""
-            label="Address"
+            label="Description"
             variant="outlined"
           />
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="status"
-            value=""
-            label="Status"
-            variant="outlined"
-          />
+
           <Button type="submit" color="inherit" variant="outlined">
             Submit
           </Button>
