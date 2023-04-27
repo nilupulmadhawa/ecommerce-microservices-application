@@ -1,19 +1,26 @@
-import React from 'react'
-import { RouterProvider } from "react-router-dom";
-import router from "./router.jsx";
-import { ContextProvider } from './context/ContextProvider.jsx'
-import { ToastContainer } from 'react-toastify';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+// routes
+// import Router from './routes';
+// theme
+import ThemeProvider from './theme';
+// components
+import { StyledChart } from './components/chart';
+import ScrollToTop from './components/scroll-to-top';
+import Router from './router';
 
-import './styles/index.css';
+// ----------------------------------------------------------------------
 
-function App() {
-
-    return (
-        <ContextProvider>
-            <ToastContainer />
-            <RouterProvider router={router} />
-        </ContextProvider>
-    );
+export default function App() {
+  return (
+    <HelmetProvider>
+      <BrowserRouter>
+        <ThemeProvider>
+          <ScrollToTop />
+          <StyledChart />
+          <Router />
+        </ThemeProvider>
+      </BrowserRouter>
+    </HelmetProvider>
+  );
 }
-
-export default App;
