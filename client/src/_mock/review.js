@@ -13,7 +13,7 @@ const reviews = [...Array(8)].map((_, index) => ({
   })}.jpg`,
   rating: faker.datatype.number({ min: 1, max: 5 }),
   title: faker.lorem.sentence(),
-  description: faker.lorem.paragraphs(),
+  description: faker.lorem.paragraphs(1),
   isVerified: faker.datatype.boolean(),
 }));
 

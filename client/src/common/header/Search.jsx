@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../components/assets/images/logo.svg';
 import { Button } from '@mui/material';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 const Search = ({ CartItem }) => {
   // fixed Header
@@ -26,7 +27,20 @@ const Search = ({ CartItem }) => {
 
           <div className="icon f_flex width">
             <Link to="/login">
-              <Button variant="contained">Login</Button>
+              <Button
+                className="me-5"
+                fullWidth
+                size="small"
+                color="inherit"
+                variant="outlined"
+              >
+                Login
+              </Button>{' '}
+            </Link>
+            <Link to="/signup">
+              <Button fullWidth size="small" color="inherit" variant="outlined">
+                SignUp
+              </Button>{' '}
             </Link>
             <i className="fa fa-user icon-circle"></i>
             <div className="cart">

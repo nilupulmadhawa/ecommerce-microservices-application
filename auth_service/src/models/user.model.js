@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
-
+ 
 const UserSchema = new mongoose.Schema(
     {
         name: {

@@ -1,21 +1,15 @@
 import { faker } from '@faker-js/faker';
 import { sample } from 'lodash';
 
-const users = [...Array(24)].map((_, index) => ({
+const users = [...Array(8)].map((_, index) => ({
   id: faker.datatype.uuid(),
-  avatarUrl: `/assets/images/users/user_${index + 1}.jpg`,
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
+  name: faker.name.firstName(),
+  // password: faker.password.password(),
+  address: '1935 Haul Road, San Francisco, California (CA), 94108',
   email: faker.internet.email(),
-  isVerified: faker.datatype.boolean(),
+  phone: faker.phone.phoneNumber(),
   status: sample(['active', 'banned']),
-  role: sample([
-    'Customer',
-    'Seller',
-    'Administrator',
-    'Logistics Manager',
-    'Support Staff',
-  ]),
+  role: sample(['admin', 'buyer', 'seller', 'customer']),
   orders: faker.datatype.number({ min: 0, max: 20 }),
   lastOrder: faker.date.past(1),
 }));

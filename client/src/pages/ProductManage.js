@@ -33,18 +33,17 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../_mock/manageproducts';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  // { id: 'avatarUrl', label: 'Image', alignRight: false },
+  { id: 'imageUrl', label: 'Image', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'mobile_number', label: 'Contact', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
-  // { id: 'password', label: 'Password', alignRight: false },
-  { id: 'address', label: 'Address', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'catagory', label: 'Catagory', alignRight: false },
+  { id: 'quantity', label: 'Quantity', alignRight: false },
+  { id: 'price', label: 'Address', alignRight: false },
+  { id: 'description', label: 'Description', alignRight: false },
   { id: 'status', label: 'Status', alignRight: true },
   { id: '' },
 ];
@@ -95,7 +94,7 @@ const style = {
   p: 4,
 };
 
-export default function UserPage() {
+export default function ProductManage() {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -183,7 +182,7 @@ export default function UserPage() {
   return (
     <>
       <Helmet>
-        <title> User | E-Commerce App </title>
+        <title> Products Manage | E-Commerce App </title>
       </Helmet>
 
       <Container>
@@ -194,13 +193,13 @@ export default function UserPage() {
           mb={5}
         >
           <Typography variant="h4" gutterBottom>
-            User
+            Manage Products
           </Typography>
           <Button
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            New User
+            New Products
           </Button>
         </Stack>
 
@@ -227,8 +226,16 @@ export default function UserPage() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, email, address, phone, role, status } =
-                        row;
+                      const {
+                        id,
+                        name,
+                        catagory,
+                        price,
+                        quantity,
+                        description,
+                        status,
+                        imageUrl,
+                      } = row;
 
                       const selectedUser = selected.indexOf(name) !== -1;
 
@@ -247,16 +254,25 @@ export default function UserPage() {
                             />
                           </TableCell>
 
+                          <TableCell component="th" scope="row" padding="none">
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={2}
+                            >
+                              <Avatar alt={name} src={imageUrl} />
+                            </Stack>
+                          </TableCell>
                           <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{phone}</TableCell>
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{address}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
+                          <TableCell align="left">{catagory}</TableCell>
+                          <TableCell align="left">{price}</TableCell>
+                          <TableCell align="left">{quantity}</TableCell>
+                          <TableCell align="left">{description}</TableCell>
 
                           <TableCell align="left">
                             <Label
                               color={
-                                (status === 'banned' && 'error') || 'success'
+                                (status === 'innactive' && 'error') || 'success'
                               }
                             >
                               {sentenceCase(status)}

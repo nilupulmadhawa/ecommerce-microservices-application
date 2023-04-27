@@ -15,6 +15,8 @@ import OrderPage from './pages/OrderPage';
 import PaymentPortalHome from './components/payments/PaymentPortalHome';
 import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
+import SignInSide from './pages/SignUp';
+import ProductManage from './pages/ProductManage';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +30,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'users', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
+        { path: 'manageproducts', element: <ProductManage /> },
         { path: 'blogs', element: <BlogPage /> },
         { path: 'ratings', element: <ReviewPage /> },
         { path: 'orders', element: <OrderPage /> },
@@ -36,6 +39,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path: 'signup',
+      element: <SignInSide />,
     },
     {
       path: '/',
