@@ -16,32 +16,30 @@ const Search = ({ CartItem }) => {
       <section className="search">
         <div className="container c_flex">
           <div className="logo width ">
-            <img src={logo} alt="" style={{ width: '60px' }} />
+            <img src={logo} alt="" style={{ width: '80px' }} />
           </div>
 
-          <div className="search-box f_flex">
+          <Link to="/signup">
+            <Button fullWidth size="small" color="info" variant="outlined">
+              SignUp
+            </Button>{' '}
+          </Link>
+
+          <div
+            className="search-box f_flex ms-5 me-5"
+            style={{ marginLeft: '50px', marginRight: '50px' }}
+          >
             <i className="fa fa-search"></i>
             <input type="text" placeholder="Search and herbal product" />
             <span>All Category</span>
           </div>
 
+          <Link to="/login">
+            <Button fullWidth size="small" color="info" variant="outlined">
+              Login
+            </Button>{' '}
+          </Link>
           <div className="icon f_flex width">
-            <Link to="/login">
-              <Button
-                className="me-5"
-                fullWidth
-                size="small"
-                color="inherit"
-                variant="outlined"
-              >
-                Login
-              </Button>{' '}
-            </Link>
-            <Link to="/signup">
-              <Button fullWidth size="small" color="inherit" variant="outlined">
-                SignUp
-              </Button>{' '}
-            </Link>
             <i className="fa fa-user icon-circle"></i>
             <div className="cart">
               <Link to="/cart">
