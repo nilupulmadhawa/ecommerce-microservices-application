@@ -38,12 +38,13 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'avatarUrl', label: 'Image', alignRight: false },
-  { id: 'firstName', label: 'First Name', alignRight: false },
+  // { id: 'avatarUrl', label: 'Image', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'mobile_number', label: 'Contact', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
+  // { id: 'password', label: 'Password', alignRight: false },
+  { id: 'address', label: 'Address', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
-  { id: 'orders', label: 'Orders', alignRight: true },
-  { id: 'isVerified', label: 'Verified', alignRight: true },
   { id: 'status', label: 'Status', alignRight: true },
   { id: '' },
 ];
@@ -226,18 +227,10 @@ export default function UserPage() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        id,
-                        firstName,
-                        email,
-                        role,
-                        orders,
-                        status,
-                        avatarUrl,
-                        isVerified,
-                      } = row;
+                      const { id, name, email, address, phone, role, status } =
+                        row;
 
-                      const selectedUser = selected.indexOf(firstName) !== -1;
+                      const selectedUser = selected.indexOf(name) !== -1;
 
                       return (
                         <TableRow
@@ -250,31 +243,15 @@ export default function UserPage() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) =>
-                                handleClick(event, firstName)
-                              }
+                              onChange={(event) => handleClick(event, name)}
                             />
                           </TableCell>
 
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={firstName} src={avatarUrl} />
-                            </Stack>
-                          </TableCell>
-
-                          <TableCell align="left">{firstName}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
+                          <TableCell align="left">{phone}</TableCell>
                           <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{address}</TableCell>
                           <TableCell align="left">{role}</TableCell>
-
-                          <TableCell align="left">{orders}</TableCell>
-
-                          <TableCell align="left">
-                            {isVerified ? 'Yes' : 'No'}
-                          </TableCell>
 
                           <TableCell align="left">
                             <Label
@@ -387,9 +364,9 @@ export default function UserPage() {
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="firstName"
+            id="name"
             value=""
-            label="First Name"
+            label="Name"
             variant="outlined"
           />
           <TextField
@@ -397,6 +374,14 @@ export default function UserPage() {
             id="email"
             value=""
             label="Email"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="phone"
+            value=""
+            label="Contact Number"
             variant="outlined"
           />
 
@@ -410,12 +395,28 @@ export default function UserPage() {
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="orders"
+            id="address"
             value=""
-            label="Orders"
+            label="Address"
+            variant="outlined"
+          />
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="status"
+            value=""
+            label="Status"
             variant="outlined"
           />
         </Box>
+        <Button
+          type="submit"
+          fullWidth
+          size="large"
+          color="inherit"
+          variant="outlined"
+        >
+          Submit
+        </Button>
       </Modal>
     </>
   );

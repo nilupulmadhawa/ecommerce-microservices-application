@@ -15,6 +15,7 @@ import OrderPage from './pages/OrderPage';
 import PaymentPortalHome from './components/payments/PaymentPortalHome';
 import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
+import SignInSide from './pages/SignUp';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,10 @@ export default function Router() {
     {
       path: 'login',
       element: <LoginPage />,
+    },
+    {
+      path: 'signup',
+      element: <SignInSide />,
     },
     {
       path: '/',
