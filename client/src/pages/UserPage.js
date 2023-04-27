@@ -177,8 +177,11 @@ export default function UserPage() {
   const isNotFound = !filteredUsers.length && !!filterName;
 
   const [openModal, setOpenModal] = React.useState(false);
+  const [openModalAdd, setOpenModalAdd] = React.useState(false);
   const handleOpen = () => setOpenModal(true);
+  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleClose = () => setOpenModal(false);
+  const handleCloseAdd = () => setOpenModalAdd(false);
 
   return (
     <>
@@ -197,12 +200,75 @@ export default function UserPage() {
             User
           </Typography>
           <Button
+            onClick={handleOpenAdd}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             New User
           </Button>
         </Stack>
+
+        <Modal
+          open={openModalAdd}
+          onClose={handleCloseAdd}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h5" component="h2">
+              Edit Details
+            </Typography>
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="name"
+              value=""
+              label="Name"
+              variant="outlined"
+            />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="email"
+              value=""
+              label="Email"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="phone"
+              value=""
+              label="Contact Number"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="role"
+              value=""
+              label="Role"
+              variant="outlined"
+            />
+
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="address"
+              value=""
+              label="Address"
+              variant="outlined"
+            />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="status"
+              value=""
+              label="Status"
+              variant="outlined"
+            />
+            <Button type="submit" color="inherit" variant="outlined">
+              Submit
+            </Button>
+          </Box>
+        </Modal>
 
         <Card>
           <UserListToolbar

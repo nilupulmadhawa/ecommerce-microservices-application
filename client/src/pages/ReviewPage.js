@@ -350,32 +350,32 @@ export default function ReviewPage() {
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="firstName"
+            id="buyer_id"
             value=""
-            label="First Name"
+            label="Buyer"
             variant="outlined"
           />
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="email"
+            id="item_id"
             value=""
-            label="Email"
-            variant="outlined"
-          />
-
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="role"
-            value=""
-            label="Role"
+            label="Product"
             variant="outlined"
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="orders"
+            id="rating"
             value=""
-            label="Orders"
+            label="Rating"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="review"
+            value=""
+            label="Review"
             variant="outlined"
           />
         </Box>
