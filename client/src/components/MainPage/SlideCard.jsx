@@ -27,7 +27,10 @@ const SlideCard = () => {
                   <p>{value.desc}</p>
                   <button className="btn-primary">Visit Collections</button>
                 </div>
-                <div className="img">
+                <div
+                  className="img"
+                  style={{ width: '300px', height: '300px' }}
+                >
                   <img src={value.cover} alt="" />
                 </div>
               </div>
