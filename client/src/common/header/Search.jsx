@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../components/assets/images/logo.svg';
+import logo from '../../components/assets/images/logo.png';
 import { Button } from '@mui/material';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
@@ -16,7 +16,7 @@ const Search = ({ CartItem }) => {
       <section className="search">
         <div className="container c_flex">
           <div className="logo width ">
-            <img src={logo} alt="" />
+            <img src={logo} alt="" style={{ width: '60px' }} />
           </div>
 
           <div className="search-box f_flex">

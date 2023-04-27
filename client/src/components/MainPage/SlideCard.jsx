@@ -3,6 +3,7 @@ import Sdata from './Sdata';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Link } from '@mui/material';
 
 const SlideCard = () => {
   const settings = {
@@ -25,7 +26,9 @@ const SlideCard = () => {
                 <div className="left">
                   <h1>{value.title}</h1>
                   <p>{value.desc}</p>
-                  <button className="btn-primary">Visit Collections</button>
+                  <Link to="/">
+                    <button className="btn-primary">Visit Collections</button>
+                  </Link>
                 </div>
                 <div
                   className="img"
@@ -41,5 +44,5 @@ const SlideCard = () => {
     </>
   );
 };
-
+ 
 export default SlideCard;
