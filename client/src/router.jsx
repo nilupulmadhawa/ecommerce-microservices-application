@@ -17,6 +17,7 @@ import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
 import ProductManage from './pages/ProductManage';
+import ProductViewPage from './pages/ProductViewPage';
 
 // ----------------------------------------------------------------------
 
@@ -67,6 +68,10 @@ export default function Router() {
         {
           path: '/payments',
           element: <Payments />,
+        },
+        {
+          path: '/productview/',
+          element: <ProductViewPage />,
         },
 
         { path: '404', element: <Page404 /> },
