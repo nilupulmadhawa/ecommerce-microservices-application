@@ -1,7 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { useState } from 'react';
-import { formatDistanceToNow } from 'date-fns';
+import React, { useState } from 'react';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 // @mui
 import {
@@ -21,8 +22,8 @@ import {
   TableContainer,
   TablePagination,
   Rating,
-  Box,
   IconButton,
+  TextField,
 } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
@@ -78,6 +79,18 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function ReviewPage() {
   const [open, setOpen] = useState(null);
@@ -159,6 +172,10 @@ export default function ReviewPage() {
   );
 
   const isNotFound = !filteredUsers.length && !!filterName;
+
+  const [openModal, setOpenModal] = React.useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
 
   return (
     <>
@@ -343,7 +360,7 @@ export default function ReviewPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={handleOpen}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
@@ -353,6 +370,50 @@ export default function ReviewPage() {
           Delete
         </MenuItem>
       </Popover>
+
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+            Edit Details
+          </Typography>
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="firstName"
+            value=""
+            label="First Name"
+            variant="outlined"
+          />
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="email"
+            value=""
+            label="Email"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="role"
+            value=""
+            label="Role"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="orders"
+            value=""
+            label="Orders"
+            variant="outlined"
+          />
+        </Box>
+      </Modal>
     </>
   );
 }
