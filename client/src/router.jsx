@@ -13,8 +13,8 @@ import Cart from './common/Cart/Cart';
 import ReviewPage from './pages/ReviewPage';
 import OrderPage from './pages/OrderPage';
 import PaymentPortalHome from './components/payments/PaymentPortalHome';
-import PaymentPortal from './components/payments/PaymentPortal';
 import Payments from './components/payments/Payments';
+import PaymentPortal from './components/payments/PaymentPortal';
 
 // ----------------------------------------------------------------------
 
