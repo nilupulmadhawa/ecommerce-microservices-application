@@ -160,7 +160,7 @@ export default function OrderPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Orders | E-Commerce App </title>
       </Helmet>
 
       <Container>

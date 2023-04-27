@@ -3,7 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { Grid, Button, Container, Stack, Typography } from '@mui/material';
 // components
 import Iconify from '../components/iconify';
-import { BlogPostCard, BlogPostsSort, BlogPostsSearch } from '../sections/@dashboard/blog';
+import {
+  BlogPostCard,
+  BlogPostsSort,
+  BlogPostsSearch,
+} from '../sections/@dashboard/blog';
 // mock
 import POSTS from '../_mock/blog';
 
@@ -21,20 +25,33 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Blog | Minimal UI </title>
+        <title> Dashboard: Blog | E-Commerce App </title>
       </Helmet>
 
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb={5}
+        >
           <Typography variant="h4" gutterBottom>
             Blog
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New Post
           </Button>
         </Stack>
 
-        <Stack mb={5} direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          mb={5}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <BlogPostsSearch posts={POSTS} />
           <BlogPostsSort options={SORT_OPTIONS} />
         </Stack>

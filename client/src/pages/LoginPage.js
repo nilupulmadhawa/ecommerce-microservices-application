@@ -1,7 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button } from '@mui/material';
+import {
+  Link,
+  Container,
+  Typography,
+  Divider,
+  Stack,
+  Button,
+} from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 // components
@@ -46,7 +53,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Login | E-Commerce App </title>
       </Helmet>
 
       <StyledRoot>
@@ -63,7 +70,10 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img
+              src="/assets/illustrations/illustration_login.png"
+              alt="login"
+            />
           </StyledSection>
         )}
 
@@ -80,15 +90,30 @@ export default function LoginPage() {
 
             <Stack direction="row" spacing={2}>
               <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:google-fill" color="#DF3E30" width={22} height={22} />
+                <Iconify
+                  icon="eva:google-fill"
+                  color="#DF3E30"
+                  width={22}
+                  height={22}
+                />
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:facebook-fill" color="#1877F2" width={22} height={22} />
+                <Iconify
+                  icon="eva:facebook-fill"
+                  color="#1877F2"
+                  width={22}
+                  height={22}
+                />
               </Button>
 
               <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify icon="eva:twitter-fill" color="#1C9CEA" width={22} height={22} />
+                <Iconify
+                  icon="eva:twitter-fill"
+                  color="#1C9CEA"
+                  width={22}
+                  height={22}
+                />
               </Button>
             </Stack>
 

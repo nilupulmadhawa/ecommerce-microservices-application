@@ -160,7 +160,7 @@ export default function ReviewPage() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Review and Ratings | E-Commerce App </title>
       </Helmet>
 
       <Container>
