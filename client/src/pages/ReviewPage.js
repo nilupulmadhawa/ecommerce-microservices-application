@@ -36,13 +36,10 @@ import USERLIST from '../_mock/review';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'avatarUrl', label: 'Avatar', alignRight: false },
-  { id: 'firstName', label: 'Name', alignRight: false },
-  { id: 'productName', label: 'Product Name', alignRight: false },
-  { id: 'imageUrl', label: 'Image', alignRight: false },
+  { id: 'buyer_id', label: 'Buyer', alignRight: false },
+  { id: 'item_id', label: 'Product', alignRight: false },
   { id: 'rating', label: 'Rating', alignRight: false },
-  { id: 'description', label: 'Description', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'review', label: 'Review', alignRight: false },
   { id: '' },
 ];
 
@@ -218,17 +215,8 @@ export default function ReviewPage() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const {
-                        id,
-                        firstName,
-                        avatarUrl,
-                        imageUrl,
-                        productName,
-                        rating,
-                        description,
-                        isVerified,
-                      } = row;
-                      const selectedUser = selected.indexOf(firstName) !== -1;
+                      const { id, buyer_id, item_id, rating, review } = row;
+                      const selectedUser = selected.indexOf(buyer_id) !== -1;
 
                       return (
                         <TableRow
@@ -241,30 +229,12 @@ export default function ReviewPage() {
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
-                              onChange={(event) =>
-                                handleClick(event, firstName)
-                              }
+                              onChange={(event) => handleClick(event, buyer_id)}
                             />
                           </TableCell>
 
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
-                            >
-                              <Avatar alt={firstName} src={avatarUrl} />
-                            </Stack>
-                          </TableCell>
-
-                          <TableCell align="left">{`${firstName}`}</TableCell>
-                          <TableCell align="left">{`${productName}`}</TableCell>
-
-                          <TableCell align="left">
-                            <Box sx={{ width: 80 }}>
-                              <Avatar alt={productName} src={imageUrl} />
-                            </Box>
-                          </TableCell>
+                          <TableCell align="left">{`${buyer_id}`}</TableCell>
+                          <TableCell align="left">{`${item_id}`}</TableCell>
 
                           <TableCell align="left">
                             <Rating value={rating} readOnly />
@@ -275,12 +245,8 @@ export default function ReviewPage() {
                               variant="body2"
                               sx={{ color: 'text.secondary' }}
                             >
-                              {`${description}`}
+                              {`${review}`}
                             </Typography>
-                          </TableCell>
-
-                          <TableCell align="left">
-                            {isVerified ? 'Yes' : 'No'}
                           </TableCell>
 
                           <TableCell align="right">
@@ -384,32 +350,32 @@ export default function ReviewPage() {
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="firstName"
+            id="buyer_id"
             value=""
-            label="First Name"
+            label="Buyer"
             variant="outlined"
           />
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="email"
+            id="item_id"
             value=""
-            label="Email"
-            variant="outlined"
-          />
-
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="role"
-            value=""
-            label="Role"
+            label="Product"
             variant="outlined"
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="orders"
+            id="rating"
             value=""
-            label="Orders"
+            label="Rating"
+            variant="outlined"
+          />
+
+          <TextField
+            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+            id="review"
+            value=""
+            label="Review"
             variant="outlined"
           />
         </Box>

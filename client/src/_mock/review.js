@@ -3,18 +3,10 @@ import { sample } from 'lodash';
 
 const reviews = [...Array(8)].map((_, index) => ({
   id: faker.datatype.uuid(),
-
-  firstName: faker.name.fullName(),
-  avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
-  productName: faker.commerce.productName(),
-  imageUrl: `/assets/images/products/product_${faker.datatype.number({
-    min: 1,
-    max: 8,
-  })}.jpg`,
+  buyer_id: 'B222',
+  item_id: 'I222',
   rating: faker.datatype.number({ min: 1, max: 5 }),
-  title: faker.lorem.sentence(),
-  description: faker.lorem.paragraphs(1),
-  isVerified: faker.datatype.boolean(),
+  review: faker.lorem.paragraphs(1),
 }));
 
 export default reviews;

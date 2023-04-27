@@ -15,5 +15,5 @@ const manageproducts = [...Array(8)].map((_, index) => ({
   })}.jpg`,
   status: sample(['active', 'innactive']),
 }));
-
+ 
 export default manageproducts;
