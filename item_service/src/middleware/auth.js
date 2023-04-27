@@ -1,7 +1,7 @@
 import { decodeJwtToken } from '../utils/jwt'
 import { makeResponse } from '../utils/response'
 import asyncHandler from './async'
-import User from '../models/user.model'
+import User from '../models/item.model'
 
 export const protect = asyncHandler(async (req, res, next) => {
     const token = req.headers.authorization ? (req.headers.authorization.startsWith('Bearer') ? req.headers.authorization.split(' ')[1]?.replace('null', '')?.replace('undefined', '') : null) : null

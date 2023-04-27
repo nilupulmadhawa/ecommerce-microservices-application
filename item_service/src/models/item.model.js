@@ -1,33 +1,31 @@
 import mongoose from 'mongoose'
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
 
-const UserSchema = new mongoose.Schema(
+const ItemSchema = new mongoose.Schema(
     {
+        seller_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true
+        },
         name: {
             type: String,
             required: true
         },
-        mobile_number: {
+        description: {
             type: String,
             required: false
         },
-        email: {
-            type: String,
-            required: true,
-        },
-        address: {
-            type: String,
-            required: false
-        },
-        password: {
+        price: {
             type: String,
             required: true
         },
-        role: {
+        image: {
             type: String,
-            required: false,
-            enum: ['admin', 'user', 'seller'],
-            default: 'user'
+            required: false
+        },
+        catagory: {
+            type: String,
+            required: true
         },
         status: {
             type: String,
@@ -41,11 +39,11 @@ const UserSchema = new mongoose.Schema(
     }
 )
 
-UserSchema.plugin(aggregatePaginate)
+ItemSchema.plugin(aggregatePaginate)
 
-UserSchema.index({ createdAt: 1 })
+ItemSchema.index({ createdAt: 1 })
 
-const User = mongoose.model('User', UserSchema)
-User.syncIndexes()
+const Item = mongoose.model('Item', ItemSchema)
+Item.syncIndexes()
 
-export default User
+export default Item
