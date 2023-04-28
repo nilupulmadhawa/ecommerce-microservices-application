@@ -94,19 +94,22 @@ export default function TrackOrder() {
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0">Samsung Galaxy</p>
+                      <p className="text-muted mb-0">
+                        {' '}
+                        Only Naturals for Women
+                      </p>
                     </MDBCol>
                     <MDBCol
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">White</p>
+                      {/* <p className="text-muted mb-0 small">White</p> */}
                     </MDBCol>
                     <MDBCol
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">Capacity: 64GB</p>
+                      {/* <p className="text-muted mb-0 small">Capacity: 64GB</p> */}
                     </MDBCol>
                     <MDBCol
                       md="2"
@@ -118,7 +121,7 @@ export default function TrackOrder() {
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">$499</p>
+                      <p className="text-muted mb-0 small">$50</p>
                     </MDBCol>
                   </MDBRow>
                   <hr
@@ -161,7 +164,7 @@ export default function TrackOrder() {
                   <MDBRow>
                     <MDBCol md="2">
                       <MDBCardImage
-                        src="/images/shops/10.png"
+                        src="./images/SlideCard/product_7.jpg"
                         fluid
                         alt="Phone"
                       />
@@ -170,19 +173,19 @@ export default function TrackOrder() {
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0">iPad</p>
+                      <p className="text-muted mb-0">Herb natural</p>
                     </MDBCol>
                     <MDBCol
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">Pink rose</p>
+                      {/* <p className="text-muted mb-0 small">Pink rose</p> */}
                     </MDBCol>
                     <MDBCol
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">Capacity: 32GB</p>
+                      {/* <p className="text-muted mb-0 small">Capacity: 32GB</p> */}
                     </MDBCol>
                     <MDBCol
                       md="2"
@@ -194,7 +197,7 @@ export default function TrackOrder() {
                       md="2"
                       className="text-center d-flex justify-content-center align-items-center"
                     >
-                      <p className="text-muted mb-0 small">$399</p>
+                      <p className="text-muted mb-0 small">$199</p>
                     </MDBCol>
                   </MDBRow>
                   <hr
@@ -235,19 +238,19 @@ export default function TrackOrder() {
               <div className="d-flex justify-content-between pt-2">
                 <p className="fw-bold mb-0">Order Details</p>
                 <p className="text-muted mb-0">
-                  <span className="fw-bold me-4">Total</span> $898.00
+                  <span className="fw-bold me-4">Total</span> $50.00
                 </p>
               </div>
 
               <div className="d-flex justify-content-between pt-2">
                 <p className="text-muted mb-0">Invoice Number : 788152</p>
                 <p className="text-muted mb-0">
-                  <span className="fw-bold me-4">Discount</span> $19.00
+                  <span className="fw-bold me-4">Discount</span> $199.00
                 </p>
               </div>
 
               <div className="d-flex justify-content-between">
-                <p className="text-muted mb-0">Invoice Date : 22 Dec,2019</p>
+                <p className="text-muted mb-0">Invoice Date : 22 April,2023</p>
                 <p className="text-muted mb-0">
                   <span className="fw-bold me-4">GST 18%</span> 123
                 </p>
@@ -272,7 +275,7 @@ export default function TrackOrder() {
                 tag="h5"
                 className="d-flex align-items-center justify-content-end text-white text-uppercase mb-0"
               >
-                Total paid: <span className="h2 mb-0 ms-2">$1040</span>
+                Total paid: <span className="h2 mb-0 ms-2">$249</span>
               </MDBTypography>
             </MDBCardFooter>
           </MDBCard>
