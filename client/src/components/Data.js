@@ -6,6 +6,7 @@ const Data = {
             cover: "./images/flash/9.jpg",
             name: "Protiens",
             price: 100,
+            rating: 5,
         },
         {
             id: 2,
@@ -13,6 +14,7 @@ const Data = {
             cover: "./images/flash/10.png",
             name: "Vitamins",
             price: 20,
+            rating: 3,
         },
         {
             id: 3,
@@ -20,6 +22,7 @@ const Data = {
             cover: "./images/flash/11.jpg",
             name: "Energetic foods",
             price: 200,
+            rating: 2,
         },
         {
             id: 4,
@@ -27,6 +30,7 @@ const Data = {
             cover: "./images/flash/12.jpg",
             name: "Collagen",
             price: 50,
+            rating: 4,
         },
         {
             id: 5,
@@ -34,6 +38,7 @@ const Data = {
             cover: "./images/flash/9.jpg",
             name: "Antioxidants",
             price: 100,
+            rating: 5,
         },
         {
             id: 6,
@@ -41,6 +46,7 @@ const Data = {
             cover: "./images/flash/10.png",
             name: "Herbal Oils",
             price: 100,
+            rating: 3,
         },
     ],
     orderItem: [

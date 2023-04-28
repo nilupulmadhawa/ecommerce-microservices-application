@@ -46,6 +46,7 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Rating } from "@mui/material";
 
 const ShopCart = ({ shopItems, addToCart }) => {
     const [count, setCount] = useState(0);
@@ -73,13 +74,14 @@ const ShopCart = ({ shopItems, addToCart }) => {
                                 <Link to={'productview'}>
                                     <h3>{shopItems.name}</h3>
                                 </Link>
-                                <div className="rate">
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                </div>
+                                <Rating
+                                    name="simple-controlled"
+                                    value={shopItems.rating}
+                                    readOnly
+                                // onChange={(event, newValue) => {
+                                //     setReview([newValue]);
+                                // }}
+                                />
                                 <div className="price">
                                     <h4>${shopItems.price}.00 </h4>
                                     {/* step : 3  
