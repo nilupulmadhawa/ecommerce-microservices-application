@@ -32,14 +32,7 @@ const Sdata = {
             discount: "10 ",
             rating: 4
         },
-        {
-            id: 11,
-            cover: "./images/shops/ne5.jpg",
-            name: "Jointcare Max",
-            price: "80",
-            discount: "20 ",
-            rating: 3
-        },
+
         {
             id: 12,
             cover: "./images/shops/ne6.jpg",
@@ -71,6 +64,14 @@ const Sdata = {
             price: "5",
             discount: "2",
             rating: 2
+        },
+        {
+            id: 11,
+            cover: "./images/shops/ne5.jpg",
+            name: "Jointcare Max",
+            price: "80",
+            discount: "20 ",
+            rating: 0
         },
     ],
 }
