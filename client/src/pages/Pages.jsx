@@ -12,7 +12,7 @@ const Pages = ({ productItems, addToCart, CartItem, shopItems }) => {
     return (
         <>
             <Home CartItem={CartItem} />
-            <FlashDeals productItems={shopItems} addToCart={addToCart} />
+            <FlashDeals productItems={productItems} addToCart={addToCart} />
             {/* <TopCate /> */}
             {/* <NewArrivals /> */}
             {/* <Discount /> */}

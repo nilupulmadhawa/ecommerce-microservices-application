@@ -2,6 +2,7 @@ import React from 'react';
 import './style.css';
 import axios from 'axios';
 
+
 const Cart = ({ CartItem, addToCart, decreaseQty }) => {
     // Stpe: 7   calucate total of items
     const totalPrice = CartItem.reduce(
@@ -85,6 +86,21 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
                         <div className=" d_flex">
                             <h4>Total Price :</h4>
                             <h3>${totalPrice}.00</h3>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <h4>Shipping Method :</h4>
+                            <div style={{ display: "flex", justifyContent: "space-around", margin: "15px" }}>
+                                <div style={{ display: "flex" }}>
+                                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked value="talaba" />
+                                    <label class="btn btn-outline-primary" for="option1">
+                                        <img style={{ width: "50px", marginLeft: "5px" }} src="https://logodownload.org/wp-content/uploads/2015/12/dhl-logo-0-1.png" /></label>
+                                </div>
+                                <div style={{ display: "flex" }}>
+                                    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off" checked value="talaba" />
+                                    <label class="btn btn-outline-primary" for="option2">
+                                        <img style={{ width: "50px", marginLeft: "5px" }} src="https://companieslogo.com/img/orig/FDX_BIG-6371a0f3.png?t=1648042471" /></label>
+                                </div>
+                            </div>
                         </div>
                         <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
                     </div>
