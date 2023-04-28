@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import '../MainPage/productview.css';
 import Head from '../../common/header/Head';
 import Footer from '../../common/footer/Footer';
+import logo from '../../components/assets/images/logo.png';
+
 import {
   MDBBtn,
   MDBCard,
@@ -19,6 +21,9 @@ import {
   MDBTextArea,
   MDBTypography,
 } from 'mdb-react-ui-kit';
+import { Button, Link } from '@mui/material';
+import Header from '../../common/header/Header';
+import Navbar from '../../common/header/Navbar';
 
 export default function Products() {
   const [value, setValue] = useState(2);
@@ -26,6 +31,43 @@ export default function Products() {
   return (
     <>
       <Head />
+      <section className="search">
+        <div className="container c_flex">
+          <div className="logo width ">
+            <img src={logo} alt="" style={{ width: '80px' }} />
+          </div>
+
+          <Link to="/signup">
+            <Button fullWidth size="small" color="info" variant="outlined">
+              SignUp
+            </Button>{' '}
+          </Link>
+
+          <div
+            className="search-box f_flex ms-5 me-5"
+            style={{ marginLeft: '50px', marginRight: '50px' }}
+          >
+            <i className="fa fa-search"></i>
+            <input type="text" placeholder="Search and herbal product" />
+            <span>All Category</span>
+          </div>
+
+          <Link to="/login">
+            <Button fullWidth size="small" color="info" variant="outlined">
+              Login
+            </Button>{' '}
+          </Link>
+          <div className="icon f_flex width">
+            <i className="fa fa-user icon-circle"></i>
+            <div className="cart">
+              <Link to="/cart">
+                <i className="fa fa-shopping-bag icon-circle"></i>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Navbar />
       <section style={{ backgroundColor: '#e6ecff', display: 'flex' }}>
         <div style={{ flex: 1 }}>
           <div style={{ width: '250px' }}>
