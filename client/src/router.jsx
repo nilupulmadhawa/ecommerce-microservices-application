@@ -19,6 +19,7 @@ import ProductManage from './pages/ProductManage';
 // import ProductViewPage from './pages/ProductViewPage';
 import UserProfile from './pages/UserProfile';
 import Products from './components/MainPage/Products';
+import TrackOrder from './components/MainPage/TrackOrder';
 
 // ----------------------------------------------------------------------
 
@@ -82,6 +83,10 @@ export default function Router() {
     {
       path: '/productview/',
       element: <Products />,
+    },
+    {
+      path: '/track/',
+      element: <TrackOrder />,
     },
 
     {
