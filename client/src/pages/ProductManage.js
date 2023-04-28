@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import manageproducts from '../_mock/manageproducts';
@@ -109,9 +109,8 @@ export default function ProductManage() {
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const handleOpenMenu = (event, r) => {
+    const handleOpenMenu = (event) => {
         setOpen(event.currentTarget);
-        setFormValues(r)
     };
 
     const handleCloseMenu = () => {
@@ -182,14 +181,14 @@ export default function ProductManage() {
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
-    const handleOpenAdd = () => { setOpenModalAdd(true); setFormValues(initialFormValues) }
+    const handleOpenAdd = () => setOpenModalAdd(true);
     const handleCloseAdd = () => setOpenModalAdd(false);
 
     const [manageproducts, setManageproducts] = useState([
         {
             category: "Herbs And Homeopathy",
             description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 1,
+            id: "1",
             imageUrl: "./images/flash/10.jpg",
             name: "Only Naturals for Women",
             price: "180",
@@ -198,7 +197,7 @@ export default function ProductManage() {
         }, {
             category: "Herbs And Homeopathy",
             description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 2,
+            id: "2",
             imageUrl: "./images/flash/ne2.jpg",
             name: "Zimacal with Magneseium",
             price: "120",
@@ -208,7 +207,7 @@ export default function ProductManage() {
         {
             category: "Herbs And Homeopathy",
             description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 3,
+            id: "3",
             imageUrl: "./images/flash/ne3.jpg",
             name: "Opokan Cream",
             price: "20",
@@ -217,66 +216,32 @@ export default function ProductManage() {
         }, {
             category: "Herbs And Homeopathy",
             description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 4,
+            id: "4",
             imageUrl: "./images/flash/ne4.jpg",
             name: "Travisto Active",
             price: "150",
             quantity: "50",
             status: "active",
-        },
-        {
+        }, {
             category: "Herbs And Homeopathy",
             description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 5,
+            id: "",
             imageUrl: "./images/flash/ne5.jpg",
-            name: "Vitamin Complex",
-            price: "400",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 6,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Rosalin Forte",
-            price: "60",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 7,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Alpha Lepoic Acid",
-            price: "120",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 8,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Collagen",
-            price: "5",
+            name: "Jointcare Max",
+            price: "80",
             quantity: "50",
             status: "active",
         }
     ]);
     const [rows, setRows] = useState([]);
-    const initialFormValues = {
+
+    const [formValues, setFormValues] = useState({
         name: '',
         category: '',
         price: '',
         quantity: '',
         description: '',
-        id: null,
-        imageUrl: '',
-        status: '',
-    };
-    const [formValues, setFormValues] = useState(initialFormValues);
+    });
 
     const handleInputChange = (event) => {
         const { id, value } = event.target;
@@ -291,6 +256,7 @@ export default function ProductManage() {
         const newProduct = {
             ...formValues,
             id: (manageproducts.length + 1).toString(),
+            imageUrl: '11',
             status: 'active',
         };
         const updatedProducts = [...manageproducts, newProduct];
@@ -302,31 +268,39 @@ export default function ProductManage() {
 
     /////////////////////////////////
     const handleDelete = (id) => {
-        setManageproducts(manageproducts.filter((product) => product.id !== formValues.id));
-        setOpen(null)
+        setManageproducts(manageproducts.filter((product) => product.id !== id));
     };
 
     ///////////////////////////////////
     const handleEdit = (id) => {
-        // console.log(open.id);
-        // const selectedRow = manageproducts.find((row) => row.id === open.id);
-        // setFormValues(manageproducts.find((row) => row.id === open.id));
+        const selectedRow = manageproducts.find((row) => row.id === id);
+        setFormValues({
+            ...selectedRow,
+            id: parseInt(selectedRow.id),
+        });
         setOpenModal(true);
     };
 
-
-
+    const initialFormValues = {
+        id: null,
+        name: '',
+        category: '',
+        price: '',
+        quantity: '',
+        description: '',
+    };
 
     const handleSubmitedit = () => {
+        const updatedRows = rows.map((row) =>
+            row.id === formValues.id ? formValues : row
+        );
 
-        const updatedRows = manageproducts.filter((product) => product.id !== formValues.id)
-
+        updateRows(updatedRows);
         setOpenModal(false);
-        const updatedProducts = [...updatedRows, formValues];
+        setFormValues(formValues);
+        const updatedProducts = [...manageproducts, formValues];
         setManageproducts(updatedProducts);
         console.log(manageproducts);
-        setFormValues(initialFormValues);
-        setOpen(null)
     };
 
     const updateRows = (updatedRows) => {
@@ -503,8 +477,7 @@ export default function ProductManage() {
                                                                 <IconButton
                                                                     size="large"
                                                                     color="inherit"
-                                                                    onClick={(e) => handleOpenMenu(e, row)}
-                                                                    id={id}
+                                                                    onClick={handleOpenMenu}
                                                                 >
                                                                     <Iconify icon={'eva:more-vertical-fill'} />
                                                                 </IconButton>
@@ -544,7 +517,7 @@ export default function ProductManage() {
                                                             </MenuItem>
                                                             <MenuItem
                                                                 sx={{ color: 'error.main' }}
-                                                                onClick={() => handleDelete(id)}
+                                                                onClick={() => handleDelete(row.id)}
                                                             >
                                                                 <Iconify
                                                                     icon={'eva:trash-2-outline'}

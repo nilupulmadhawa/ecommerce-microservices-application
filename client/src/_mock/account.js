@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------
 
 const account = {
-    displayName: 'Mihiran Jayasekara',
+    displayName: 'Admin',
     email: 'demo@minimals.cc',
     photoURL: '/assets/images/avatars/avatar_default.jpg',
-    role: 'Seller'
+    role: 'admin'
 };
 
 export default account;
