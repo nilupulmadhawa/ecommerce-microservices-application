@@ -1,16 +1,16 @@
 footer {
-  background-color: #0f3460;
+  background-color: #006a39;
   padding: 100px 0;
   color: #fff;
 }
 footer h1 {
   margin-bottom: 30px;
-  color: #e94560;
+  color: #ffffff;
   font-weight: 800;
-  font-style: italic;
+  font-style: bold;
 }
 footer .img {
-  background-color: #0c2a4d;
+  background-color: #006a39;
   padding: 15px 20px;
   border-radius: 5px;
 }

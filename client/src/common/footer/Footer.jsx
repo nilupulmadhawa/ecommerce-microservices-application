@@ -7,7 +7,7 @@ const Footer = () => {
       <footer>
         <div className='container grid2'>
           <div className='box'>
-            <h1>Herbal World</h1>
+            <h1>Herbal</h1>
             <p>Welcome to Herbal World E-commerce platform! We are a one-stop-shop for
                all of your natural health and wellness needs. Our platform offers a wide range 
                of high-quality herbal products from trusted brands, all conveniently available at your fingertips.</p>

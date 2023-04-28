@@ -12,15 +12,15 @@ import Router from './router';
 // ----------------------------------------------------------------------
 
 export default function App() {
-  return (
-    <HelmetProvider>
-      <BrowserRouter>
-        <ThemeProvider>
-          <ScrollToTop />
-          <StyledChart />
-          <Router />
-        </ThemeProvider>
-      </BrowserRouter>
-    </HelmetProvider>
-  );
+    return (
+        <HelmetProvider>
+            <BrowserRouter>
+                <ThemeProvider>
+                    <ScrollToTop />
+                    <StyledChart />
+                    <Router />
+                </ThemeProvider>
+            </BrowserRouter>
+        </HelmetProvider>
+    );
 }

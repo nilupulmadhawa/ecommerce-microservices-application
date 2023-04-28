@@ -1,7 +1,7 @@
-.shop .category {
+/* .shop .category {
   padding: 30px;
   height: 90vh;
-}
+} */
 .chead h1 {
   font-size: 20px;
   margin-bottom: 20px;
@@ -11,7 +11,7 @@
   border-left: 3px solid rgba(0, 0, 0, 0.5);
   padding-left: 70px;
 }
-.shop .category .box {
+/* .shop .category .box {
   background-color: #f6f9fc;
   margin: 15px 0;
   padding: 5px 10px;
@@ -25,18 +25,18 @@
 .shop .category .box:hover {
   background-color: #fff;
   box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
-}
+} */
 .shop .box2 {
   margin-top: 100px !important;
   text-align: center;
 }
-.shop .category button {
+/* .shop .category button {
   padding: 10px;
   background: none;
   text-align: center;
   font-size: 17px;
   font-weight: 500;
-}
+} */
 
 .shop .contentWidth {
   margin-left: 30px;

@@ -9,6 +9,8 @@ import Header from '../common/header/Header';
 import Cart from '../common/Cart/Cart';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Pages from '../pages/Pages';
+import ProductViewPage from './ProductViewPage';
+import Shop from '../components/shops/Shop';
 
 const GestLayout = () => {
     /*
@@ -81,7 +83,6 @@ const GestLayout = () => {
         }
     };
     const location = useLocation(); // get the current location
-    console.log(location.pathname);
     return (
         <>
             <Header CartItem={CartItem} />
@@ -91,6 +92,12 @@ const GestLayout = () => {
 
             {location.pathname === '/cart' && (
                 <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+            )}
+            {location.pathname === '/productview' && (
+                <ProductViewPage CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} />
+            )}
+            {location.pathname === '/shop' && (
+                <Shop CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} />
             )}
 
 

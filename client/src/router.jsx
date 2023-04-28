@@ -11,7 +11,7 @@ import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
 import ReviewPage from './pages/ReviewPage';
 import OrderPage from './pages/OrderPage';
-import PaymentPortalHome from './components/payments/PaymentPortalHome';
+import PaymentSuccess from './components/payments/PaymentSuccess';
 import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
@@ -24,76 +24,77 @@ import TrackOrder from './components/MainPage/TrackOrder';
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const routes = useRoutes([
-    {
-      path: '/dashboard',
-      element: <DashboardLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <DashboardAppPage /> },
-        { path: 'users', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'manageproducts', element: <ProductManage /> },
-        { path: 'blogs', element: <BlogPage /> },
-        { path: 'ratings', element: <ReviewPage /> },
-        { path: 'orders', element: <OrderPage /> },
-      ],
-    },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
-    {
-      path: 'signup',
-      element: <SignInSide />,
-    },
-    {
-      path: 'user',
-      element: <UserProfile />,
-    },
-    {
-      path: '/',
-      element: <SimpleLayout />,
-      children: [
+    const routes = useRoutes([
         {
-          path: '/',
-          element: <HomePage />,
+            path: '/dashboard',
+            element: <DashboardLayout />,
+            children: [
+                { element: <Navigate to="/dashboard/app" />, index: true },
+                { path: 'app', element: <DashboardAppPage /> },
+                { path: 'users', element: <UserPage /> },
+                { path: 'products', element: <ProductsPage /> },
+                { path: 'manageproducts', element: <ProductManage /> },
+                { path: 'blogs', element: <BlogPage /> },
+                { path: 'ratings', element: <ReviewPage /> },
+                { path: 'orders', element: <OrderPage /> },
+            ],
         },
         {
-          path: '/cart',
-          element: <HomePage />,
+            path: 'login',
+            element: <LoginPage />,
         },
         {
-          path: '/paymentportal',
-          element: <PaymentPortalHome />,
+            path: 'signup',
+            element: <SignInSide />,
         },
         {
-          path: '/paymentportal/pay',
-          element: <PaymentPortal />,
-        },
-        {
-          path: '/payments',
-          element: <Payments />,
+            path: '/',
+            element: <SimpleLayout />,
+            children: [
+                {
+                    path: '/',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/cart',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/productview',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/shop',
+                    element: <HomePage />,
+                },
+                {
+                    path: '/track',
+                    element: <TrackOrder />,
+                },
+                {
+                    path: '/paymentsuccess',
+                    element: <PaymentSuccess />,
+                },
+                {
+                    path: '/paymentportal/pay',
+                    element: <PaymentPortal />,
+                },
+                {
+                    path: '/payments',
+                    element: <Payments />,
+                },
+
+                { path: '404', element: <Page404 /> },
+                { path: '*', element: <Navigate to="/404" replace /> },
+            ],
         },
 
-        { path: '404', element: <Page404 /> },
-        { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
-    {
-      path: '/productview/',
-      element: <Products />,
-    },
-    {
-      path: '/track/',
-      element: <TrackOrder />,
-    },
 
-    {
-      path: '*',
-      element: <Navigate to="/404" replace />,
-    },
-  ]);
+        {
+            path: '*',
+            element: <Navigate to="/404" replace />,
+        },
+    ]);
 
-  return routes;
+    return routes;
 }
