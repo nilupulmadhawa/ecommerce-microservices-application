@@ -3,6 +3,7 @@ import './UserProfile.css';
 import Head from '../common/header/Head';
 import Footer from '../common/footer/Footer';
 import { Card, CardContent, Typography } from '@material-ui/core';
+import Navbar from '../common/header/Navbar';
 
 export default function UserProfile() {
   // const PF = 'http://localhost:5000/profile_pic/';
@@ -25,6 +26,7 @@ export default function UserProfile() {
   return (
     <div className="profile">
       <Head />
+      <Navbar />
       <div className="container d-flex justify-content-center">
         <Card className="card-user p-3 py-4" variant="outlined">
           <CardContent>
@@ -36,7 +38,7 @@ export default function UserProfile() {
               <img
                 src="./assets/images/avatars/avatar_1.jpg"
                 width="200"
-                className="rounded-circle"
+                className="rounded-circle mx-auto d-block"
                 alt="profile"
               />
               <br />
