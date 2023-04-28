@@ -28,7 +28,7 @@ export default function ProductViewPage({ shopItems, addToCart }) {
     const handleAddReview = () => {
         console.log();
         setReview([...review, value])
-        setValue({ user: "Kasun Perera" })
+        setValue({ user: "Kasun Perera", rating: 0, comment: "" })
     }
 
     return (
@@ -54,7 +54,6 @@ export default function ProductViewPage({ shopItems, addToCart }) {
                             <Rating
                                 name="simple-controlled"
                                 value={value.rating}
-
                                 onChange={(event, newValue) => {
                                     setValue({ ...value, rating: newValue });
                                 }}
