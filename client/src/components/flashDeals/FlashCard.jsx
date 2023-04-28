@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from 'react-router-dom';
+import { Rating } from "@mui/material";
 
 const SampleNextArrow = (props) => {
     const { onClick } = props;
@@ -67,13 +68,14 @@ const FlashCard = ({ productItems, addToCart }) => {
                                     <Link to={'productview'}>
                                         <h3>{productItems.name}</h3>
                                     </Link>
-                                    <div className="rate">
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                        <i className="fa fa-star"></i>
-                                    </div>
+                                    <Rating
+                                        name="simple-controlled"
+                                        value={productItems.rating}
+                                        readOnly
+                                    // onChange={(event, newValue) => {
+                                    //     setReview([newValue]);
+                                    // }}
+                                    />
                                     <div className="price">
                                         <h4>${productItems.price}.00 </h4>
                                         {/* step : 3  
