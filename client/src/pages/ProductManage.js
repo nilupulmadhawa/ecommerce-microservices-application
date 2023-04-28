@@ -4,6 +4,7 @@ import { sentenceCase } from 'change-case';
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import manageproducts from '../_mock/manageproducts';
 
 // @mui
 import {
@@ -38,7 +39,7 @@ import USERLIST from '../_mock/manageproducts';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'imageUrl', label: 'Image', alignRight: false },
+  // { id: 'imageUrl', label: 'Image', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'catagory', label: 'Catagory', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
@@ -131,23 +132,23 @@ export default function ProductManage() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -166,20 +167,95 @@ export default function ProductManage() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(
-    USERLIST,
-    getComparator(order, orderBy),
-    filterName
-  );
+  // const manageproducts = applySortFilter(
+  //   USERLIST,
+  //   getComparator(order, orderBy),
+  //   filterName
+  // );
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  // const isNotFound = !manageproducts.length && !!filterName;
 
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalAdd, setOpenModalAdd] = React.useState(false);
+
   const handleOpen = () => setOpenModal(true);
-  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleClose = () => setOpenModal(false);
+
+  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleCloseAdd = () => setOpenModalAdd(false);
+
+  const [manageproducts, setManageproducts] = useState([]);
+  const [rows, setRows] = useState([]);
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    category: '',
+    price: '',
+    quantity: '',
+    description: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newProduct = {
+      ...formValues,
+      id: (manageproducts.length + 1).toString(),
+      imageUrl: '11',
+      status: 'active',
+    };
+    const updatedProducts = [...manageproducts, newProduct];
+    setManageproducts(updatedProducts);
+    handleCloseAdd();
+  };
+
+  /////////////////////////////////
+  const handleDelete = (id) => {
+    setManageproducts(manageproducts.filter((product) => product.id !== id));
+  };
+
+  ///////////////////////////////////
+  const handleEdit = (id) => {
+    const selectedRow = manageproducts.find((row) => row.id === id);
+    setFormValues({
+      ...selectedRow,
+      id: parseInt(selectedRow.id),
+    });
+    setOpenModal(true);
+  };
+
+  const initialFormValues = {
+    id: null,
+    name: '',
+    category: '',
+    price: '',
+    quantity: '',
+    description: '',
+  };
+
+  const handleSubmitedit = () => {
+    const updatedRows = rows.map((row) =>
+      row.id === formValues.id ? formValues : row
+    );
+
+    updateRows(updatedRows);
+    setOpenModal(false);
+    setFormValues(formValues);
+    const updatedProducts = [...manageproducts, formValues];
+    setManageproducts(updatedProducts);
+    console.log(formValues);
+  };
+
+  const updateRows = (updatedRows) => {
+    setRows(updatedRows);
+  };
 
   return (
     <>
@@ -214,51 +290,64 @@ export default function ProductManage() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h5" component="h2">
-              Edit Details
+              Add Details
             </Typography>
 
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="name"
-              value=""
-              label="Product Name"
-              variant="outlined"
-            />
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="catagory"
-              value=""
-              label="Catagory"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="price"
-              value=""
-              label="Price"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="quantity"
-              value=""
-              label="quantity"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="description"
-              value=""
-              label="Description"
-              variant="outlined"
-            />
-
-            <Button type="submit" color="inherit" variant="outlined">
-              Submit
-            </Button>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                id="name"
+                name="name"
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.name}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="category"
+                name="category"
+                label="Category"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.category}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="price"
+                name="price"
+                label="Price"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.price}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="quantity"
+                name="quantity"
+                label="Quantity"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.quantity}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="description"
+                name="description"
+                label="Description"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.description}
+                onChange={handleInputChange}
+              />
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                Add Product
+              </Button>
+            </form>
           </Box>
         </Modal>
 
@@ -282,103 +371,110 @@ export default function ProductManage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const {
-                        id,
-                        name,
-                        catagory,
-                        price,
-                        description,
-                        status,
-                        imageUrl,
-                      } = row;
+                  {manageproducts &&
+                    manageproducts.length > 0 &&
+                    manageproducts
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        const {
+                          id,
+                          name,
+                          catagory,
+                          price,
+                          description,
+                          status,
+                        } = row;
 
-                      const selectedUser = selected.indexOf(name) !== -1;
+                        const selectedUser = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={selectedUser}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
-
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
+                        return (
+                          <React.Fragment key={id}>
+                            <TableRow
+                              hover
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={selectedUser}
                             >
-                              <Avatar alt={name} src={imageUrl} />
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{catagory}</TableCell>
-                          <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{description}</TableCell>
+                              <TableCell align="left"></TableCell>
+                              <TableCell align="left">{name}</TableCell>
+                              <TableCell align="left">{catagory}</TableCell>
+                              <TableCell align="left">{price}</TableCell>
+                              <TableCell align="left">{description}</TableCell>
+                              <TableCell align="left">
+                                <Label
+                                  color={
+                                    (status === 'innactive' && 'error') ||
+                                    'success'
+                                  }
+                                >
+                                  {sentenceCase(status)}
+                                </Label>
+                              </TableCell>
+                              <TableCell align="right">
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={handleOpenMenu}
+                                >
+                                  <Iconify icon={'eva:more-vertical-fill'} />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
 
-                          <TableCell align="left">
-                            <Label
-                              color={
-                                (status === 'innactive' && 'error') || 'success'
-                              }
+                            <Popover
+                              open={Boolean(open)}
+                              anchorEl={open}
+                              onClose={handleCloseMenu}
+                              anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                              }}
+                              PaperProps={{
+                                sx: {
+                                  p: 1,
+                                  width: 140,
+                                  '& .MuiMenuItem-root': {
+                                    px: 1,
+                                    typography: 'body2',
+                                    borderRadius: 0.75,
+                                  },
+                                },
+                              }}
                             >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
-
-                          <TableCell align="right">
-                            <IconButton
-                              size="large"
-                              color="inherit"
-                              onClick={handleOpenMenu}
-                            >
-                              <Iconify icon={'eva:more-vertical-fill'} />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                              <MenuItem onClick={() => handleEdit(id)}>
+                                <Iconify
+                                  icon={'eva:edit-fill'}
+                                  sx={{ mr: 2 }}
+                                />
+                                Edit
+                              </MenuItem>
+                              <MenuItem
+                                sx={{ color: 'error.main' }}
+                                onClick={() => handleDelete(row.id)}
+                              >
+                                <Iconify
+                                  icon={'eva:trash-2-outline'}
+                                  sx={{ mr: 2 }}
+                                />
+                                Delete
+                              </MenuItem>
+                            </Popover>
+                          </React.Fragment>
+                        );
+                      })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
                 </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete
-                            words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -395,35 +491,6 @@ export default function ProductManage() {
         </Card>
       </Container>
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem onClick={handleOpen}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
-
       <Modal
         open={openModal}
         onClose={handleClose}
@@ -434,49 +501,56 @@ export default function ProductManage() {
           <Typography id="modal-modal-title" variant="h5" component="h2">
             Edit Details
           </Typography>
+          <form onSubmit={handleSubmitedit}>
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="name"
+              value={formValues.name}
+              label="Product Name"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="name"
-            value=""
-            label="Product Name"
-            variant="outlined"
-          />
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="catagory"
-            value=""
-            label="Catagory"
-            variant="outlined"
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="category"
+              value={formValues.category}
+              label="Category"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="price"
-            value=""
-            label="Price"
-            variant="outlined"
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="price"
+              value={formValues.price}
+              label="Price"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="quantity"
-            value=""
-            label="quantity"
-            variant="outlined"
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="quantity"
+              value={formValues.quantity}
+              label="Quantity"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="description"
-            value=""
-            label="Description"
-            variant="outlined"
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="description"
+              value={formValues.description}
+              label="Description"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <Button type="submit" color="inherit" variant="outlined">
-            Submit
-          </Button>
+            <Button type="submit" color="inherit" variant="outlined">
+              Submit
+            </Button>
+          </form>
         </Box>
       </Modal>
     </>

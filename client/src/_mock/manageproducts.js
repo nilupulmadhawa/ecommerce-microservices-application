@@ -1,19 +1,13 @@
-import { faker } from '@faker-js/faker';
-import { sample } from 'lodash';
-
-const manageproducts = [...Array(8)].map((_, index) => ({
-  id: faker.datatype.uuid(),
-  name: faker.commerce.productName(),
-  catagory: 'White/Black-Volt-Pure Platinum',
-  price: 150,
-  quantity: faker.datatype.number({ min: 1, max: 100 }),
-  description: faker.lorem.paragraphs(1),
-
-  imageUrl: `/assets/images/products/product_${faker.datatype.number({
-    min: 1,
-    max: 8,
-  })}.jpg`,
-  status: sample(['active', 'innactive']),
-}));
- 
+const manageproducts = [
+  {
+    id: '1',
+    name: 'Product 1',
+    catagory: 'White/Black-Volt-Pure Platinum',
+    price: 150,
+    quantity: 10,
+    description: 'This is the description for product 1',
+    imageUrl: '/assets/images/products/product_1.jpg',
+    status: 'active',
+  },
+];
 export default manageproducts;
