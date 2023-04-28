@@ -132,23 +132,23 @@ export default function ProductManage() {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
+  // const handleClick = (event, name) => {
+  //   const selectedIndex = selected.indexOf(name);
+  //   let newSelected = [];
+  //   if (selectedIndex === -1) {
+  //     newSelected = newSelected.concat(selected, name);
+  //   } else if (selectedIndex === 0) {
+  //     newSelected = newSelected.concat(selected.slice(1));
+  //   } else if (selectedIndex === selected.length - 1) {
+  //     newSelected = newSelected.concat(selected.slice(0, -1));
+  //   } else if (selectedIndex > 0) {
+  //     newSelected = newSelected.concat(
+  //       selected.slice(0, selectedIndex),
+  //       selected.slice(selectedIndex + 1)
+  //     );
+  //   }
+  //   setSelected(newSelected);
+  // };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -167,13 +167,13 @@ export default function ProductManage() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(
-    USERLIST,
-    getComparator(order, orderBy),
-    filterName
-  );
+  // const manageproducts = applySortFilter(
+  //   USERLIST,
+  //   getComparator(order, orderBy),
+  //   filterName
+  // );
 
-  const isNotFound = !filteredUsers.length && !!filterName;
+  // const isNotFound = !manageproducts.length && !!filterName;
 
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalAdd, setOpenModalAdd] = React.useState(false);
@@ -184,7 +184,7 @@ export default function ProductManage() {
   const handleOpenAdd = () => setOpenModalAdd(true);
   const handleCloseAdd = () => setOpenModalAdd(false);
 
-  const [manageproduct, setManageproduct] = useState(null);
+  const [manageproducts, setManageproducts] = useState([]);
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -210,13 +210,15 @@ export default function ProductManage() {
       imageUrl: '11',
       status: 'active',
     };
-    console.log(newProduct);
-    manageproducts.push(newProduct);
-
+    const updatedProducts = [...manageproducts, newProduct];
+    setManageproducts(updatedProducts);
     handleCloseAdd();
   };
 
   /////////////////////////////////
+  // const handleDelete = (id) => {
+  //   setManageproducts(manageproducts.filter((product) => product.id !== id));
+  // };
 
   return (
     <>
@@ -332,72 +334,82 @@ export default function ProductManage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const {
-                        id,
-                        name,
-                        catagory,
-                        price,
-                        description,
-                        status,
-                        imageUrl,
-                      } = row;
+                  {manageproducts &&
+                    manageproducts.length > 0 &&
+                    manageproducts
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row) => {
+                        const {
+                          id,
+                          name,
+                          catagory,
+                          price,
+                          description,
+                          status,
+                          imageUrl,
+                        } = row;
 
-                      const selectedUser = selected.indexOf(name) !== -1;
+                        const selectedUser = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={selectedUser}
-                        >
-                          <TableCell padding="checkbox">
+                        return (
+                          <TableRow
+                            hover
+                            key={id}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={selectedUser}
+                          >
+                            {/* <TableCell padding="checkbox">
                             <Checkbox
                               checked={selectedUser}
                               onChange={(event) => handleClick(event, name)}
                             />
-                          </TableCell>
+                          </TableCell> */}
 
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={2}
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              padding="none"
                             >
-                              <Avatar alt={name} src={imageUrl} />
-                            </Stack>
-                          </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{catagory}</TableCell>
-                          <TableCell align="left">{price}</TableCell>
-                          <TableCell align="left">{description}</TableCell>
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={2}
+                              >
+                                <Avatar alt={name} src={imageUrl} />
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">{name}</TableCell>
+                            <TableCell align="left">{catagory}</TableCell>
+                            <TableCell align="left">{price}</TableCell>
+                            <TableCell align="left">{description}</TableCell>
 
-                          <TableCell align="left">
-                            <Label
-                              color={
-                                (status === 'innactive' && 'error') || 'success'
-                              }
-                            >
-                              {sentenceCase(status)}
-                            </Label>
-                          </TableCell>
+                            <TableCell align="left">
+                              <Label
+                                color={
+                                  (status === 'innactive' && 'error') ||
+                                  'success'
+                                }
+                              >
+                                {sentenceCase(status)}
+                              </Label>
+                            </TableCell>
 
-                          <TableCell align="right">
-                            <IconButton
-                              size="large"
-                              color="inherit"
-                              onClick={handleOpenMenu}
-                            >
-                              <Iconify icon={'eva:more-vertical-fill'} />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                            <TableCell align="right">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={handleOpenMenu}
+                              >
+                                <Iconify icon={'eva:more-vertical-fill'} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
@@ -405,7 +417,7 @@ export default function ProductManage() {
                   )}
                 </TableBody>
 
-                {isNotFound && (
+                {/* {isNotFound && (
                   <TableBody>
                     <TableRow>
                       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -428,7 +440,7 @@ export default function ProductManage() {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                )}
+                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -468,7 +480,10 @@ export default function ProductManage() {
           Edit
         </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
+        <MenuItem
+          sx={{ color: 'error.main' }}
+          // onClick={() => handleDelete(product.id)}
+        >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
