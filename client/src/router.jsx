@@ -9,7 +9,6 @@ import DashboardAppPage from './pages/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
-import Cart from './common/Cart/Cart';
 import ReviewPage from './pages/ReviewPage';
 import OrderPage from './pages/OrderPage';
 import PaymentPortalHome from './components/payments/PaymentPortalHome';
@@ -17,7 +16,9 @@ import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
 import ProductManage from './pages/ProductManage';
-import ProductViewPage from './pages/ProductViewPage';
+// import ProductViewPage from './pages/ProductViewPage';
+import UserProfile from './pages/UserProfile';
+import Products from './components/MainPage/Products';
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,10 @@ export default function Router() {
     {
       path: 'signup',
       element: <SignInSide />,
+    },
+    {
+      path: 'user',
+      element: <UserProfile />,
     },
     {
       path: '/',
@@ -76,7 +81,7 @@ export default function Router() {
     },
     {
       path: '/productview/',
-      element: <ProductViewPage />,
+      element: <Products />,
     },
 
     {
