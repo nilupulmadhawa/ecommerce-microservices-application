@@ -37,7 +37,7 @@ const Search = ({ CartItem }) => {
                     >
                         <i className="fa fa-search"></i>
                         <input type="text" placeholder="Search and herbal product" />
-                        <span style={{ fontSize: '13px' }}>All Category</span>
+                        <span style={{ fontSize: '13px', padding: '13px' }}>All Category</span>
                     </div>
 
 

@@ -37,7 +37,7 @@ function PaymentSuccess() {
             </Typography>
             <Link to="/">
                 <button
-                    className='btn-primary'
+                    className='btn-primary mt-2'
                     onClick={() => {
                         // Handle button click, such as redirecting to homepage
                     }}

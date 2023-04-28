@@ -11,6 +11,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Pages from '../pages/Pages';
 import ProductViewPage from './ProductViewPage';
 import Shop from '../components/shops/Shop';
+import PaymentSuccess from '../components/payments/PaymentSuccess'
+import TrackOrder from '../components/MainPage/TrackOrder';
 
 const GestLayout = () => {
     /*
@@ -98,6 +100,12 @@ const GestLayout = () => {
             )}
             {location.pathname === '/shop' && (
                 <Shop CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} />
+            )}
+            {location.pathname === '/paymentsuccess' && (
+                <PaymentSuccess />
+            )}
+            {location.pathname === '/track' && (
+                <TrackOrder />
             )}
 
 

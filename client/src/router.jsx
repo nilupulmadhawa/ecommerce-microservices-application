@@ -69,11 +69,11 @@ export default function Router() {
                 },
                 {
                     path: '/track',
-                    element: <TrackOrder />,
+                    element: <HomePage />,
                 },
                 {
                     path: '/paymentsuccess',
-                    element: <PaymentSuccess />,
+                    element: <HomePage />,
                 },
                 {
                     path: '/paymentportal/pay',
