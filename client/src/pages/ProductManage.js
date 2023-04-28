@@ -4,6 +4,7 @@ import { sentenceCase } from 'change-case';
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import manageproducts from '../_mock/manageproducts';
 
 // @mui
 import {
@@ -176,10 +177,46 @@ export default function ProductManage() {
 
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalAdd, setOpenModalAdd] = React.useState(false);
+
   const handleOpen = () => setOpenModal(true);
-  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleClose = () => setOpenModal(false);
+
+  const handleOpenAdd = () => setOpenModalAdd(true);
   const handleCloseAdd = () => setOpenModalAdd(false);
+
+  const [manageproduct, setManageproduct] = useState(null);
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    category: '',
+    price: '',
+    quantity: '',
+    description: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newProduct = {
+      ...formValues,
+      id: (manageproducts.length + 1).toString(),
+      imageUrl: '11',
+      status: 'active',
+    };
+    console.log(newProduct);
+    manageproducts.push(newProduct);
+
+    handleCloseAdd();
+  };
+
+  /////////////////////////////////
 
   return (
     <>
@@ -214,51 +251,64 @@ export default function ProductManage() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h5" component="h2">
-              Edit Details
+              Add Details
             </Typography>
 
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="name"
-              value=""
-              label="Product Name"
-              variant="outlined"
-            />
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="catagory"
-              value=""
-              label="Catagory"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="price"
-              value=""
-              label="Price"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="quantity"
-              value=""
-              label="quantity"
-              variant="outlined"
-            />
-
-            <TextField
-              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-              id="description"
-              value=""
-              label="Description"
-              variant="outlined"
-            />
-
-            <Button type="submit" color="inherit" variant="outlined">
-              Submit
-            </Button>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                id="name"
+                name="name"
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.name}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="category"
+                name="category"
+                label="Category"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.category}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="price"
+                name="price"
+                label="Price"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.price}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="quantity"
+                name="quantity"
+                label="Quantity"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.quantity}
+                onChange={handleInputChange}
+              />
+              <TextField
+                id="description"
+                name="description"
+                label="Description"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={formValues.description}
+                onChange={handleInputChange}
+              />
+              <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                Add Product
+              </Button>
+            </form>
           </Box>
         </Modal>
 
@@ -438,43 +488,54 @@ export default function ProductManage() {
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
             id="name"
-            value=""
+            value={formValues.name}
             label="Product Name"
             variant="outlined"
+            onChange={handleInputChange}
           />
+
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="catagory"
-            value=""
-            label="Catagory"
+            id="category"
+            value={formValues.category}
+            label="Category"
             variant="outlined"
+            onChange={handleInputChange}
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
             id="price"
-            value=""
+            value={formValues.price}
             label="Price"
             variant="outlined"
+            onChange={handleInputChange}
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
             id="quantity"
-            value=""
-            label="quantity"
+            value={formValues.quantity}
+            label="Quantity"
             variant="outlined"
+            onChange={handleInputChange}
           />
 
           <TextField
             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
             id="description"
-            value=""
+            value={formValues.description}
             label="Description"
             variant="outlined"
+            onChange={handleInputChange}
           />
 
-          <Button type="submit" color="inherit" variant="outlined">
+          <Button
+            type="submit"
+            color="inherit"
+            variant="outlined"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Box>
