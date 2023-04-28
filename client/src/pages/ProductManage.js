@@ -216,9 +216,9 @@ export default function ProductManage() {
   };
 
   /////////////////////////////////
-  // const handleDelete = (id) => {
-  //   setManageproducts(manageproducts.filter((product) => product.id !== id));
-  // };
+  const handleDelete = (id) => {
+    setManageproducts(manageproducts.filter((product) => product.id !== id));
+  };
 
   return (
     <>
@@ -355,59 +355,94 @@ export default function ProductManage() {
                         const selectedUser = selected.indexOf(name) !== -1;
 
                         return (
-                          <TableRow
-                            hover
-                            key={id}
-                            tabIndex={-1}
-                            role="checkbox"
-                            selected={selectedUser}
-                          >
-                            {/* <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell> */}
-
-                            <TableCell
-                              component="th"
-                              scope="row"
-                              padding="none"
+                          <React.Fragment key={id}>
+                            <TableRow
+                              hover
+                              tabIndex={-1}
+                              role="checkbox"
+                              selected={selectedUser}
                             >
-                              <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={2}
+                              <TableCell
+                                component="th"
+                                scope="row"
+                                padding="none"
                               >
-                                <Avatar alt={name} src={imageUrl} />
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="left">{name}</TableCell>
-                            <TableCell align="left">{catagory}</TableCell>
-                            <TableCell align="left">{price}</TableCell>
-                            <TableCell align="left">{description}</TableCell>
+                                <Stack
+                                  direction="row"
+                                  alignItems="center"
+                                  spacing={2}
+                                >
+                                  <Avatar alt={name} src={imageUrl} />
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="left">{name}</TableCell>
+                              <TableCell align="left">{catagory}</TableCell>
+                              <TableCell align="left">{price}</TableCell>
+                              <TableCell align="left">{description}</TableCell>
+                              <TableCell align="left">
+                                <Label
+                                  color={
+                                    (status === 'innactive' && 'error') ||
+                                    'success'
+                                  }
+                                >
+                                  {sentenceCase(status)}
+                                </Label>
+                              </TableCell>
+                              <TableCell align="right">
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={handleOpenMenu}
+                                >
+                                  <Iconify icon={'eva:more-vertical-fill'} />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
 
-                            <TableCell align="left">
-                              <Label
-                                color={
-                                  (status === 'innactive' && 'error') ||
-                                  'success'
-                                }
+                            <Popover
+                              open={Boolean(open)}
+                              anchorEl={open}
+                              onClose={handleCloseMenu}
+                              anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                              }}
+                              PaperProps={{
+                                sx: {
+                                  p: 1,
+                                  width: 140,
+                                  '& .MuiMenuItem-root': {
+                                    px: 1,
+                                    typography: 'body2',
+                                    borderRadius: 0.75,
+                                  },
+                                },
+                              }}
+                            >
+                              <MenuItem onClick={handleOpen}>
+                                <Iconify
+                                  icon={'eva:edit-fill'}
+                                  sx={{ mr: 2 }}
+                                />
+                                Edit
+                              </MenuItem>
+                              <MenuItem
+                                sx={{ color: 'error.main' }}
+                                onClick={() => handleDelete(row.id)}
                               >
-                                {sentenceCase(status)}
-                              </Label>
-                            </TableCell>
-
-                            <TableCell align="right">
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={handleOpenMenu}
-                              >
-                                <Iconify icon={'eva:more-vertical-fill'} />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
+                                <Iconify
+                                  icon={'eva:trash-2-outline'}
+                                  sx={{ mr: 2 }}
+                                />
+                                Delete
+                              </MenuItem>
+                            </Popover>
+                          </React.Fragment>
                         );
                       })}
                   {emptyRows > 0 && (
@@ -416,31 +451,6 @@ export default function ProductManage() {
                     </TableRow>
                   )}
                 </TableBody>
-
-                {/* {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete
-                            words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )} */}
               </Table>
             </TableContainer>
           </Scrollbar>
@@ -456,38 +466,6 @@ export default function ProductManage() {
           />
         </Card>
       </Container>
-
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem onClick={handleOpen}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem
-          sx={{ color: 'error.main' }}
-          // onClick={() => handleDelete(product.id)}
-        >
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
 
       <Modal
         open={openModal}
