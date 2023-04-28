@@ -39,7 +39,7 @@ import USERLIST from '../_mock/manageproducts';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'imageUrl', label: 'Image', alignRight: false },
+  // { id: 'imageUrl', label: 'Image', alignRight: false },
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'catagory', label: 'Catagory', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
@@ -185,6 +185,7 @@ export default function ProductManage() {
   const handleCloseAdd = () => setOpenModalAdd(false);
 
   const [manageproducts, setManageproducts] = useState([]);
+  const [rows, setRows] = useState([]);
 
   const [formValues, setFormValues] = useState({
     name: '',
@@ -195,11 +196,11 @@ export default function ProductManage() {
   });
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues({
-      ...formValues,
-      [name]: value,
-    });
+    const { id, value } = event.target;
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      [id]: value,
+    }));
   };
 
   const handleSubmit = (event) => {
@@ -218,6 +219,42 @@ export default function ProductManage() {
   /////////////////////////////////
   const handleDelete = (id) => {
     setManageproducts(manageproducts.filter((product) => product.id !== id));
+  };
+
+  ///////////////////////////////////
+  const handleEdit = (id) => {
+    const selectedRow = manageproducts.find((row) => row.id === id);
+    setFormValues({
+      ...selectedRow,
+      id: parseInt(selectedRow.id),
+    });
+    setOpenModal(true);
+  };
+
+  const initialFormValues = {
+    id: null,
+    name: '',
+    category: '',
+    price: '',
+    quantity: '',
+    description: '',
+  };
+
+  const handleSubmitedit = () => {
+    const updatedRows = rows.map((row) =>
+      row.id === formValues.id ? formValues : row
+    );
+
+    updateRows(updatedRows);
+    setOpenModal(false);
+    setFormValues(formValues);
+    const updatedProducts = [...manageproducts, formValues];
+    setManageproducts(updatedProducts);
+    console.log(formValues);
+  };
+
+  const updateRows = (updatedRows) => {
+    setRows(updatedRows);
   };
 
   return (
@@ -349,7 +386,6 @@ export default function ProductManage() {
                           price,
                           description,
                           status,
-                          imageUrl,
                         } = row;
 
                         const selectedUser = selected.indexOf(name) !== -1;
@@ -362,19 +398,7 @@ export default function ProductManage() {
                               role="checkbox"
                               selected={selectedUser}
                             >
-                              <TableCell
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
-                                <Stack
-                                  direction="row"
-                                  alignItems="center"
-                                  spacing={2}
-                                >
-                                  <Avatar alt={name} src={imageUrl} />
-                                </Stack>
-                              </TableCell>
+                              <TableCell align="left"></TableCell>
                               <TableCell align="left">{name}</TableCell>
                               <TableCell align="left">{catagory}</TableCell>
                               <TableCell align="left">{price}</TableCell>
@@ -424,7 +448,7 @@ export default function ProductManage() {
                                 },
                               }}
                             >
-                              <MenuItem onClick={handleOpen}>
+                              <MenuItem onClick={() => handleEdit(id)}>
                                 <Iconify
                                   icon={'eva:edit-fill'}
                                   sx={{ mr: 2 }}
@@ -477,60 +501,56 @@ export default function ProductManage() {
           <Typography id="modal-modal-title" variant="h5" component="h2">
             Edit Details
           </Typography>
+          <form onSubmit={handleSubmitedit}>
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="name"
+              value={formValues.name}
+              label="Product Name"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="name"
-            value={formValues.name}
-            label="Product Name"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="category"
+              value={formValues.category}
+              label="Category"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="category"
-            value={formValues.category}
-            label="Category"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="price"
+              value={formValues.price}
+              label="Price"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="price"
-            value={formValues.price}
-            label="Price"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="quantity"
+              value={formValues.quantity}
+              label="Quantity"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="quantity"
-            value={formValues.quantity}
-            label="Quantity"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
+            <TextField
+              sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+              id="description"
+              value={formValues.description}
+              label="Description"
+              variant="outlined"
+              onChange={handleInputChange}
+            />
 
-          <TextField
-            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-            id="description"
-            value={formValues.description}
-            label="Description"
-            variant="outlined"
-            onChange={handleInputChange}
-          />
-
-          <Button
-            type="submit"
-            color="inherit"
-            variant="outlined"
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
+            <Button type="submit" color="inherit" variant="outlined">
+              Submit
+            </Button>
+          </form>
         </Box>
       </Modal>
     </>
