@@ -7,7 +7,7 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
-    - host: test.local
+    - host: dev.local
       http:
         paths:
           - path: /api/item/?(.*)
@@ -34,7 +34,7 @@ spec:
                 port:
                   number: 3001
 
-          - path: /api/user/?(.*)
+          - path: /?(.*)
             pathType: Prefix
             backend:
               service:
