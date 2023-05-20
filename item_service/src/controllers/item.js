@@ -16,7 +16,7 @@ export const create = asyncHandler(async (req, res) => {
 
 export const getAll = asyncHandler(async (req, res) => {
     try {
-        const items = await Item.find();
+        const items = await Item.find({ status: "active" });
         return makeResponse({ res, status: 200, data: items, message: 'Item retrieved succesfully' })
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });

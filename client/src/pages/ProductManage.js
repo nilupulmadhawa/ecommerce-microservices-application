@@ -4,7 +4,7 @@ import { sentenceCase } from 'change-case';
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import manageproducts from '../_mock/manageproducts';
+import Swal from 'sweetalert2'
 
 // @mui
 import {
@@ -26,6 +26,14 @@ import {
     TableContainer,
     TablePagination,
     TextField,
+    Select,
+    InputLabel,
+    FormControl,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -35,11 +43,14 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/manageproducts';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
+import { useStateContext } from '../context/ContextProvider';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    // { id: 'imageUrl', label: 'Image', alignRight: false },
+    // { id: 'image', label: 'Image', alignRight: false },
     { id: 'name', label: 'Name', alignRight: false },
     { id: 'catagory', label: 'Catagory', alignRight: false },
     { id: 'price', label: 'Price', alignRight: false },
@@ -95,7 +106,9 @@ const style = {
 };
 
 export default function ProductManage() {
+    const { user } = useStateContext()
     const [open, setOpen] = useState(null);
+    const [cOpen, setCOpen] = React.useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -118,6 +131,7 @@ export default function ProductManage() {
         setOpen(null);
     };
 
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -132,25 +146,6 @@ export default function ProductManage() {
         }
         setSelected([]);
     };
-
-    // const handleClick = (event, name) => {
-    //   const selectedIndex = selected.indexOf(name);
-    //   let newSelected = [];
-    //   if (selectedIndex === -1) {
-    //     newSelected = newSelected.concat(selected, name);
-    //   } else if (selectedIndex === 0) {
-    //     newSelected = newSelected.concat(selected.slice(1));
-    //   } else if (selectedIndex === selected.length - 1) {
-    //     newSelected = newSelected.concat(selected.slice(0, -1));
-    //   } else if (selectedIndex > 0) {
-    //     newSelected = newSelected.concat(
-    //       selected.slice(0, selectedIndex),
-    //       selected.slice(selectedIndex + 1)
-    //     );
-    //   }
-    //   setSelected(newSelected);
-    // };
-
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -185,96 +180,17 @@ export default function ProductManage() {
     const handleOpenAdd = () => { setOpenModalAdd(true); setFormValues(initialFormValues) }
     const handleCloseAdd = () => setOpenModalAdd(false);
 
-    const [manageproducts, setManageproducts] = useState([
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 1,
-            imageUrl: "./images/flash/10.jpg",
-            name: "Only Naturals for Women",
-            price: "180",
-            quantity: "50",
-            status: "active",
-        }, {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 2,
-            imageUrl: "./images/flash/ne2.jpg",
-            name: "Zimacal with Magneseium",
-            price: "120",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 3,
-            imageUrl: "./images/flash/ne3.jpg",
-            name: "Opokan Cream",
-            price: "20",
-            quantity: "50",
-            status: "active",
-        }, {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 4,
-            imageUrl: "./images/flash/ne4.jpg",
-            name: "Travisto Active",
-            price: "150",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 5,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Vitamin Complex",
-            price: "400",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 6,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Rosalin Forte",
-            price: "60",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 7,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Alpha Lepoic Acid",
-            price: "120",
-            quantity: "50",
-            status: "active",
-        },
-        {
-            category: "Herbs And Homeopathy",
-            description: "Only Natural’s For Women Only is a once-daily multivitamin that may provide nutritional support for hair‚ skin‚ nails‚ energy‚ digestion‚ hormonal balance and breast and bone health necessary for an active lifestyle.",
-            id: 8,
-            imageUrl: "./images/flash/ne5.jpg",
-            name: "Collagen",
-            price: "5",
-            quantity: "50",
-            status: "active",
-        }
-    ]);
+    const [manageproducts, setManageproducts] = useState([]);
     const [rows, setRows] = useState([]);
     const initialFormValues = {
         name: '',
-        category: '',
+        catagory: '',
         price: '',
-        quantity: '',
         description: '',
         id: null,
-        imageUrl: '',
+        image: '',
         status: '',
+        seller_id: user._id
     };
     const [formValues, setFormValues] = useState(initialFormValues);
 
@@ -285,26 +201,51 @@ export default function ProductManage() {
             [id]: value,
         }));
     };
+    const handleSelectChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [name]: value,
+        }));
+    };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const newProduct = {
-            ...formValues,
-            id: (manageproducts.length + 1).toString(),
-            status: 'active',
-        };
-        const updatedProducts = [...manageproducts, newProduct];
-        setManageproducts([...manageproducts, newProduct]);
+        await apiRequest(() => axiosInstance.post(`/item`, formValues)).then((res) => {
+            if (res.success) {
+                toast.success(res.message);
+                getAllData()
+                handleCloseAdd();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+                handleCloseAdd();
+            }
+        })
 
-        handleCloseAdd();
-        console.log(manageproducts);
     };
 
     /////////////////////////////////
+
+    const [deleteId, setDeleteId] = useState(null)
     const handleDelete = (id) => {
-        setManageproducts(manageproducts.filter((product) => product.id !== formValues.id));
-        setOpen(null)
+        console.log(id);
+        setDeleteId(id)
+        setCOpen(true);
     };
+
+    const handleSubmitedelete = async () => {
+        await apiRequest(() => axiosInstance.delete(`/item/${deleteId}`,)).then((res) => {
+            if (res.success) {
+                toast.success(res.message);
+                getAllData()
+                setCOpen(false);
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
 
     ///////////////////////////////////
     const handleEdit = (id) => {
@@ -317,21 +258,43 @@ export default function ProductManage() {
 
 
 
-    const handleSubmitedit = () => {
-
-        const updatedRows = manageproducts.filter((product) => product.id !== formValues.id)
-
-        setOpenModal(false);
-        const updatedProducts = [...updatedRows, formValues];
-        setManageproducts(updatedProducts);
-        console.log(manageproducts);
-        setFormValues(initialFormValues);
-        setOpen(null)
+    const handleSubmitedit = async (event) => {
+        event.preventDefault();
+        await apiRequest(() => axiosInstance.patch(`/item/${formValues._id}`, formValues)).then((res) => {
+            if (res.success) {
+                toast.success(res.message);
+                getAllData()
+                setOpenModal(false);
+                setFormValues(initialFormValues);
+                setOpen(null)
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
     };
 
-    const updateRows = (updatedRows) => {
-        setRows(updatedRows);
+
+
+    const getAllData = async () => {
+        console.log(user._id);
+        await apiRequest(() => axiosInstance.get(`/item/seller/${user._id}`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                setManageproducts(res.data)
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
     };
+
+
+    useEffect(() => {
+        getAllData();
+    }, []);
 
     return (
         <>
@@ -381,23 +344,23 @@ export default function ProductManage() {
                                 onChange={handleInputChange}
                             />
                             <TextField
-                                id="imageUrl"
-                                name="imageUrl"
-                                label="imageUrl"
+                                id="image"
+                                name="image"
+                                label="Image Url"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={formValues.imageUrl}
+                                value={formValues.image}
                                 onChange={handleInputChange}
                             />
                             <TextField
-                                id="category"
-                                name="category"
+                                id="catagory"
+                                name="catagory"
                                 label="Category"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={formValues.category}
+                                value={formValues.catagory}
                                 onChange={handleInputChange}
                             />
                             <TextField
@@ -411,16 +374,6 @@ export default function ProductManage() {
                                 onChange={handleInputChange}
                             />
                             <TextField
-                                id="quantity"
-                                name="quantity"
-                                label="Quantity"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={formValues.quantity}
-                                onChange={handleInputChange}
-                            />
-                            <TextField
                                 id="description"
                                 name="description"
                                 label="Description"
@@ -430,6 +383,22 @@ export default function ProductManage() {
                                 value={formValues.description}
                                 onChange={handleInputChange}
                             />
+                            <Box sx={{ minWidth: 120 }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="status">Status</InputLabel>
+                                    <Select
+                                        labelId="status"
+                                        id="status"
+                                        name='status'
+                                        value={formValues.status}
+                                        label="Age"
+                                        onChange={handleSelectChange}
+                                    >
+                                        <MenuItem value={'active'}>active</MenuItem>
+                                        <MenuItem value={'inactive'}>inactive</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
                             <Button type="submit" variant="contained" sx={{ mt: 2 }}>
                                 Add Product
                             </Button>
@@ -466,9 +435,9 @@ export default function ProductManage() {
                                             )
                                             .map((row) => {
                                                 const {
-                                                    id,
+                                                    _id,
                                                     name,
-                                                    category,
+                                                    catagory,
                                                     price,
                                                     description,
                                                     status,
@@ -477,7 +446,7 @@ export default function ProductManage() {
                                                 const selectedUser = selected.indexOf(name) !== -1;
 
                                                 return (
-                                                    <React.Fragment key={id}>
+                                                    <React.Fragment key={_id}>
                                                         <TableRow
                                                             hover
                                                             tabIndex={-1}
@@ -486,13 +455,13 @@ export default function ProductManage() {
                                                         >
                                                             <TableCell align="left"></TableCell>
                                                             <TableCell align="left">{name}</TableCell>
-                                                            <TableCell align="left">{category}</TableCell>
+                                                            <TableCell align="left">{catagory}</TableCell>
                                                             <TableCell align="left">{price}</TableCell>
                                                             <TableCell align="left">{description}</TableCell>
                                                             <TableCell align="left">
                                                                 <Label
                                                                     color={
-                                                                        (status === 'innactive' && 'error') ||
+                                                                        (status === 'inactive' && 'error') ||
                                                                         'success'
                                                                     }
                                                                 >
@@ -504,7 +473,7 @@ export default function ProductManage() {
                                                                     size="large"
                                                                     color="inherit"
                                                                     onClick={(e) => handleOpenMenu(e, row)}
-                                                                    id={id}
+                                                                    id={_id}
                                                                 >
                                                                     <Iconify icon={'eva:more-vertical-fill'} />
                                                                 </IconButton>
@@ -535,23 +504,23 @@ export default function ProductManage() {
                                                                 },
                                                             }}
                                                         >
-                                                            <MenuItem onClick={() => handleEdit(id)}>
+                                                            <MenuItem onClick={() => handleEdit(_id)}>
                                                                 <Iconify
                                                                     icon={'eva:edit-fill'}
                                                                     sx={{ mr: 2 }}
                                                                 />
                                                                 Edit
                                                             </MenuItem>
-                                                            <MenuItem
+                                                            {/* <MenuItem
                                                                 sx={{ color: 'error.main' }}
-                                                                onClick={() => handleDelete(id)}
+                                                                onClick={() => handleDelete(_id)}
                                                             >
                                                                 <Iconify
                                                                     icon={'eva:trash-2-outline'}
                                                                     sx={{ mr: 2 }}
                                                                 />
                                                                 Delete
-                                                            </MenuItem>
+                                                            </MenuItem> */}
                                                         </Popover>
                                                     </React.Fragment>
                                                 );
@@ -598,20 +567,20 @@ export default function ProductManage() {
                             onChange={handleInputChange}
                         />
                         <TextField
-                            id="imageUrl"
-                            name="imageUrl"
-                            label="imageUrl"
+                            id="image"
+                            name="image"
+                            label="Image Url"
                             variant="outlined"
                             fullWidth
                             margin="normal"
-                            value={formValues.imageUrl}
+                            value={formValues.image}
                             onChange={handleInputChange}
                         />
 
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="category"
-                            value={formValues.category}
+                            id="catagory"
+                            value={formValues.catagory}
                             label="Category"
                             variant="outlined"
                             onChange={handleInputChange}
@@ -628,15 +597,6 @@ export default function ProductManage() {
 
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="quantity"
-                            value={formValues.quantity}
-                            label="Quantity"
-                            variant="outlined"
-                            onChange={handleInputChange}
-                        />
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                             id="description"
                             value={formValues.description}
                             label="Description"
@@ -644,12 +604,50 @@ export default function ProductManage() {
                             onChange={handleInputChange}
                         />
 
-                        <Button type="submit" color="inherit" variant="outlined">
-                            Submit
+                        <Box sx={{ minWidth: 120 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="status">Status</InputLabel>
+                                <Select
+                                    labelId="status"
+                                    id="status"
+                                    name='status'
+                                    value={formValues.status}
+                                    label="Age"
+                                    onChange={handleSelectChange}
+                                >
+                                    <MenuItem value={'active'}>active</MenuItem>
+                                    <MenuItem value={'inactive'}>inactive</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Button type="submit" variant="contained" style={{ marginTop: "15px" }}>
+                            Save
                         </Button>
                     </form>
                 </Box>
             </Modal>
+            <Dialog
+                open={cOpen}
+                onClose={() => setCOpen(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure you want to delete this product?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Can not be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setCOpen(false)}>Disagree</Button>
+                    <Button onClick={handleSubmitedelete} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

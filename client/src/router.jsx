@@ -17,9 +17,6 @@ import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
 import ProductManage from './pages/ProductManage';
 // import ProductViewPage from './pages/ProductViewPage';
-import UserProfile from './pages/UserProfile';
-import Products from './components/MainPage/Products';
-import TrackOrder from './components/MainPage/TrackOrder';
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +57,7 @@ export default function Router() {
                     element: <HomePage />,
                 },
                 {
-                    path: '/productview',
+                    path: '/productview/:id',
                     element: <HomePage />,
                 },
                 {

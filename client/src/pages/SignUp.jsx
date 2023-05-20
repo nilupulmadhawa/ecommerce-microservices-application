@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MenuItem, Select } from '@mui/material';
 import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -36,13 +38,21 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-
+    const navigate = useNavigate();
     const [form, setForm] = useState({})
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         await apiRequest(() => axiosInstance.post(`/user/register`, form)).then((res) => {
-            console.log(res);
+            if (res.success) {
+                // console.log(res.message);
+                toast.success(res.message);
+                navigate('/login');
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
             // navigate('/', { replace: true });
         })
 

@@ -14,6 +14,7 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../../../components/iconify';
 import { axiosInstance, apiRequest } from '../../../services/core/axios';
 import { useStateContext } from "../../../context/ContextProvider";
+import { toast } from 'react-toastify';
 // import { axiosInstance, apiRequest } from '../../../'
 
 // ----------------------------------------------------------------------
@@ -32,11 +33,14 @@ export default function LoginForm() {
     const handleClick = async () => {
         await apiRequest(() => axiosInstance.post(`/user/login`, form)).then((res) => {
             if (res.success) {
+                // console.log(res.message);
+                toast.success(res.message);
                 setUser(res.data.user)
                 setToken(res.data.access_token)
-                navigate('/', { replace: true });
+                navigate('/');
             } else {
 
+                toast.error(res.message);
                 console.log(res);
             }
         })
