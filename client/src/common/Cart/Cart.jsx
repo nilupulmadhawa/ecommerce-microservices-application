@@ -1,9 +1,14 @@
 import React from 'react';
 import './style.css';
 import axios from 'axios';
+import { useStateContext } from '../../context/ContextProvider';
+import { apiRequest, axiosInstance } from '../../services/core/axios';
+import { toast } from 'react-toastify';
 
 
 const Cart = ({ CartItem, addToCart, decreaseQty }) => {
+
+    const { user } = useStateContext()
     // Stpe: 7   calucate total of items
     const totalPrice = CartItem.reduce(
         (price, item) => price + item.qty * item.price,
@@ -12,7 +17,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
 
     const handleCheckout = () => {
 
-        axios.post('http://localhost:3001/create-payment-intent', { cartItems: CartItem })
+        axios.post(process.env.REACT_APP_BACKEND_URL + '/create-payment-intent', { cartItems: CartItem })
             .then(function (res) {
                 window.location.href = res.data.url;
             })
@@ -21,6 +26,28 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
             });
 
     };
+
+    const submitvalue = async () => {
+        await apiRequest(() => axiosInstance.post(`/order`,
+            {
+                "buyer_id": user._id,
+                "seller_id": "6443bda95337082dba23daf7",
+                "total": totalPrice,
+                "commission": totalPrice * 0.1,
+                "seller_profit": totalPrice * 0.9,
+                "items": CartItem
+
+            })).then((res) => {
+                if (res.success) {
+                    console.log(res);
+                    // return
+                    handleCheckout()
+                } else {
+                    toast.error(res.message);
+                    console.log(res);
+                }
+            })
+    }
 
     // prodcut qty total
     return (
@@ -102,7 +129,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
                                 </div>
                             </div>
                         </div>
-                        <button className="btn btn-primary" onClick={handleCheckout}>Checkout</button>
+                        <button className="btn btn-primary" onClick={submitvalue}>Checkout</button>
                     </div>
                 </div>
             </section>

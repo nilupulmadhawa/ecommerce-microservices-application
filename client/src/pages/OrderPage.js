@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -12,6 +12,7 @@ import {
     Stack,
     Paper,
     Avatar,
+    Button,
     Popover,
     Checkbox,
     TableRow,
@@ -24,6 +25,14 @@ import {
     TableContainer,
     TablePagination,
     TextField,
+    Select,
+    InputLabel,
+    FormControl,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -33,12 +42,13 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/order';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
     { id: 'buyer_id', label: 'Buyer', alignRight: false },
-    { id: 'items', label: 'Products', alignRight: false },
     { id: 'total', label: 'Total', alignRight: false },
     { id: 'seller_profit', label: 'Seller Profit', alignRight: false },
     { id: 'status', label: 'Status', alignRight: false },
@@ -105,10 +115,45 @@ export default function OrderPage() {
     const [filterName, setFilterName] = useState('');
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    const handleOpenMenu = (event) => {
+    const [formValues, setFormValues] = useState({});
+    const [aid, setAid] = useState({});
+    const [items, setItems] = useState([]);
+    const handleOpenMenu = (event, row, it) => {
         setOpen(event.currentTarget);
+        console.log(row);
+        setAid(row);
+        setItems(it);
     };
+
+    const updatedata = async () => {
+        console.log(open);
+        await apiRequest(() => axiosInstance.patch(`/order/${aid._id}`, formValues)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                toast.success(res.message);
+                getdata();
+                handleClose();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
+
+    const getonedata = async () => {
+        console.log(open);
+        await apiRequest(() => axiosInstance.get(`/order/${aid}`, formValues)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                toast.success(res.message);
+                getdata();
+                handleClose();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
 
     const handleCloseMenu = () => {
         setOpen(null);
@@ -169,35 +214,40 @@ export default function OrderPage() {
         getComparator(order, orderBy),
         filterName
     );
+    const handleSelectChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [name]: value,
+        }));
+    };
 
     const isNotFound = !filteredUsers.length && !!filterName;
 
     const [openModal, setOpenModal] = React.useState(false);
-    const [data, setData] = React.useState([{
-        id: 1,
-        buyer_id: "Kasun Perera",
-        items: "Only Naturals for Women",
-        total: 360,
-        seller_profit: 324,
-        status: "Pending",
-    }, {
-        id: 2,
-        buyer_id: "kasun Perera",
-        items: "Vitamins",
-        total: 100,
-        seller_profit: 90,
-        status: "Accept",
-    }, {
-        id: 3,
-        buyer_id: "kasun Perera",
-        items: "Only Naturals for Women",
-        total: 540,
-        seller_profit: 486,
-        status: "Completed",
-    }
-    ]);
+    const [data, setData] = React.useState([]);
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
+
+
+
+    const getdata = async () => {
+        await apiRequest(() => axiosInstance.get(`/order`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                setData(res.data)
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
+    };
+
+    useEffect(() => {
+        getdata();
+    }, []);
 
     return (
         <>
@@ -241,19 +291,19 @@ export default function OrderPage() {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
                                             const {
-                                                id,
+                                                _id,
                                                 buyer_id,
-                                                items,
                                                 total,
                                                 seller_profit,
                                                 status,
+                                                items
                                             } = row;
                                             const selectedUser = selected.indexOf(buyer_id) !== -1;
 
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={id}
+                                                    key={_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={selectedUser}
@@ -261,18 +311,17 @@ export default function OrderPage() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={selectedUser}
-                                                            onChange={(event) => handleClick(event, buyer_id)}
+                                                            onChange={(event) => handleClick(event)}
                                                         />
                                                     </TableCell>
 
                                                     <TableCell align="left">{buyer_id}</TableCell>
 
-                                                    <TableCell align="left">{items}</TableCell>
 
-                                                    <TableCell align="left">{`${total}`}</TableCell>
+                                                    <TableCell align="left">{`${total}`}.00</TableCell>
 
 
-                                                    <TableCell align="left">{seller_profit}</TableCell>
+                                                    <TableCell align="left">{seller_profit}.00</TableCell>
 
                                                     <TableCell align="left">
                                                         <Label
@@ -288,7 +337,7 @@ export default function OrderPage() {
                                                         <IconButton
                                                             size="large"
                                                             color="inherit"
-                                                            onClick={handleOpenMenu}
+                                                            onClick={(e) => handleOpenMenu(e, row, items)}
                                                         >
                                                             <Iconify icon={'eva:more-vertical-fill'} />
                                                         </IconButton>
@@ -383,37 +432,62 @@ export default function OrderPage() {
                         Edit Details
                     </Typography>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="firstName"
-                        value=""
-                        label="First Name"
-                        variant="outlined"
-                    />
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="email"
-                        value=""
-                        label="Email"
-                        variant="outlined"
-                    />
+                    <Box sx={{ minWidth: 120 }}>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="role"
-                        value=""
-                        label="Role"
-                        variant="outlined"
-                    />
+                        {
+                            items.map((item) => {
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="orders"
-                        value=""
-                        label="Orders"
-                        variant="outlined"
-                    />
+                                return (
+                                    <div className="cart-list product d_flex" >
+                                        <div className="img">
+                                            <img src={item[0]?.image} alt="" width={80} />
+                                        </div>
+                                        <div className="cart-details">
+                                            <h3>{item[0]?.name}</h3>
+                                            <h4>
+                                                ${item[0]?.price}.00 * {item[0]?.qty}
+                                            </h4>
+                                        </div>
+
+                                        <div className="cart-item-price"></div>
+                                    </div>
+                                );
+                            })
+                        }
+
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <label><strong>Total :</strong> {aid.total}</label>
+                            <label><strong>commission :</strong> {aid.commission}</label>
+                            <label><strong>Seller Profit :</strong> {aid.seller_profit}</label>
+                            <label><strong>Current status :</strong> {aid.status}</label>
+                            <label><strong>Created at :</strong> {aid.created_at}</label>
+                        </div>
+
+                        <FormControl fullWidth>
+                            <InputLabel id="status">Status</InputLabel>
+                            <Select
+                                labelId="status"
+                                id="status"
+                                name='status'
+                                value={formValues.status || ''}
+                                label="Age"
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value={'Pending'}>Pending</MenuItem>
+                                <MenuItem value={'Accept'}>Accept</MenuItem>
+                                <MenuItem value={'Reject'}>Reject</MenuItem>
+                                <MenuItem value={'Cancel'}>Cancel</MenuItem>
+                                <MenuItem value={'Delivered'}>Delivered</MenuItem>
+                                <MenuItem value={'Completed'}>Completed</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    <Button variant="contained" style={{ marginTop: "15px" }} onClick={updatedata}>
+                        Save
+                    </Button>
                 </Box>
+
             </Modal>
         </>
     );

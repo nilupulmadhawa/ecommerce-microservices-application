@@ -36,7 +36,7 @@ export default function ProductViewPage({ shopItems, addToCart, setQty, qty }) {
             return
         }
         console.log({ buyer_id: user._id, item_id: id, rating: value.rating, review: value.review });
-        await apiRequest(() => axiosInstance.post(`/rating`, { buyer_id: user._id, item_id: id, rating: value.rating, review: value.review })).then((res) => {
+        await apiRequest(() => axiosInstance.post(`/rating`, { buyer_id: user._id, item_id: id, user_name: user.name, item_name: shopItem.name, rating: value.rating, review: value.review })).then((res) => {
             if (res.success) {
                 getReview()
                 toast.success(res.message);
@@ -133,7 +133,7 @@ export default function ProductViewPage({ shopItems, addToCart, setQty, qty }) {
                     return (
                         <div style={{ display: "flex", justifyContent: "center" }}>
                             <div className="cart-list product d_flex" key={r.id} style={{ width: "700px", display: "flex", justifyContent: "center", flexDirection: 'column', textAlign: "center" }}>
-                                <strong style={{ textAlign: "left" }}>{r.user}</strong>
+                                <strong style={{ textAlign: "left" }}>{r.user_name}</strong>
                                 <div>
                                     <Rating
                                         name="simple-controlled"

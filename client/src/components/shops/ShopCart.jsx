@@ -74,14 +74,14 @@ const ShopCart = ({ shopItems, addToCart }) => {
                                 <Link to={'productview/' + shopItems._id}>
                                     <h3>{shopItems.name}</h3>
                                 </Link>
-                                <Rating
+                                {/* <Rating
                                     name="simple-controlled"
                                     value={shopItems.rating}
                                     readOnly
                                 // onChange={(event, newValue) => {
                                 //     setReview([newValue]);
                                 // }}
-                                />
+                                /> */}
                                 <div className="price">
                                     <h4>${shopItems.price}.00 </h4>
                                     {/* step : 3  

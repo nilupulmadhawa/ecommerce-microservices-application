@@ -6,11 +6,11 @@ import { protect } from '../middleware/auth'
 
 const userRouter = express.Router();
 
-userRouter.post('/', protect, create);
-userRouter.get('/', protect, getAll);
-userRouter.get('/:id', protect, getById);
-userRouter.patch('/:id', protect, update);
-userRouter.delete('/:id', protect, remove);
+userRouter.post('/', create);
+userRouter.get('/', getAll);
+userRouter.get('/:id', getById);
+userRouter.patch('/:id', update);
+userRouter.delete('/:id', remove);
 
 // userRouter.post('/', celebrate({ [Segments.BODY]: addLocationSchema }), create);
 // userRouter.get('/', celebrate({ [Segments.QUERY]: userViewSchema }), getAll);

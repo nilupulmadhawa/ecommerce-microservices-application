@@ -15,7 +15,7 @@ const Head = () => {
                         <label> support@herbalworld.com</label>
                     </div>
                     <div className='right row RText'>
-                        {user?.role == 'seller' && <label>  <Link to='/dashboard' style={{ color: '#fff' }}>Dashboard</Link></label>}
+                        {(user?.role == 'seller' || user?.role == 'admin') && <label>  <Link to='/dashboard' style={{ color: '#fff' }}>Dashboard</Link></label>}
                         <label>Need Help?</label>
                         <span>🏳️‍⚧️</span>
                         <label>EN</label>

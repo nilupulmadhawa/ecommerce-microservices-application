@@ -11,7 +11,6 @@ import {
     Table,
     Stack,
     Paper,
-    Avatar,
     Button,
     Popover,
     Checkbox,
@@ -34,19 +33,20 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
+import { useEffect } from 'react';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
+import { useStateContext } from '../context/ContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    // { id: 'avatarUrl', label: 'Image', alignRight: false },
     { id: 'name', label: 'Name', alignRight: false },
     { id: 'mobile_number', label: 'Contact', alignRight: false },
     { id: 'email', label: 'Email', alignRight: false },
-    // { id: 'password', label: 'Password', alignRight: false },
     { id: 'address', label: 'Address', alignRight: false },
     { id: 'role', label: 'Role', alignRight: false },
-    { id: 'status', label: 'Status', alignRight: true },
-    { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -96,6 +96,11 @@ const style = {
 };
 
 export default function UserPage() {
+    const { token, user } = useStateContext();
+    const navigate = useNavigate();
+    if (user.role !== 'admin') {
+        navigate('/404');
+    }
     const [open, setOpen] = useState(null);
 
     const [page, setPage] = useState(0);
@@ -183,25 +188,103 @@ export default function UserPage() {
     const handleClose = () => setOpenModal(false);
     const handleCloseAdd = () => setOpenModalAdd(false);
 
-    const [users, setUsers] = React.useState([
-        {
-            id: 1, name: "kamal perera", email: "kamal@gmail.com", address: "malabe", phone: "0771234567", role: "Buyer", status: "Active"
-        },
-        {
-            id: 2, name: "John Smith", email: "john@gmail.com", address: "Kaduwela", phone: "0776589658", role: "Buyer", status: "Active"
-        },
+    const [cOpen, setCOpen] = React.useState(false);
 
-        {
-            id: 4, name: "John William", email: "jjs@gmail.com", address: "Malabe", phone: "0113658956", role: "Seller", status: "InActive"
-        },
-        {
-            id: 3, name: "James William", email: "james@gmail.com", address: "Malabe", phone: "077658489", role: "Buyer", status: "Active"
-        },
-        {
-            id: 5, name: "Nimal Perera", email: "nimal@gmail.com", address: "Kaduwela", phone: "0115896859", role: "Seller", status: "Active"
-        },
+    const [manageuser, setManageuser] = useState([]);
+    const [rows, setRows] = useState([]);
+    const initialFormValues = {
+        name: '',
+        email: '',
+        mobile_number: '',
+        address: '',
+        password: '',
+        id: '',
+        role: '',
+    };
+    const [formValues, setFormValues] = useState(initialFormValues);
 
-    ]);
+    const handleInputChange = (event) => {
+        const { id, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [id]: value,
+        }));
+    };
+    const handleSelectChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [name]: value,
+        }));
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await apiRequest(() =>
+            axiosInstance.post(`/user/register`, formValues)
+        ).then((res) => {
+            if (res.success) {
+                toast.success(res.message);
+                getAllData();
+                handleCloseAdd();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+                handleCloseAdd();
+            }
+        });
+    };
+
+    /////////////////////////////////
+
+    ///////////////////////////////////
+    //   const handleEdit = (id) => {
+    //     console.log(open.id);
+    //     // const selectedRow = manageproducts.find((row) => row.id === open.id);
+    //     // setFormValues(manageproducts.find((row) => row.id === open.id));
+    //     setOpenModal(true);
+    //   };
+
+    const handleEdit = (_id) => {
+        const selectedUser = manageuser.find((user) => user._id === _id);
+        setFormValues(selectedUser);
+        setOpenModal(true);
+    };
+
+    const handleSubmitedit = async (event) => {
+        event.preventDefault();
+        await apiRequest(() =>
+            axiosInstance.patch(`/user/${formValues._id}`, formValues)
+        ).then((res) => {
+            if (res.success) {
+                toast.success(res.message);
+                getAllData();
+                setOpenModal(false);
+                setFormValues(initialFormValues);
+                setOpen(null);
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        });
+    };
+
+    const getAllData = async () => {
+        console.log();
+        await apiRequest(() => axiosInstance.get(`/user/`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                setManageuser(res.data);
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        });
+    };
+
+    useEffect(() => {
+        getAllData();
+    }, []);
     return (
         <>
             <Helmet>
@@ -235,57 +318,73 @@ export default function UserPage() {
                 >
                     <Box sx={style}>
                         <Typography id="modal-modal-title" variant="h5" component="h2">
-                            Edit Details
+                            Add Details
                         </Typography>
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                                id="name"
+                                label="Name"
+                                variant="outlined"
+                                value={formValues.name}
+                                onChange={handleInputChange}
+                            />
+                            <TextField
+                                sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                                id="email"
+                                label="Email"
+                                variant="outlined"
+                                value={formValues.email}
+                                onChange={handleInputChange}
+                            />
 
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="name"
-                            value=""
-                            label="Name"
-                            variant="outlined"
-                        />
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="email"
-                            value=""
-                            label="Email"
-                            variant="outlined"
-                        />
+                            <TextField
+                                sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                                id="mobile_number"
+                                label="Contact Number"
+                                variant="outlined"
+                                value={formValues.mobile_number}
+                                onChange={handleInputChange}
+                            />
 
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="phone"
-                            value=""
-                            label="Contact Number"
-                            variant="outlined"
-                        />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="role"
+                                label="Role"
+                                name="role"
+                                value={formValues.role}
+                                onChange={handleSelectChange}
+                                autoComplete="role"
+                                autoFocus
+                                select
+                            >
+                                {/* Add options to the Select component using MenuItem */}
+                                <MenuItem value="buyer">Buyer</MenuItem>
+                                <MenuItem value="seller">Seller</MenuItem>
+                            </TextField>
 
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="role"
-                            value=""
-                            label="Role"
-                            variant="outlined"
-                        />
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="address"
-                            value=""
-                            label="Address"
-                            variant="outlined"
-                        />
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="status"
-                            value=""
-                            label="Status"
-                            variant="outlined"
-                        />
-                        <Button type="submit" color="inherit" variant="outlined">
-                            Submit
-                        </Button>
+                            <TextField
+                                sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                                id="address"
+                                label="Address"
+                                variant="outlined"
+                                value={formValues.address}
+                                onChange={handleInputChange}
+                            />
+                            <TextField
+                                sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                                id="password"
+                                label="Password"
+                                variant="outlined"
+                                value={formValues.password}
+                                onChange={handleInputChange}
+                            />
+                            <Button type="submit" color="inherit" variant="outlined">
+                                Submit
+                            </Button>
+                        </form>
                     </Box>
                 </Modal>
 
@@ -309,17 +408,24 @@ export default function UserPage() {
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {users
-                                        .map((row) => {
-                                            const { id, name, email, address, phone, role, status } =
-                                                row;
+                                    {manageuser.map((row) => {
+                                        const {
+                                            _id,
+                                            name,
+                                            email,
+                                            address,
+                                            mobile_number,
+                                            role,
+                                            password,
+                                        } = row;
 
-                                            const selectedUser = selected.indexOf(name) !== -1;
+                                        const selectedUser = selected.indexOf(name) !== -1;
 
-                                            return (
+                                        return (
+                                            <React.Fragment key={_id}>
                                                 <TableRow
                                                     hover
-                                                    key={id}
+                                                    key={_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={selectedUser}
@@ -332,33 +438,59 @@ export default function UserPage() {
                                                     </TableCell>
 
                                                     <TableCell align="left">{name}</TableCell>
-                                                    <TableCell align="left">{phone}</TableCell>
+                                                    <TableCell align="left">{mobile_number}</TableCell>
                                                     <TableCell align="left">{email}</TableCell>
                                                     <TableCell align="left">{address}</TableCell>
                                                     <TableCell align="left">{role}</TableCell>
-
-                                                    <TableCell align="left">
-                                                        <Label
-                                                            color={
-                                                                (status === 'InActive' && 'error') || 'success'
-                                                            }
-                                                        >
-                                                            {sentenceCase(status)}
-                                                        </Label>
-                                                    </TableCell>
 
                                                     <TableCell align="right">
                                                         <IconButton
                                                             size="large"
                                                             color="inherit"
-                                                            onClick={handleOpenMenu}
+                                                            onClick={(e) => handleOpenMenu(e, row)}
+                                                            id={_id}
                                                         >
                                                             <Iconify icon={'eva:more-vertical-fill'} />
                                                         </IconButton>
                                                     </TableCell>
                                                 </TableRow>
-                                            );
-                                        })}
+                                                <Popover
+                                                    open={Boolean(open)}
+                                                    anchorEl={open}
+                                                    onClose={handleCloseMenu}
+                                                    anchorOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'left',
+                                                    }}
+                                                    transformOrigin={{
+                                                        vertical: 'top',
+                                                        horizontal: 'right',
+                                                    }}
+                                                    PaperProps={{
+                                                        sx: {
+                                                            p: 1,
+                                                            width: 140,
+                                                            '& .MuiMenuItem-root': {
+                                                                px: 1,
+                                                                typography: 'body2',
+                                                                borderRadius: 0.75,
+                                                            },
+                                                        },
+                                                    }}
+                                                >
+                                                    <MenuItem>
+                                                        <Iconify
+                                                            icon={'eva:edit-fill'}
+                                                            sx={{ mr: 2 }}
+                                                            onClick={() => handleEdit(_id)}
+                                                            id={_id}
+                                                        />
+                                                        Edit
+                                                    </MenuItem>
+                                                </Popover>
+                                            </React.Fragment>
+                                        );
+                                    })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
                                             <TableCell colSpan={6} />
@@ -406,35 +538,6 @@ export default function UserPage() {
                 </Card>
             </Container>
 
-            <Popover
-                open={Boolean(open)}
-                anchorEl={open}
-                onClose={handleCloseMenu}
-                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                PaperProps={{
-                    sx: {
-                        p: 1,
-                        width: 140,
-                        '& .MuiMenuItem-root': {
-                            px: 1,
-                            typography: 'body2',
-                            borderRadius: 0.75,
-                        },
-                    },
-                }}
-            >
-                <MenuItem onClick={handleOpen}>
-                    <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-                    Edit
-                </MenuItem>
-
-                <MenuItem sx={{ color: 'error.main' }}>
-                    <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-                    Delete
-                </MenuItem>
-            </Popover>
-
             <Modal
                 open={openModal}
                 onClose={handleClose}
@@ -445,55 +548,65 @@ export default function UserPage() {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         Edit Details
                     </Typography>
+                    <form onSubmit={handleSubmitedit}>
+                        <TextField
+                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                            id="name"
+                            value={formValues.name}
+                            label="Name"
+                            variant="outlined"
+                            onChange={handleInputChange}
+                        />
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="name"
-                        value=""
-                        label="Name"
-                        variant="outlined"
-                    />
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="email"
-                        value=""
-                        label="Email"
-                        variant="outlined"
-                    />
+                        <TextField
+                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                            id="email"
+                            value={formValues.email}
+                            label="Email"
+                            variant="outlined"
+                            onChange={handleInputChange}
+                        />
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="phone"
-                        value=""
-                        label="Contact Number"
-                        variant="outlined"
-                    />
+                        <TextField
+                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                            id="mobile_number"
+                            value={formValues.mobile_number}
+                            label="Contact Number"
+                            variant="outlined"
+                            onChange={handleInputChange}
+                        />
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="role"
-                        value=""
-                        label="Role"
-                        variant="outlined"
-                    />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="role"
+                            label="Role"
+                            name="role"
+                            value={formValues.role}
+                            onChange={handleSelectChange}
+                            autoComplete="address"
+                            autoFocus
+                            select
+                        >
+                            {/* Add options to the Select component using MenuItem */}
+                            <MenuItem value="buyer">Buyer</MenuItem>
+                            <MenuItem value="seller">Seller</MenuItem>
+                        </TextField>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="address"
-                        value=""
-                        label="Address"
-                        variant="outlined"
-                    />
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="status"
-                        value=""
-                        label="Status"
-                        variant="outlined"
-                    />
-                    <Button type="submit" color="inherit" variant="outlined">
-                        Submit
-                    </Button>
+                        <TextField
+                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
+                            id="address"
+                            value={formValues.address}
+                            label="Address"
+                            variant="outlined"
+                            onChange={handleInputChange}
+                        />
+
+                        <Button type="submit" color="inherit" variant="outlined">
+                            Submit
+                        </Button>
+                    </form>
                 </Box>
             </Modal>
         </>

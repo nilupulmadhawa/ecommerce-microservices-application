@@ -158,6 +158,18 @@ export default function SignInSide() {
                                 margin="normal"
                                 required
                                 fullWidth
+                                id="mobile_number"
+                                label="Mobile Number"
+                                name="mobile_number"
+                                value={form.mobile_number}
+                                onChange={changeHandle}
+                                autoComplete="address"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
                                 id="role"
                                 label="Role"
                                 name="role"
@@ -175,7 +187,7 @@ export default function SignInSide() {
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
-                            <Button type='submit' fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                            <Button type='submit' fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} style={{ background: '#006a39' }}>
                                 Sign Up
                             </Button>
                             <Grid container>

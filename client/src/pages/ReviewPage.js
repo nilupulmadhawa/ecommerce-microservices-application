@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -32,6 +32,8 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/review';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -103,6 +105,7 @@ export default function ReviewPage() {
     const [filterName, setFilterName] = useState('');
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [form, setForm] = useState(5);
 
     const handleOpenMenu = (event) => {
         setOpen(event.currentTarget);
@@ -171,43 +174,39 @@ export default function ReviewPage() {
     const isNotFound = !filteredUsers.length && !!filterName;
 
     const [openModal, setOpenModal] = React.useState(false);
-    const [values, setValues] = React.useState([
-        {
-            id: 1,
-            buyer_id: "Kasun Perera",
-            item_id: "Only Naturals for Women",
-            rating: 4,
-            review: "good product"
-        },
-        {
-            id: 2,
-            buyer_id: "James William",
-            item_id: "Only Naturals for Women",
-            rating: 5,
-            review: "I liked the product, although now it does take too long to arrive, I no longer expected it"
-        },
-        {
-            id: 3,
-            buyer_id: "John Smith",
-            item_id: "Only Naturals for Women",
-            rating: 5,
-            review: "Thank you very much seller definitely recommend seller and product"
-        },
-        {
-            id: 4,
-            buyer_id: "John Smith",
-            item_id: "Zimacal with Magneseiumn",
-            rating: 2,
-            review: "Thank you very much "
-        },
-        {
-            id: 4,
-            buyer_id: "James William",
-            item_id: "Opokan Cream",
-            rating: 3,
-            review: "Thank you very much "
-        }
-    ]);
+    const [values, setValues] = React.useState([]);
+
+    const getvalues = async () => {
+        await apiRequest(() => axiosInstance.get(`/rating`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                setValues(res.data)
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
+
+
+    const deletevalues = async (id) => {
+        console.log(id);
+        await apiRequest(() => axiosInstance.delete(`/rating/${id}`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                getvalues()
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
+
+    useEffect(() => {
+        getvalues()
+    }, [])
+
+
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
 
@@ -249,54 +248,81 @@ export default function ReviewPage() {
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {values
-                                        .map((row) => {
-                                            const { id, buyer_id, item_id, rating, review } = row;
-                                            const selectedUser = selected.indexOf(buyer_id) !== -1;
+                                    {values?.map((row) => {
+                                        const { _id, item_name, user_name, rating, review, buyer_id } = row;
+                                        const selectedUser = selected.indexOf(buyer_id) !== -1;
 
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    key={id}
-                                                    tabIndex={-1}
-                                                    role="checkbox"
-                                                    selected={selectedUser}
-                                                >
-                                                    <TableCell padding="checkbox">
-                                                        <Checkbox
-                                                            checked={selectedUser}
-                                                            onChange={(event) => handleClick(event, buyer_id)}
-                                                        />
-                                                    </TableCell>
+                                        return (
+                                            <TableRow
+                                                hover
+                                                key={_id}
+                                                tabIndex={-1}
+                                                role="checkbox"
+                                                selected={selectedUser}
+                                            >
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        checked={selectedUser}
+                                                        onChange={(event) => handleClick(event, buyer_id)}
+                                                    />
+                                                </TableCell>
 
-                                                    <TableCell align="left">{`${buyer_id}`}</TableCell>
-                                                    <TableCell align="left">{`${item_id}`}</TableCell>
+                                                <TableCell align="left">{`${user_name}`}</TableCell>
+                                                <TableCell align="left">{`${item_name}`}</TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Rating value={rating} readOnly />
-                                                    </TableCell>
+                                                <TableCell align="left">
+                                                    <Rating value={rating} readOnly />
+                                                </TableCell>
 
-                                                    <TableCell align="left">
-                                                        <Typography
-                                                            variant="body2"
-                                                            sx={{ color: 'text.secondary' }}
-                                                        >
-                                                            {`${review}`}
-                                                        </Typography>
-                                                    </TableCell>
+                                                <TableCell align="left">
+                                                    <Typography
+                                                        variant="body2"
+                                                        sx={{ color: 'text.secondary' }}
+                                                    >
+                                                        {`${review}`}
+                                                    </Typography>
+                                                </TableCell>
 
-                                                    <TableCell align="right">
-                                                        <IconButton
-                                                            size="large"
-                                                            color="inherit"
-                                                            onClick={handleOpenMenu}
-                                                        >
-                                                            <Iconify icon={'eva:more-vertical-fill'} />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
+                                                <TableCell align="right">
+                                                    <IconButton
+                                                        size="large"
+                                                        color="inherit"
+                                                        onClick={handleOpenMenu}
+                                                    >
+                                                        <Iconify icon={'eva:more-vertical-fill'} />
+                                                    </IconButton>
+                                                    <Popover
+                                                        open={Boolean(open)}
+                                                        anchorEl={open}
+                                                        onClose={handleCloseMenu}
+                                                        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                                                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                                        PaperProps={{
+                                                            sx: {
+                                                                p: 1,
+                                                                width: 140,
+                                                                '& .MuiMenuItem-root': {
+                                                                    px: 1,
+                                                                    typography: 'body2',
+                                                                    borderRadius: 0.75,
+                                                                },
+                                                            },
+                                                        }}
+                                                    >
+                                                        {/* <MenuItem onClick={handleOpen}>
+                    <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+                    Edit
+                </MenuItem> */}
+
+                                                        <MenuItem sx={{ color: 'error.main' }} onClick={() => deletevalues(_id)}>
+                                                            <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+                                                            Delete
+                                                        </MenuItem>
+                                                    </Popover>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
                                             <TableCell colSpan={6} />
@@ -344,34 +370,7 @@ export default function ReviewPage() {
                 </Card>
             </Container>
 
-            <Popover
-                open={Boolean(open)}
-                anchorEl={open}
-                onClose={handleCloseMenu}
-                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                PaperProps={{
-                    sx: {
-                        p: 1,
-                        width: 140,
-                        '& .MuiMenuItem-root': {
-                            px: 1,
-                            typography: 'body2',
-                            borderRadius: 0.75,
-                        },
-                    },
-                }}
-            >
-                <MenuItem onClick={handleOpen}>
-                    <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-                    Edit
-                </MenuItem>
 
-                <MenuItem sx={{ color: 'error.main' }}>
-                    <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-                    Delete
-                </MenuItem>
-            </Popover>
 
             <Modal
                 open={openModal}
@@ -387,22 +386,24 @@ export default function ReviewPage() {
                     <TextField
                         sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                         id="buyer_id"
-                        value=""
+                        value={form.buyer_id}
                         label="Buyer"
                         variant="outlined"
+                        readonly
                     />
                     <TextField
                         sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                         id="item_id"
-                        value=""
+                        value={form.item_id}
                         label="Product"
                         variant="outlined"
+
                     />
 
                     <TextField
                         sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                         id="rating"
-                        value=""
+                        value={form.item_id}
                         label="Rating"
                         variant="outlined"
                     />
@@ -410,7 +411,7 @@ export default function ReviewPage() {
                     <TextField
                         sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                         id="review"
-                        value=""
+                        value={form.item_id}
                         label="Review"
                         variant="outlined"
                     />
