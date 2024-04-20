@@ -2,9 +2,6 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Swal from 'sweetalert2'
 
 // @mui
 import {
@@ -26,6 +23,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogActions,
+    MenuItem,
 } from '@mui/material';
 // components
 import Label from '../components/label';
@@ -136,23 +134,24 @@ export default function ProductManage() {
 
     // const isNotFound = !manageproducts.length && !!filterName;
 
-   
 
-    
+
+
 
     const [manageproducts, setManageproducts] = useState([]);
-  
+
 
     /////////////////////////////////
 
     const [deleteId, setDeleteId] = useState(null)
-    const handleDelete = (id) => {
-        console.log(id);
-        setDeleteId(id)
+    const handleDelete = (_id) => {
+        console.log(_id);
+        setDeleteId(_id)
         setCOpen(true);
     };
 
-    const handleSubmitedelete = async () => {
+    const handleSubmitDelete = async () => {
+        console.log(deleteId);
         await apiRequest(() => axiosInstance.delete(`/item/${deleteId}`,)).then((res) => {
             if (res.success) {
                 toast.success(res.message);
@@ -164,7 +163,7 @@ export default function ProductManage() {
             }
         })
     }
-  
+
 
     const getAllData = async () => {
         await apiRequest(() => axiosInstance.get(`/item/seller/${user._id}`)).then((res) => {
@@ -191,8 +190,8 @@ export default function ProductManage() {
             </Helmet>
 
             <Container>
-                
-            <Stack
+
+                <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
@@ -202,7 +201,7 @@ export default function ProductManage() {
                         Manage Products
                     </Typography>
 
-                <ProductListAddProduct getAllData={getAllData}/>
+                    <ProductListAddProduct getAllData={getAllData} />
 
 
                 </Stack>
@@ -305,17 +304,17 @@ export default function ProductManage() {
                                                                 },
                                                             }}
                                                         >
-    <EditProduct getAllData={getAllData} id={_id} formValues={formValues} setFormValues={setFormValues} />
-                                                            {/* <MenuItem
+                                                            <EditProduct getAllData={getAllData} id={_id} formValues={formValues} setFormValues={setFormValues} />
+                                                            <MenuItem
                                                                 sx={{ color: 'error.main' }}
-                                                                onClick={() => handleDelete(_id)}
+                                                                onClick={() => handleDelete(formValues._id)}
                                                             >
                                                                 <Iconify
                                                                     icon={'eva:trash-2-outline'}
                                                                     sx={{ mr: 2 }}
                                                                 />
                                                                 Delete
-                                                            </MenuItem> */}
+                                                            </MenuItem>
                                                         </Popover>
                                                     </React.Fragment>
                                                 );
@@ -342,7 +341,7 @@ export default function ProductManage() {
                 </Card>
             </Container>
 
-            
+
             <Dialog
                 open={cOpen}
                 onClose={() => setCOpen(false)}
@@ -354,12 +353,12 @@ export default function ProductManage() {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Can not be undone.
+                        Cannot be undone..!!!
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setCOpen(false)}>Disagree</Button>
-                    <Button onClick={handleSubmitedelete} autoFocus>
+                    <Button onClick={handleSubmitDelete} autoFocus>
                         Agree
                     </Button>
                 </DialogActions>
