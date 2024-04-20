@@ -98,9 +98,9 @@ const style = {
 export default function UserPage() {
     const { token, user } = useStateContext();
     const navigate = useNavigate();
-    if (user.role !== 'admin') {
-        navigate('/404');
-    }
+    // if (user.role !== 'admin') {
+    //     navigate('/404');
+    // }
     const [open, setOpen] = useState(null);
 
     const [page, setPage] = useState(0);

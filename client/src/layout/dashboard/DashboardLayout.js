@@ -38,15 +38,15 @@ export default function DashboardLayout() {
     const { token } = useStateContext()
     const navigate = useNavigate();
 
-    if (!token) {
-        navigate('/login');
-    }
+    // if (!token) {
+    //     navigate('/login');
+    // }
 
 
 
     return (
         <>
-            {token &&
+            {/* {token && */}
                 <StyledRoot>
                     <Header onOpenNav={() => setOpen(true)} />
 
@@ -57,7 +57,7 @@ export default function DashboardLayout() {
                     </Main>
 
                 </StyledRoot>
-            }
+            {/* } */}
         </>
     );
 }
