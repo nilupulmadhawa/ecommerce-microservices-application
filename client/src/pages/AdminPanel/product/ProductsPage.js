@@ -8,9 +8,9 @@ import {
   ProductList,
   ProductCartWidget,
   ProductFilterSidebar,
-} from '../sections/@dashboard/products';
+} from '../../../sections/@dashboard/products';
 // mock
-import PRODUCTS from '../_mock/products';
+import PRODUCTS from '../../../_mock/products';
 
 // ----------------------------------------------------------------------
 

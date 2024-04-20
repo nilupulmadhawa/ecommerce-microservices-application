@@ -35,14 +35,14 @@ import {
     DialogActions,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Label from '../../../components/label';
+import Iconify from '../../../components/iconify';
+import Scrollbar from '../../../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../../../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/order';
-import { apiRequest, axiosInstance } from '../services/core/axios';
+import USERLIST from '../../../_mock/order';
+import { apiRequest, axiosInstance } from '../../../services/core/axios';
 import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------

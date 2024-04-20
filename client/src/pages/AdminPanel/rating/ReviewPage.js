@@ -26,13 +26,13 @@ import {
     TextField,
 } from '@mui/material';
 // components
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Iconify from '../../../components/iconify';
+import Scrollbar from '../../../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../../../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/review';
-import { apiRequest, axiosInstance } from '../services/core/axios';
+import USERLIST from '../../../_mock/review';
+import { apiRequest, axiosInstance } from '../../../services/core/axios';
 import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------

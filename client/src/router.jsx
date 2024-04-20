@@ -1,21 +1,21 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import UserPage from './pages/AdminPanel/user/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
-import DashboardAppPage from './pages/DashboardAppPage';
+import ProductsPage from './pages/AdminPanel/product/ProductsPage';
+import DashboardAppPage from './pages/AdminPanel/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
-import ReviewPage from './pages/ReviewPage';
-import OrderPage from './pages/OrderPage';
+import ReviewPage from './pages/AdminPanel/rating/ReviewPage';
+import OrderPage from './pages/AdminPanel/order/OrderPage';
 import PaymentSuccess from './components/payments/PaymentSuccess';
 import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
-import ProductManage from './pages/ProductManage';
+import ProductManage from './pages/AdminPanel/product/ProductManage';
 // import ProductViewPage from './pages/ProductViewPage';
 
 // ----------------------------------------------------------------------
