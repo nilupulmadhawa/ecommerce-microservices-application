@@ -16,6 +16,7 @@ import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
 import ProductManage from './pages/AdminPanel/product/ProductManage';
+import ProductCategoryManage from './pages/AdminPanel/product/ProductCategoryManage';
 // import ProductViewPage from './pages/ProductViewPage';
 
 // ----------------------------------------------------------------------
@@ -31,6 +32,7 @@ export default function Router() {
                 { path: 'users', element: <UserPage /> },
                 { path: 'products', element: <ProductsPage /> },
                 { path: 'manageproducts', element: <ProductManage /> },
+                { path: 'managecategories', element: <ProductCategoryManage /> },
                 { path: 'blogs', element: <BlogPage /> },
                 { path: 'ratings', element: <ReviewPage /> },
                 { path: 'orders', element: <OrderPage /> },

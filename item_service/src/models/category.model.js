@@ -3,6 +3,10 @@ import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
  
 const CategorySchema = new mongoose.Schema(
     {
+        seller_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true
+        },
         category: {
             type: String,
             required: true
@@ -10,6 +14,12 @@ const CategorySchema = new mongoose.Schema(
         icon: {
             type: String,
             required: false
+        },
+        status: {
+            type: String,
+            required: false,
+            enum: ['active', 'inactive'],
+            default: 'active'
         },   
     },
     {

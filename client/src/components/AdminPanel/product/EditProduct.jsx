@@ -14,7 +14,7 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
 
   const initialFormValues = {
     name: '',
-    catagory: '',
+    category: '',
     price: '',
     description: '',
     id: null,
@@ -26,8 +26,6 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
   const [open, setOpen] = useState(null);
 
   const [openModal, setOpenModal] = React.useState(false);
-  const [manageproducts, setManageproducts] = useState([]);
-
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -47,7 +45,7 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
     }));
   };
 
-  const handleSubmitedit = async (event) => {
+  const handleSubmitEdit = async (event) => {
     event.preventDefault();
     await apiRequest(() => axiosInstance.patch(`/item/${formValues._id}`, formValues)).then((res) => {
         if (res.success) {
@@ -102,7 +100,7 @@ const style = {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         Edit Details
                     </Typography>
-                    <form onSubmit={handleSubmitedit}>
+                    <form onSubmit={handleSubmitEdit}>
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                             id="name"
@@ -124,8 +122,8 @@ const style = {
 
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="catagory"
-                            value={formValues.catagory}
+                            id="category"
+                            value={formValues.category}
                             label="Category"
                             variant="outlined"
                             onChange={handleInputChange}
@@ -167,7 +165,7 @@ const style = {
                         </Box>
 
                         <Button type="submit" variant="contained" style={{ marginTop: "15px" }}>
-                            Save
+                            Edit
                         </Button>
                     </form>
                 </Box>

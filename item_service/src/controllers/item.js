@@ -57,12 +57,23 @@ export const remove = asyncHandler(async (req, res) => {
     }
 })
 
-export const getsellerItems = asyncHandler(async (req, res) => {
+export const getSellerItems = asyncHandler(async (req, res) => {
     try {
-        const item = await Item.find({ seller_id: req.params.id });
-        if (item.length == 0) return makeResponse({ res, status: 404, message: 'Item Not found' })
-        return makeResponse({ res, status: 200, data: item, message: 'Device retrieved succesfully' })
+        // Assuming 'category' is a reference in your Item schema
+        const items = await Item.find({ seller_id: req.params.id }).populate('category');
+        
+        if (items.length === 0) {
+            return makeResponse({ res, status: 404, message: 'Items not found' });
+        }
+        
+        // Check if any of the items have a category not found (i.e., null)
+        const itemsWithMissingCategories = items.some(item => !item.category);
+        if (itemsWithMissingCategories) {
+            return makeResponse({ res, status: 404, message: 'Category not found for one or more items' });
+        }
+
+        return makeResponse({ res, status: 200, data: items, message: 'Items retrieved successfully' });
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });
     }
-})
+});

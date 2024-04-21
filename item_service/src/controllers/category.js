@@ -57,9 +57,20 @@ export const remove = asyncHandler(async (req, res) => {
     }
 })
 
-export const getsellerCategories = asyncHandler(async (req, res) => {
+export const getSellerCategories = asyncHandler(async (req, res) => {
     try {
         const category = await Category.find({ seller_id: req.params.id });
+        if (category.length == 0) return makeResponse({ res, status: 404, message: 'Category Not found' })
+        return makeResponse({ res, status: 200, data: category, message: 'Device retrieved succesfully' })
+    } catch (error) {
+        return makeResponse({ res, status: 500, message: error.message });
+    }
+})
+
+// get status active all categories
+export const getActiveCategories = asyncHandler(async (req, res) => {
+    try {
+        const category = await Category.find({ seller_id: req.params.id, status: "active" });
         if (category.length == 0) return makeResponse({ res, status: 404, message: 'Category Not found' })
         return makeResponse({ res, status: 200, data: category, message: 'Device retrieved succesfully' })
     } catch (error) {

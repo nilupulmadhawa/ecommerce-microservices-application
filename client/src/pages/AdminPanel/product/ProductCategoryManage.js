@@ -32,21 +32,19 @@ import Scrollbar from '../../../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../../../sections/@dashboard/user';
 // mock
-import USERLIST from '../../../_mock/manageproducts';
+import USERLIST from '../../../_mock/managecategory';
 import { apiRequest, axiosInstance } from '../../../services/core/axios';
 import { toast } from 'react-toastify';
-import AddProduct from '../../../components/AdminPanel/product/AddProduct';
 import { useStateContext } from '../../../context/ContextProvider';
-import EditProduct from '../../../components/AdminPanel/product/EditProduct';
+import EditCategory from '../../../components/AdminPanel/category/EditCategory';
+import AddCategory from '../../../components/AdminPanel/category/AddCategory';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
     // { id: 'image', label: 'Image', alignRight: false },
-    { id: 'name', label: 'Name', alignRight: false },
+    { id: 'icon', label: 'Icon', alignRight: false },
     { id: 'category', label: 'Category', alignRight: false },
-    { id: 'price', label: 'Price', alignRight: false },
-    { id: 'description', label: 'Description', alignRight: false },
     { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
@@ -73,13 +71,10 @@ export default function ProductManage() {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const initialFormValues = {
-        name: '',
+        icon: '',
         category: '',
-        price: '',
-        description: '',
         id: null,
-        image: '',
-        status: '',
+        status:'',
         seller_id: user._id
     };
 
@@ -126,19 +121,19 @@ export default function ProductManage() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-    // const manageproducts = applySortFilter(
+    // const managecategory = applySortFilter(
     //   USERLIST,
     //   getComparator(order, orderBy),
     //   filterName
     // );
 
-    // const isNotFound = !manageproducts.length && !!filterName;
+    // const isNotFound = !managecategory.length && !!filterName;
 
 
 
 
 
-    const [manageproducts, setManageProducts] = useState([]);
+    const [managecategory, setManageCategory] = useState([]);
 
 
     /////////////////////////////////
@@ -152,7 +147,7 @@ export default function ProductManage() {
 
     const handleSubmitDelete = async () => {
         console.log(deleteId);
-        await apiRequest(() => axiosInstance.delete(`/item/${deleteId}`,)).then((res) => {
+        await apiRequest(() => axiosInstance.delete(`/category/${deleteId}`,)).then((res) => {
             if (res.success) {
                 toast.success(res.message);
                 getAllData()
@@ -166,41 +161,27 @@ export default function ProductManage() {
 
 
     const getAllData = async () => {
-        const response = await axiosInstance.get(`/item/seller/${user._id}?include=category`);
-        console.log("Full API Response:", response.data);
-    
-        // Check if 'data' is present and has entries
-        if (response.data && response.data.data && response.data.data.length > 0) {
-            const mappedProducts = response.data.data.map(product => {
-                return {
-                    ...product,
-                    category: product.category && product.category.category ? product.category.category : 'Unknown Category'
-                };
-            });
-    
-            console.log("Mapped Products:", mappedProducts); // Should log now
-            setManageProducts(mappedProducts);
-        } else {
-            console.log("No data available or response structure is incorrect:", response.data);
-            toast.error("Failed to retrieve products: No data available");
-            setManageProducts([]); // Clear products or handle accordingly
-        }
+        await apiRequest(() => axiosInstance.get(`/category/seller/${user._id}`)).then((res) => {
+            if (res.success) {
+                setManageCategory(res.data)
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
     };
-    
-    
-        
+
+
     useEffect(() => {
         getAllData();
     }, []);
-    
-  
-
-   
 
     return (
         <>
             <Helmet>
-                <title> Products Manage | E-Commerce App </title>
+                <title> Category Manage | E-Commerce App </title>
             </Helmet>
 
             <Container>
@@ -212,10 +193,10 @@ export default function ProductManage() {
                     mb={5}
                 >
                     <Typography variant="h4" gutterBottom>
-                        Manage Products
+                        Manage Category
                     </Typography>
 
-                    <AddProduct getAllData={getAllData} />
+                    <AddCategory getAllData={getAllData} />
 
 
                 </Stack>
@@ -240,25 +221,22 @@ export default function ProductManage() {
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {manageproducts &&
-                                        manageproducts.length > 0 &&
-                                        manageproducts
+                                    {managecategory &&
+                                        managecategory.length > 0 &&
+                                        managecategory
                                             .slice(
                                                 page * rowsPerPage,
                                                 page * rowsPerPage + rowsPerPage
                                             )
                                             .map((row) => {
-                                                console.log('row', row)
                                                 const {
                                                     _id,
-                                                    name,
+                                                    icon,
                                                     category,
-                                                    price,
-                                                    description,
                                                     status,
                                                 } = row;
 
-                                                const selectedUser = selected.indexOf(name) !== -1;
+                                                const selectedUser = selected.indexOf(icon) !== -1;
 
                                                 return (
                                                     <React.Fragment key={_id}>
@@ -269,10 +247,8 @@ export default function ProductManage() {
                                                             selected={selectedUser}
                                                         >
                                                             <TableCell align="left"></TableCell>
-                                                            <TableCell align="left">{name}</TableCell>
+                                                            <TableCell align="left">{icon}</TableCell>
                                                             <TableCell align="left">{category}</TableCell>
-                                                            <TableCell align="left">{price}</TableCell>
-                                                            <TableCell align="left">{description}</TableCell>
                                                             <TableCell align="left">
                                                                 <Label
                                                                     color={
@@ -283,6 +259,7 @@ export default function ProductManage() {
                                                                     {sentenceCase(status)}
                                                                 </Label>
                                                             </TableCell>
+                                                           
                                                             <TableCell align="right">
                                                                 <IconButton
                                                                     size="large"
@@ -319,7 +296,7 @@ export default function ProductManage() {
                                                                 },
                                                             }}
                                                         >
-                                                            <EditProduct getAllData={getAllData} id={_id} formValues={formValues} setFormValues={setFormValues} />
+                                                            <EditCategory getAllData={getAllData} id={_id} formValues={formValues} setFormValues={setFormValues} />
                                                             <MenuItem
                                                                 sx={{ color: 'error.main' }}
                                                                 onClick={() => handleDelete(formValues._id)}

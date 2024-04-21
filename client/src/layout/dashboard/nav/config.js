@@ -19,23 +19,28 @@ const navConfig = [
     {
         title: 'products',
         path: '/dashboard/products',
-        icon: icon('ic_cart'),
+        icon: icon('ic_item'),
     },
     {
         title: 'manage products',
         path: '/dashboard/manageproducts',
-        icon: icon('ic_cart'),
+        icon: icon('ic_manage'),
+    },
+    {
+        title: 'manage categories',
+        path: '/dashboard/managecategories',
+        icon: icon('ic_category'),
     },
 
     {
         title: 'orders',
         path: '/dashboard/orders',
-        icon: icon('ic_lock'),
+        icon: icon('ic_cart'),
     },
     {
         title: 'review and ratings',
         path: '/dashboard/ratings',
-        icon: icon('ic_lock'),
+        icon: icon('ic_rate'),
     },
     {
         title: 'Users',
