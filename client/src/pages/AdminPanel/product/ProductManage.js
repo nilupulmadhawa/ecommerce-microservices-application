@@ -167,23 +167,19 @@ export default function ProductManage() {
 
     const getAllData = async () => {
         const response = await axiosInstance.get(`/item/seller/${user._id}?include=category`);
-        console.log("Full API Response:", response.data);
     
-        // Check if 'data' is present and has entries
         if (response.data && response.data.data && response.data.data.length > 0) {
             const mappedProducts = response.data.data.map(product => {
                 return {
                     ...product,
-                    category: product.category && product.category.category ? product.category.category : 'Unknown Category'
                 };
             });
+            console.log(mappedProducts);
     
-            console.log("Mapped Products:", mappedProducts); // Should log now
             setManageProducts(mappedProducts);
         } else {
-            console.log("No data available or response structure is incorrect:", response.data);
             toast.error("Failed to retrieve products: No data available");
-            setManageProducts([]); // Clear products or handle accordingly
+            setManageProducts([]);
         }
     };
     
@@ -248,7 +244,7 @@ export default function ProductManage() {
                                                 page * rowsPerPage + rowsPerPage
                                             )
                                             .map((row) => {
-                                                console.log('row', row)
+                                                console.log(row);
                                                 const {
                                                     _id,
                                                     name,
@@ -256,6 +252,7 @@ export default function ProductManage() {
                                                     price,
                                                     description,
                                                     status,
+                                                    category_id,
                                                 } = row;
 
                                                 const selectedUser = selected.indexOf(name) !== -1;

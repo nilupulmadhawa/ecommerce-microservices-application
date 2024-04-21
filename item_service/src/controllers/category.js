@@ -1,7 +1,7 @@
 import asyncHandler from '../middleware/async'
 import { makeResponse } from '../utils/response'
 import Category from '../models/category.model.js';
-import bcrypt from 'bcrypt'
+
 
 export const create = asyncHandler(async (req, res) => {
     try {
@@ -77,3 +77,16 @@ export const getActiveCategories = asyncHandler(async (req, res) => {
         return makeResponse({ res, status: 500, message: error.message });
     }
 })
+
+
+export const uploadFile = (req, res) => {
+    if (req.file) {
+        res.status(200).json({
+            message: "File uploaded successfully",
+            filename: req.file.filename 
+        });
+    } else {
+        res.status(400).json({ message: "File upload failed" });
+    }
+};
+

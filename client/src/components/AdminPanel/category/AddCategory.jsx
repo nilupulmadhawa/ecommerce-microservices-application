@@ -23,6 +23,14 @@ const AddCategory = ({getAllData}) => {
   const [openModalAdd, setOpenModalAdd] = React.useState(false);
   const [formValues, setFormValues] = useState(initialFormValues);
 
+  const [file, setFile] = useState(null);
+
+  
+
+const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+};
+
   const handleOpenAdd = () => { 
     console.log('open add');
     setOpenModalAdd(true); 
@@ -59,20 +67,52 @@ const handleSelectChange = (event) => {
     }));
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  await apiRequest(() => axiosInstance.post(`/category`, formValues)).then((res) => {
-      if (res.success) {
-          toast.success(res.message);
-          getAllData()
-          handleCloseAdd();
-      } else {
-          toast.error(res.message);
-          console.log(res);
-          handleCloseAdd();
-      }
-  })
+// const handleSubmit = async (event) => {
+//   event.preventDefault();
+//   await apiRequest(() => axiosInstance.post(`/category`, formValues)).then((res) => {
+//       if (res.success) {
+//           toast.success(res.message);
+//           getAllData()
+//           handleCloseAdd();
+//       } else {
+//           toast.error(res.message);
+//           console.log(res);
+//           handleCloseAdd();
+//       }
+//   })
 
+// };
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (file) {
+        const data = new FormData();
+        const filename = Date.now() + file.name;
+        data.append("name", filename);
+        data.append("file", file);
+
+        try {
+            const uploadResponse = await axiosInstance.post(`/category/upload/icons`, data);
+            console.log(uploadResponse)
+            if (uploadResponse.status === 200) {
+                
+                const submitForm = { ...formValues, icon: filename };
+                console.log(submitForm)
+                const categoryResponse = await axiosInstance.post(`/category`, submitForm);
+                if (categoryResponse.status === 200) {
+                    toast.success(categoryResponse.data.message);
+                    getAllData();
+                    handleCloseAdd();
+                } else {
+                    toast.error(categoryResponse.data.message);
+                }
+            } else {
+                throw new Error('Failed to upload icon');
+            }
+        } catch (err) {
+            toast.error('Failed to upload file.');
+            console.error(err);
+        }
+    }
 };
 
 
@@ -99,16 +139,24 @@ const handleSubmit = async (event) => {
                         </Typography>
 
                         <form onSubmit={handleSubmit}>
-                            <TextField
-                                id="icon"
-                                name="icon"
-                                label="Icon"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={formValues.icon}
-                                onChange={handleInputChange}
-                            />
+                        {/* resize image*/}
+                        <Box sx={{ display: 'flex', justifyContent: 'center', width:'50px' }}>
+
+
+                        {file && (
+                            <img className='img-fluid rounded' src={URL.createObjectURL(file)} alt="" /> 
+                            )} 
+                            </Box>
+                        <TextField
+                            type="file"
+                            id="icon"
+                            name="icon"
+                            variant="outlined"
+                            margin="normal"
+                            onChange={handleFileChange}
+                            inputProps={{ accept: "image/*" }}
+                            fullWidth
+                        />
                             
                             <TextField
                                 id="category"

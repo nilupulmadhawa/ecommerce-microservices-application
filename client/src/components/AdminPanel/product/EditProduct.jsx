@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import Iconify from '../../../components/iconify';
@@ -15,6 +15,7 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
   const initialFormValues = {
     name: '',
     category: '',
+    category_id:'',
     price: '',
     description: '',
     id: null,
@@ -30,6 +31,26 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
+  const [categories, setCategories] = useState([]);
+
+ 
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    await apiRequest(() => axiosInstance.get(`/category/active/seller/${user._id}`)).then((res) => {
+        if (res.success) {
+          
+            setCategories(res.data);
+        } else {
+            toast.error(res.message);
+            console.log(res);
+        }
+    });
+  };
+
+
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     setFormValues((prevFormValues) => ({
@@ -39,11 +60,23 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
   };
   const handleSelectChange = (event) => {
     const { name, value } = event.target;
-    setFormValues((prevFormValues) => ({
-        ...prevFormValues,
-        [name]: value,
-    }));
-  };
+
+    // Check if the selected value is in the categories list
+    const isValid = categories.some(category => category._id === value);
+    if (!isValid) {
+        toast.error('Selected category is not valid, please choose a valid category.');
+        setFormValues(prevFormValues => ({
+            ...prevFormValues,
+            [name]: '' // Resetting to default or you could choose the first category._id
+        }));
+    } else {
+        setFormValues(prevFormValues => ({
+            ...prevFormValues,
+            [name]: value
+        }));
+    }
+};
+
 
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
@@ -62,7 +95,9 @@ const EditProduct = ({ getAllData, id, formValues, setFormValues }) => {
 };
 
 const handleEdit = (id) => {  
+    console.log(id)
   setOpenModal(true);
+  
 };
 
 
@@ -120,14 +155,22 @@ const style = {
                             onChange={handleInputChange}
                         />
 
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="category"
-                            value={formValues.category}
-                            label="Category"
-                            variant="outlined"
-                            onChange={handleInputChange}
-                        />
+                    <FormControl fullWidth margin="normal">
+                            <InputLabel id="category-label">Category</InputLabel>
+                            <Select
+                                labelId="category-label"
+                                id="category"
+                                name="category"
+                                value={formValues.category_id}
+                                label="Category"
+                                onChange={handleSelectChange}
+                            >
+                                {categories.map((category) => (
+                                <MenuItem key={category._id} value={category._id}>{category.category}</MenuItem>
+
+                                ))}
+                            </Select>
+                            </FormControl>
 
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}

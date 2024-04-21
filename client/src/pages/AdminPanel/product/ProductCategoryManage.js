@@ -173,6 +173,10 @@ export default function ProductManage() {
 
     };
 
+    // icon route
+    const iconsBaseUrl = process.env.REACT_APP_BACKEND_URL + '/icon/';
+    console.log(iconsBaseUrl);
+
 
     useEffect(() => {
         getAllData();
@@ -247,7 +251,12 @@ export default function ProductManage() {
                                                             selected={selectedUser}
                                                         >
                                                             <TableCell align="left"></TableCell>
-                                                            <TableCell align="left">{icon}</TableCell>
+                                                            {/* <TableCell align="left">{icon}</TableCell> */}
+                                                            <TableCell component="th" scope="row" padding="none">
+                                                                <Stack direction="row" alignItems="center" spacing={2}>
+                                                                <img src={`${iconsBaseUrl}${icon}`} alt={category} style={{ width: 40, height: 40, borderRadius: '50%' }} />
+                                                                </Stack>
+                                                            </TableCell>
                                                             <TableCell align="left">{category}</TableCell>
                                                             <TableCell align="left">
                                                                 <Label

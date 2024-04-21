@@ -1,7 +1,6 @@
 import asyncHandler from '../middleware/async'
 import { makeResponse } from '../utils/response'
 import Item from '../models/item.model.js';
-import bcrypt from 'bcrypt'
 
 export const create = asyncHandler(async (req, res) => {
     try {
@@ -57,23 +56,57 @@ export const remove = asyncHandler(async (req, res) => {
     }
 })
 
+
+// Handler to retrieve items sold by a specific seller and populate category details
 export const getSellerItems = asyncHandler(async (req, res) => {
     try {
-        // Assuming 'category' is a reference in your Item schema
+        // Fetch items where 'seller_id' matches the provided ID and populate the 'category' field
         const items = await Item.find({ seller_id: req.params.id }).populate('category');
         
+        // Check if no items were found
         if (items.length === 0) {
-            return makeResponse({ res, status: 404, message: 'Items not found' });
+            return makeResponse({ 
+                res, 
+                status: 404, 
+                message: 'Items not found' 
+            });
         }
         
-        // Check if any of the items have a category not found (i.e., null)
+        // Check if any items are missing their associated category
         const itemsWithMissingCategories = items.some(item => !item.category);
         if (itemsWithMissingCategories) {
-            return makeResponse({ res, status: 404, message: 'Category not found for one or more items' });
+            return makeResponse({ 
+                res, 
+                status: 404, 
+                message: 'Category not found for one or more items' 
+            });
         }
 
-        return makeResponse({ res, status: 200, data: items, message: 'Items retrieved successfully' });
+        // Prepare items data to include category details
+        const preparedItems = items.map(item => ({
+            _id: item._id,
+            name: item.name,
+            price: item.price,
+            description: item.description,
+            category_id: item.category ? item.category._id : null, // Safely access category ID
+            category: item.category ? item.category.category : 'No category', // Example to handle category name
+            image: item.image,
+            status: item.status
+        }));
+
+        // Return response with the prepared items data
+        return makeResponse({ 
+            res, 
+            status: 200, 
+            data: preparedItems, 
+            message: 'Items retrieved successfully' 
+        });
     } catch (error) {
-        return makeResponse({ res, status: 500, message: error.message });
+        // Handle any server errors
+        return makeResponse({ 
+            res, 
+            status: 500, 
+            message: error.message 
+        });
     }
 });

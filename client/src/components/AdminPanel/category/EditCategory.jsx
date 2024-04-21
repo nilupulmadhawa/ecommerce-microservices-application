@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import Iconify from '../../../components/iconify';
@@ -27,6 +27,19 @@ const EditCategory = ({ getAllData, id, formValues, setFormValues }) => {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
+  const [file, setFile] = useState(null); 
+
+  const [preview, setPreview] = useState('');  // State for the preview image
+
+  // Function to handle file input changes
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFile(file);
+      setPreview(URL.createObjectURL(file));  // Set the preview URL
+    }
+  };
+
   const handleInputChange = (event) => {
     const { id, value } = event.target;
     setFormValues((prevFormValues) => ({
@@ -44,19 +57,60 @@ const EditCategory = ({ getAllData, id, formValues, setFormValues }) => {
 
   const handleSubmitEdit = async (event) => {
     event.preventDefault();
-    await apiRequest(() => axiosInstance.patch(`/category/${formValues._id}`, formValues)).then((res) => {
-        if (res.success) {
-            toast.success(res.message);
-            getAllData()
-            setOpenModal(false);
-            setFormValues(initialFormValues);
-            setOpen(null)
-        } else {
-            toast.error(res.message);
-            console.log(res);
+    let finalIconName = formValues.icon; // Start with the existing icon name
+
+    if (file) {
+        // There's a new file, prepare FormData for upload
+        const formData = new FormData();
+        const filename = Date.now() + file.name;
+        formData.append("name", filename);
+        formData.append("file", file);
+
+        try {
+            // Upload the new icon
+            const uploadResponse = await axiosInstance.post(`/category/upload/icons`, formData);
+            if (uploadResponse.status === 200) {
+                finalIconName = filename; // Update icon name if upload is successful
+            } else {
+                throw new Error('Failed to upload icon');
+            }
+        } catch (err) {
+            toast.error('Failed to upload file.');
+            console.error(err);
+            return; // Exit if the upload fails
         }
-    })
+    }
+
+    // Prepare the final form data for updating the category
+    const submitForm = {
+        ...formValues,
+        icon: finalIconName
+    };
+
+    try {
+        // Send the updated category data to the server
+        const categoryResponse = await axiosInstance.patch(`/category/${formValues._id}`, submitForm);
+        if (categoryResponse.status === 200) {
+            toast.success(categoryResponse.data.message);
+            getAllData();
+            handleClose(); // Close the modal
+        } else {
+            toast.error(categoryResponse.data.message);
+        }
+    } catch (err) {
+        toast.error('Failed to update category.');
+        console.error(err);
+    }
 };
+
+
+  // Effect to load current icon for preview when the modal is opened
+  useEffect(() => {
+    if (formValues.icon && !file) {
+      const iconUrl = process.env.REACT_APP_BACKEND_URL + '/icon/' + formValues.icon;
+      setPreview(iconUrl);
+    }
+  }, [formValues.icon, file]);
 
 const handleEdit = (id) => {  
   setOpenModal(true);
@@ -98,14 +152,26 @@ const style = {
                         Edit Details
                     </Typography>
                     <form onSubmit={handleSubmitEdit}>
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="icon"
-                            value={formValues.icon}
-                            label="Icon"
-                            variant="outlined"
-                            onChange={handleInputChange}
-                        />
+                    <Box sx={{ mt: 2, width: '100%', marginBottom: '10px' }}>
+              {/* Show the preview of the image */}
+              {preview && (
+                <img className='img-fluid rounded' src={preview} alt="Category" style={{ width: 100, height: 100 }} />
+              )}
+
+              {/* File input for the icon */}
+              <TextField
+                type="file"
+                id="icon"
+                label="Icon"
+                variant="outlined"
+                onChange={handleFileChange}
+                inputProps={{ accept: "image/*" }}
+                fullWidth
+                sx={{ mt: 2 }}  // Add margin top
+              />
+             
+            </Box>
+                       
                        
 
                         <TextField
