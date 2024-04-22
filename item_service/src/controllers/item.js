@@ -25,7 +25,7 @@ export const getAll = asyncHandler(async (req, res) => {
 export const getById = asyncHandler(async (req, res) => {
     try {
         const item = await Item.find({ _id: req.params.id });
-        if (item.length == 0) return makeResponse({ res, status: 404, message: 'Item Not found' })
+        if (item.length == 0) return makeResponse({ res, status: 404, message: 'Item Not Found' })
         return makeResponse({ res, status: 200, data: item, message: 'Device retrieved succesfully' })
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });

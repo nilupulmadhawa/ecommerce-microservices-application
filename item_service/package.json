@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon --exec babel-node src/app.js",
         "start": "babel-node src/app.js",
-        "test": "test"
+        "test": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose"
     },
     "author": "",
     "license": "ISC",
@@ -33,7 +33,10 @@
         "@babel/eslint-parser": "7.19.1",
         "@babel/node": "^7.20.7",
         "@babel/preset-env": "^7.20.2",
+        "cross-env": "^7.0.3",
         "dotenv": "^16.0.3",
-        "eslint": "^8.32.0"
+        "eslint": "^8.32.0",
+        "jest": "^29.7.0",
+        "supertest": "^6.3.4"
     }
 }

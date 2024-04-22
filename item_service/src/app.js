@@ -38,6 +38,15 @@ connectDB();
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, () => {
-    console.log(`Server successfully started on port ${port}`)
-})
+// app.listen(port, () => {
+//     console.log(`Server successfully started on port ${port}`)
+// })
+
+// Start the server only if we're not in a test environment
+if (process.env.NODE_ENV !== 'test') {
+    const port = process.env.PORT || 3001;
+    app.listen(port, () => {
+        console.log(`Server successfully started on port ${port}`);
+    });
+}
+export default app;

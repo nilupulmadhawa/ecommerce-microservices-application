@@ -67,21 +67,6 @@ const handleSelectChange = (event) => {
     }));
   };
 
-// const handleSubmit = async (event) => {
-//   event.preventDefault();
-//   await apiRequest(() => axiosInstance.post(`/category`, formValues)).then((res) => {
-//       if (res.success) {
-//           toast.success(res.message);
-//           getAllData()
-//           handleCloseAdd();
-//       } else {
-//           toast.error(res.message);
-//           console.log(res);
-//           handleCloseAdd();
-//       }
-//   })
-
-// };
 const handleSubmit = async (event) => {
     event.preventDefault();
     if (file) {
