@@ -1,47 +1,98 @@
 
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./productViewPage.css";
 import Gallery from "../components/Gallery";
 import Description from "../components/Description";
 import { Rating, TextField } from "@mui/material";
-export default function ProductViewPage({ shopItems, addToCart }) {
-
+import { useParams } from "react-router-dom";
+import { apiRequest, axiosInstance } from "../services/core/axios";
+import { toast } from "react-toastify";
+import { useStateContext } from "../context/ContextProvider";
+export default function ProductViewPage({ shopItems, addToCart, setQty, qty }) {
+    const { user } = useStateContext()
     const [quant, setQuant] = useState(0);
     const [orderedQuant, setOrderedQuant] = useState(0);
-    const [review, setReview] = useState([{ user: "John Smith", rating: 5, comment: "Thank you very much seller definitely recommend seller and product " }, { user: "James William", rating: 5, comment: "I liked the product, although now it does take too long to arrive, I no longer expected it" }]);
+    const [review, setReview] = useState([]);
     const [value, setValue] = useState({ user: "Kasun Perera" })
-
+    const [shopItem, setShopItem] = useState({})
+    let { id } = useParams();
     const addQuant = () => {
-        setQuant(quant + 1);
+        setQty(qty + 1);
     };
 
     const removeQuant = () => {
-        setQuant(quant - 1);
+        setQty(qty - 1);
     };
 
     const resetQuant = () => {
-        setQuant(0);
+        setQty(0);
         setOrderedQuant(0);
     };
 
-    const handleAddReview = () => {
-        console.log();
-        setReview([...review, value])
-        setValue({ user: "Kasun Perera", rating: 0, comment: "" })
+    const handleAddReview = async () => {
+        if (!value.rating) {
+            toast.error("Please add a rating");
+            return
+        }
+        console.log({ buyer_id: user._id, item_id: id, rating: value.rating, review: value.review });
+        await apiRequest(() => axiosInstance.post(`/rating`, { buyer_id: user._id, item_id: id, user_name: user.name, item_name: shopItem.name, rating: value.rating, review: value.review })).then((res) => {
+            if (res.success) {
+                getReview()
+                toast.success(res.message);
+                setValue({ ...value, review: "", rating: 0 })
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
     }
+
+    const getItem = async () => {
+        await apiRequest(() => axiosInstance.get(`/item/${id}`)).then((res) => {
+            if (res.success) {
+                setShopItem(res.data[0])
+                console.log(res.data);
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
+    };
+
+    const getReview = async () => {
+        await apiRequest(() => axiosInstance.get(`/rating/item/${id}`)).then((res) => {
+            if (res.success) {
+                setReview(res.data)
+                console.log(res.data);
+            } else {
+                console.log(res);
+            }
+        })
+
+    };
+
+    useEffect(() => {
+        getItem();
+        setQty(1)
+        getReview();
+    }, [])
+
 
     return (
         <>
             <section className="core">
-                <Gallery shopItem={shopItems[0]} />
-                {/* <MobileGallery shopItem={shopItems[0]} /> */}
+                <Gallery shopItem={shopItem} />
+                {/* <MobileGallery shopItem={shopItem} /> */}
                 <Description
-                    onQuant={quant}
+                    onQuant={qty}
                     onAdd={addQuant}
                     onRemove={removeQuant}
                     onSetOrderedQuant={setOrderedQuant}
-                    shopItem={shopItems[0]}
+                    shopItem={shopItem}
                     addToCart={addToCart}
                 />
             </section>
@@ -62,10 +113,10 @@ export default function ProductViewPage({ shopItems, addToCart }) {
                         <TextField
                             sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
                             id="Comment"
-                            value={value.comment}
+                            value={value.review}
                             label="Comment"
                             variant="outlined"
-                            onChange={(e) => setValue({ ...value, comment: e.target.value })}
+                            onChange={(e) => setValue({ ...value, review: e.target.value })}
                         />
                         <button className="btn-primary" onClick={handleAddReview}>
                             Add Review
@@ -73,7 +124,7 @@ export default function ProductViewPage({ shopItems, addToCart }) {
                     </div>
                 </div>
                 {review.length === 0 && (
-                    <h1 className="no-items product">No Items are add in Cart</h1>
+                    <h1 className="no-items product">No reviews</h1>
                 )}
 
                 {/* yasma hami le cart item lai display garaaxa */}
@@ -82,7 +133,7 @@ export default function ProductViewPage({ shopItems, addToCart }) {
                     return (
                         <div style={{ display: "flex", justifyContent: "center" }}>
                             <div className="cart-list product d_flex" key={r.id} style={{ width: "700px", display: "flex", justifyContent: "center", flexDirection: 'column', textAlign: "center" }}>
-                                <strong style={{ textAlign: "left" }}>{r.user}</strong>
+                                <strong style={{ textAlign: "left" }}>{r.user_name}</strong>
                                 <div>
                                     <Rating
                                         name="simple-controlled"
@@ -94,7 +145,7 @@ export default function ProductViewPage({ shopItems, addToCart }) {
                                     />
                                 </div>
 
-                                <span>{r.comment}</span>
+                                <span>{r.review}</span>
 
                             </div>
                         </div>

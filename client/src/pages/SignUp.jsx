@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { MenuItem, Select } from '@mui/material';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
     return (
@@ -35,14 +38,29 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignInSide() {
-    const handleSubmit = (event) => {
+    const navigate = useNavigate();
+    const [form, setForm] = useState({})
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        await apiRequest(() => axiosInstance.post(`/user/register`, form)).then((res) => {
+            if (res.success) {
+                // console.log(res.message);
+                toast.success(res.message);
+                navigate('/login');
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+            // navigate('/', { replace: true });
+        })
+
     };
+
+    const changeHandle = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value })
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -96,6 +114,8 @@ export default function SignInSide() {
                                 label="Name"
                                 name="name"
                                 autoComplete="name"
+                                value={form.name}
+                                onChange={changeHandle}
                                 autoFocus
                             />
                             <TextField
@@ -105,6 +125,8 @@ export default function SignInSide() {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                value={form.email}
+                                onChange={changeHandle}
                                 autoComplete="email"
                                 autoFocus
                             />
@@ -113,6 +135,8 @@ export default function SignInSide() {
                                 required
                                 fullWidth
                                 name="password"
+                                value={form.password}
+                                onChange={changeHandle}
                                 label="Password"
                                 type="password"
                                 id="password"
@@ -125,6 +149,20 @@ export default function SignInSide() {
                                 id="address"
                                 label="Address"
                                 name="address"
+                                value={form.address}
+                                onChange={changeHandle}
+                                autoComplete="address"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="mobile_number"
+                                label="Mobile Number"
+                                name="mobile_number"
+                                value={form.mobile_number}
+                                onChange={changeHandle}
                                 autoComplete="address"
                                 autoFocus
                             />
@@ -135,26 +173,23 @@ export default function SignInSide() {
                                 id="role"
                                 label="Role"
                                 name="role"
+                                value={form.role}
+                                onChange={changeHandle}
                                 autoComplete="address"
                                 autoFocus
                                 select
                             >
                                 {/* Add options to the Select component using MenuItem */}
-                                <MenuItem value="Buyer">Buyer</MenuItem>
-                                <MenuItem value="Seller">Seller</MenuItem>
+                                <MenuItem value="buyer">Buyer</MenuItem>
+                                <MenuItem value="seller">Seller</MenuItem>
                             </TextField>
                             <FormControlLabel
                                 control={<Checkbox value="remember" color="primary" />}
                                 label="Remember me"
                             />
-                            <Link href="/login">
-                                {
-                                    <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                        Sign Up
-                                    </Button>
-                                }
-                            </Link>
-
+                            <Button type='submit' fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} style={{ background: '#006a39' }}>
+                                Sign Up
+                            </Button>
                             <Grid container>
                                 <Grid item xs></Grid>
                                 <Grid item>

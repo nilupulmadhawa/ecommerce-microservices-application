@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Data from '../components/Data';
 import Sdata from '../components/shops/Sdata';
 import './Home.css';
@@ -13,6 +13,8 @@ import ProductViewPage from './ProductViewPage';
 import Shop from '../components/shops/Shop';
 import PaymentSuccess from '../components/payments/PaymentSuccess'
 import TrackOrder from '../components/MainPage/TrackOrder';
+import { apiRequest, axiosInstance } from '../services/core/axios';
+import { toast } from 'react-toastify';
 
 const GestLayout = () => {
     /*
@@ -28,16 +30,38 @@ const GestLayout = () => {
     */
 
     //Step 1 :
-    const { productItems } = Data;
-    const { shopItems } = Sdata;
+    // const { productItems } = Data;
+    // const { shopItems } = Sdata;
+    const [productItems, setProductItems] = useState([]);
+    const [shopItems, setShopItems] = useState([]);
+
+    const getItem = async () => {
+        await apiRequest(() => axiosInstance.get(`/item`)).then((res) => {
+            if (res.success) {
+                setProductItems(res.data)
+                setShopItems(res.data)
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
+    };
+
+    useEffect(() => {
+        getItem();
+    }, []);
+
 
     //Step 2 :
     const [CartItem, setCartItem] = useState([]);
+    const [qty, setQty] = useState(1);
 
     //Step 4 :
     const addToCart = (product) => {
         // if hamro product alredy cart xa bhane  find garna help garxa
-        const productExit = CartItem.find((item) => item.id === product.id);
+        const productExit = CartItem.find((item) => item._id === product._id);
         // if productExit chai alredy exit in cart then will run fun() => setCartItem
         // ani inside => setCartItem will run => map() ani yo map() chai each cart ma
         // gayara check garxa if item.id ra product.id chai match bhayo bhane
@@ -47,7 +71,7 @@ const GestLayout = () => {
         if (productExit) {
             setCartItem(
                 CartItem.map((item) =>
-                    item.id === product.id
+                    item._id === product._id
                         ? { ...productExit, qty: productExit.qty + 1 }
                         : item
                 )
@@ -55,21 +79,21 @@ const GestLayout = () => {
         } else {
             // but if the product doesnt exit in the cart that mean if card is empty
             // then new product is added in cart  and its qty is initalize to 1
-            setCartItem([...CartItem, { ...product, qty: 1 }]);
+            setCartItem([...CartItem, { ...product, qty: qty }]);
         }
     };
 
     // Stpe: 6
     const decreaseQty = (product) => {
         // if hamro product alredy cart xa bhane  find garna help garxa
-        const productExit = CartItem.find((item) => item.id === product.id);
+        const productExit = CartItem.find((item) => item._id === product._id);
 
         // if product is exit and its qty is 1 then we will run a fun  setCartItem
         // inside  setCartItem we will run filter to check if item.id is match to product.id
         // if the item.id is doesnt match to product.id then that items are display in cart
         // else
         if (productExit.qty === 1) {
-            setCartItem(CartItem.filter((item) => item.id !== product.id));
+            setCartItem(CartItem.filter((item) => item._id !== product._id));
         } else {
             // if product is exit and qty  of that produt is not equal to 1
             // then will run function call setCartItem
@@ -77,7 +101,7 @@ const GestLayout = () => {
             // this map() will check if item.id match to produt.id  then we have to desc the qty of product by 1
             setCartItem(
                 CartItem.map((item) =>
-                    item.id === product.id
+                    item._id === product._id
                         ? { ...productExit, qty: productExit.qty - 1 }
                         : item
                 )
@@ -85,6 +109,7 @@ const GestLayout = () => {
         }
     };
     const location = useLocation(); // get the current location
+    console.log(location.pathname.slice(0, 13));
     return (
         <>
             <Header CartItem={CartItem} />
@@ -95,8 +120,8 @@ const GestLayout = () => {
             {location.pathname === '/cart' && (
                 <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
             )}
-            {location.pathname === '/productview' && (
-                <ProductViewPage CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} />
+            {location.pathname.slice(0, 13) === '/productview/' && (
+                <ProductViewPage CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} setQty={setQty} qty={qty} />
             )}
             {location.pathname === '/shop' && (
                 <Shop CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} shopItems={shopItems} />

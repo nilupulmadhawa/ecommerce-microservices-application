@@ -5,8 +5,11 @@ import { Button } from '@mui/material';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AccountPopover from '../../layout/dashboard/header/AccountPopover';
+import { useStateContext } from '../../context/ContextProvider';
 
 const Search = ({ CartItem }) => {
+    const { token } = useStateContext()
     // fixed Header
     window.addEventListener('scroll', function () {
         const search = document.querySelector('.search');
@@ -42,37 +45,39 @@ const Search = ({ CartItem }) => {
 
 
                     <div className="icon f_flex width">
-                        <Link>
-                            <i id="demo-positioned-button"
-                                aria-controls={open ? 'demo-positioned-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={open ? 'true' : undefined}
-                                onClick={handleClick} className="fa fa-user icon-circle"></i>
-                        </Link>
-                        <Menu
-                            id="demo-positioned-menu"
-                            aria-labelledby="demo-positioned-button"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                        >
+                        {token ? <AccountPopover /> : <>
+                            <Link>
+                                <i id="demo-positioned-button"
+                                    aria-controls={open ? 'demo-positioned-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={handleClick} className="fa fa-user icon-circle"></i>
+                            </Link>
+                            <Menu
+                                id="demo-positioned-menu"
+                                aria-labelledby="demo-positioned-button"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                            >
 
 
-                            <MenuItem onClick={handleClose}><Link to="/login">
-                                Login
-                            </Link></MenuItem>
-                            <MenuItem onClick={handleClose}> <Link to="/signup">
-                                Signup
-                            </Link></MenuItem>
-                        </Menu>
+                                <MenuItem onClick={handleClose}><Link to="/login">
+                                    Login
+                                </Link></MenuItem>
+                                <MenuItem onClick={handleClose}> <Link to="/signup">
+                                    Signup
+                                </Link></MenuItem>
+                            </Menu>
+                        </>}
                         <div className="cart">
                             <Link to="/cart">
                                 <i className="fa fa-shopping-bag icon-circle"></i>

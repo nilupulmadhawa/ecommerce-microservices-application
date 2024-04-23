@@ -60,10 +60,10 @@ const ShopCart = ({ shopItems, addToCart }) => {
                 return (
                     <div className="box">
                         <div className="product mtop">
-                            <Link to={'productview'}>
+                            <Link to={'productview/' + shopItems._id}>
                                 <div className="img">
                                     {/* <span className="discount">{shopItems.discount}% Off</span> */}
-                                    <img src={shopItems.cover} alt="" />
+                                    <img src={shopItems.image} alt="" />
                                     <div className="product-like">
                                         <label>{count}</label> <br />
                                         <i className="fa-regular fa-heart" onClick={increment}></i>
@@ -71,17 +71,17 @@ const ShopCart = ({ shopItems, addToCart }) => {
                                 </div>
                             </Link>
                             <div className="product-details">
-                                <Link to={'productview'}>
+                                <Link to={'productview/' + shopItems._id}>
                                     <h3>{shopItems.name}</h3>
                                 </Link>
-                                <Rating
+                                {/* <Rating
                                     name="simple-controlled"
                                     value={shopItems.rating}
                                     readOnly
                                 // onChange={(event, newValue) => {
                                 //     setReview([newValue]);
                                 // }}
-                                />
+                                /> */}
                                 <div className="price">
                                     <h4>${shopItems.price}.00 </h4>
                                     {/* step : 3  

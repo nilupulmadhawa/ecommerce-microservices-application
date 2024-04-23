@@ -1,6 +1,9 @@
 import React from "react"
+import { Link } from "react-router-dom"
+import { useStateContext } from "../../context/ContextProvider"
 
 const Head = () => {
+    const { user } = useStateContext()
     return (
         <>
             <section className='head'>
@@ -12,7 +15,7 @@ const Head = () => {
                         <label> support@herbalworld.com</label>
                     </div>
                     <div className='right row RText'>
-                        <label>Theme FAQ"s</label>
+                        {(user?.role == 'seller' || user?.role == 'admin') && <label>  <Link to='/dashboard' style={{ color: '#fff' }}>Dashboard</Link></label>}
                         <label>Need Help?</label>
                         <span>🏳️‍⚧️</span>
                         <label>EN</label>

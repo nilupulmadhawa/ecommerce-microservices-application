@@ -47,10 +47,7 @@ export const update = asyncHandler(async (req, res) => {
 
 export const remove = asyncHandler(async (req, res) => {
     try {
-        const rating = await Rating.find({ _id: req.params.id })
-        if (rating.length == 0) return makeResponse({ res, status: 404, message: 'Rating Not found' });
-        const result = await Rating.findByIdAndUpdate(req.params.id, { status: "inactive" }, { new: true })
-        if (!result) return makeResponse({ res, status: 500, message: 'Failed to delete Rating' })
+        const rating = await Rating.deleteOne({ _id: req.params.id })
         return makeResponse({ res, status: 200, message: 'Rating deleted successfully' })
     } catch (error) {
         return makeResponse({ res, status: 500, message: error.message });

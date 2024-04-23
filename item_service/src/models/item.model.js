@@ -23,8 +23,9 @@ const ItemSchema = new mongoose.Schema(
             type: String,
             required: false
         },
-        catagory: {
-            type: String,
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category',
             required: true
         },
         status: {

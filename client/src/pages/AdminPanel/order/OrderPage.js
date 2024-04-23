@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import React, { useState } from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import React, { useEffect, useState } from 'react';
 
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 // @mui
 import {
     Card,
@@ -25,27 +25,33 @@ import {
     TableContainer,
     TablePagination,
     TextField,
+    Select,
+    InputLabel,
+    FormControl,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Label from '../../../components/label';
+import Iconify from '../../../components/iconify';
+import Scrollbar from '../../../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../../../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../../../_mock/order';
+import { apiRequest, axiosInstance } from '../../../services/core/axios';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-    // { id: 'avatarUrl', label: 'Image', alignRight: false },
-    { id: 'name', label: 'Name', alignRight: false },
-    { id: 'mobile_number', label: 'Contact', alignRight: false },
-    { id: 'email', label: 'Email', alignRight: false },
-    // { id: 'password', label: 'Password', alignRight: false },
-    { id: 'address', label: 'Address', alignRight: false },
-    { id: 'role', label: 'Role', alignRight: false },
-    { id: 'status', label: 'Status', alignRight: true },
+    { id: 'buyer_id', label: 'Buyer', alignRight: false },
+    { id: 'total', label: 'Total', alignRight: false },
+    { id: 'seller_profit', label: 'Seller Profit', alignRight: false },
+    { id: 'status', label: 'Status', alignRight: false },
     { id: '' },
 ];
 
@@ -95,7 +101,7 @@ const style = {
     p: 4,
 };
 
-export default function UserPage() {
+export default function OrderPage() {
     const [open, setOpen] = useState(null);
 
     const [page, setPage] = useState(0);
@@ -109,10 +115,45 @@ export default function UserPage() {
     const [filterName, setFilterName] = useState('');
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
-
-    const handleOpenMenu = (event) => {
+    const [formValues, setFormValues] = useState({});
+    const [aid, setAid] = useState({});
+    const [items, setItems] = useState([]);
+    const handleOpenMenu = (event, row, it) => {
         setOpen(event.currentTarget);
+        console.log(row);
+        setAid(row);
+        setItems(it);
     };
+
+    const updatedata = async () => {
+        console.log(open);
+        await apiRequest(() => axiosInstance.patch(`/order/${aid._id}`, formValues)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                toast.success(res.message);
+                getdata();
+                handleClose();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
+
+    const getonedata = async () => {
+        console.log(open);
+        await apiRequest(() => axiosInstance.get(`/order/${aid}`, formValues)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                toast.success(res.message);
+                getdata();
+                handleClose();
+            } else {
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+    }
 
     const handleCloseMenu = () => {
         setOpen(null);
@@ -173,39 +214,45 @@ export default function UserPage() {
         getComparator(order, orderBy),
         filterName
     );
+    const handleSelectChange = (event) => {
+        const { name, value } = event.target;
+        setFormValues((prevFormValues) => ({
+            ...prevFormValues,
+            [name]: value,
+        }));
+    };
 
     const isNotFound = !filteredUsers.length && !!filterName;
 
     const [openModal, setOpenModal] = React.useState(false);
-    const [openModalAdd, setOpenModalAdd] = React.useState(false);
+    const [data, setData] = React.useState([]);
     const handleOpen = () => setOpenModal(true);
-    const handleOpenAdd = () => setOpenModalAdd(true);
     const handleClose = () => setOpenModal(false);
-    const handleCloseAdd = () => setOpenModalAdd(false);
 
-    const [users, setUsers] = React.useState([
-        {
-            id: 1, name: "kamal perera", email: "kamal@gmail.com", address: "malabe", phone: "0771234567", role: "Buyer", status: "Active"
-        },
-        {
-            id: 2, name: "John Smith", email: "john@gmail.com", address: "Kaduwela", phone: "0776589658", role: "Buyer", status: "Active"
-        },
 
-        {
-            id: 4, name: "John William", email: "jjs@gmail.com", address: "Malabe", phone: "0113658956", role: "Seller", status: "InActive"
-        },
-        {
-            id: 3, name: "James William", email: "james@gmail.com", address: "Malabe", phone: "077658489", role: "Buyer", status: "Active"
-        },
-        {
-            id: 5, name: "Nimal Perera", email: "nimal@gmail.com", address: "Kaduwela", phone: "0115896859", role: "Seller", status: "Active"
-        },
 
-    ]);
+    const getdata = async () => {
+        await apiRequest(() => axiosInstance.get(`/order`)).then((res) => {
+            if (res.success) {
+                console.log(res);
+                setData(res.data)
+            } else {
+
+                toast.error(res.message);
+                console.log(res);
+            }
+        })
+
+    };
+
+    useEffect(() => {
+        getdata();
+    }, []);
+
     return (
         <>
             <Helmet>
-                <title> User | E-Commerce App </title>
+                <title> Orders | E-Commerce App </title>
             </Helmet>
 
             <Container>
@@ -216,78 +263,9 @@ export default function UserPage() {
                     mb={5}
                 >
                     <Typography variant="h4" gutterBottom>
-                        User
+                        Orders
                     </Typography>
-                    <Button
-                        onClick={handleOpenAdd}
-                        variant="contained"
-                        startIcon={<Iconify icon="eva:plus-fill" />}
-                    >
-                        New User
-                    </Button>
                 </Stack>
-
-                <Modal
-                    open={openModalAdd}
-                    onClose={handleCloseAdd}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h5" component="h2">
-                            Edit Details
-                        </Typography>
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="name"
-                            value=""
-                            label="Name"
-                            variant="outlined"
-                        />
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="email"
-                            value=""
-                            label="Email"
-                            variant="outlined"
-                        />
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="phone"
-                            value=""
-                            label="Contact Number"
-                            variant="outlined"
-                        />
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="role"
-                            value=""
-                            label="Role"
-                            variant="outlined"
-                        />
-
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="address"
-                            value=""
-                            label="Address"
-                            variant="outlined"
-                        />
-                        <TextField
-                            sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                            id="status"
-                            value=""
-                            label="Status"
-                            variant="outlined"
-                        />
-                        <Button type="submit" color="inherit" variant="outlined">
-                            Submit
-                        </Button>
-                    </Box>
-                </Modal>
 
                 <Card>
                     <UserListToolbar
@@ -309,17 +287,23 @@ export default function UserPage() {
                                     onSelectAllClick={handleSelectAllClick}
                                 />
                                 <TableBody>
-                                    {users
+                                    {data
+                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row) => {
-                                            const { id, name, email, address, phone, role, status } =
-                                                row;
-
-                                            const selectedUser = selected.indexOf(name) !== -1;
+                                            const {
+                                                _id,
+                                                buyer_id,
+                                                total,
+                                                seller_profit,
+                                                status,
+                                                items
+                                            } = row;
+                                            const selectedUser = selected.indexOf(buyer_id) !== -1;
 
                                             return (
                                                 <TableRow
                                                     hover
-                                                    key={id}
+                                                    key={_id}
                                                     tabIndex={-1}
                                                     role="checkbox"
                                                     selected={selectedUser}
@@ -327,20 +311,22 @@ export default function UserPage() {
                                                     <TableCell padding="checkbox">
                                                         <Checkbox
                                                             checked={selectedUser}
-                                                            onChange={(event) => handleClick(event, name)}
+                                                            onChange={(event) => handleClick(event)}
                                                         />
                                                     </TableCell>
 
-                                                    <TableCell align="left">{name}</TableCell>
-                                                    <TableCell align="left">{phone}</TableCell>
-                                                    <TableCell align="left">{email}</TableCell>
-                                                    <TableCell align="left">{address}</TableCell>
-                                                    <TableCell align="left">{role}</TableCell>
+                                                    <TableCell align="left">{buyer_id}</TableCell>
+
+
+                                                    <TableCell align="left">{`${total}`}.00</TableCell>
+
+
+                                                    <TableCell align="left">{seller_profit}.00</TableCell>
 
                                                     <TableCell align="left">
                                                         <Label
                                                             color={
-                                                                (status === 'InActive' && 'error') || 'success'
+                                                                (status === 'Completed' && 'success') || 'error'
                                                             }
                                                         >
                                                             {sentenceCase(status)}
@@ -351,7 +337,7 @@ export default function UserPage() {
                                                         <IconButton
                                                             size="large"
                                                             color="inherit"
-                                                            onClick={handleOpenMenu}
+                                                            onClick={(e) => handleOpenMenu(e, row, items)}
                                                         >
                                                             <Iconify icon={'eva:more-vertical-fill'} />
                                                         </IconButton>
@@ -446,55 +432,62 @@ export default function UserPage() {
                         Edit Details
                     </Typography>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="name"
-                        value=""
-                        label="Name"
-                        variant="outlined"
-                    />
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="email"
-                        value=""
-                        label="Email"
-                        variant="outlined"
-                    />
+                    <Box sx={{ minWidth: 120 }}>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="phone"
-                        value=""
-                        label="Contact Number"
-                        variant="outlined"
-                    />
+                        {
+                            items.map((item) => {
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="role"
-                        value=""
-                        label="Role"
-                        variant="outlined"
-                    />
+                                return (
+                                    <div className="cart-list product d_flex" >
+                                        <div className="img">
+                                            <img src={item[0]?.image} alt="" width={80} />
+                                        </div>
+                                        <div className="cart-details">
+                                            <h3>{item[0]?.name}</h3>
+                                            <h4>
+                                                ${item[0]?.price}.00 * {item[0]?.qty}
+                                            </h4>
+                                        </div>
 
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="address"
-                        value=""
-                        label="Address"
-                        variant="outlined"
-                    />
-                    <TextField
-                        sx={{ mt: 2, width: '100%', marginBottom: '10px' }}
-                        id="status"
-                        value=""
-                        label="Status"
-                        variant="outlined"
-                    />
-                    <Button type="submit" color="inherit" variant="outlined">
-                        Submit
+                                        <div className="cart-item-price"></div>
+                                    </div>
+                                );
+                            })
+                        }
+
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <label><strong>Total :</strong> {aid.total}</label>
+                            <label><strong>commission :</strong> {aid.commission}</label>
+                            <label><strong>Seller Profit :</strong> {aid.seller_profit}</label>
+                            <label><strong>Current status :</strong> {aid.status}</label>
+                            <label><strong>Created at :</strong> {aid.created_at}</label>
+                        </div>
+
+                        <FormControl fullWidth>
+                            <InputLabel id="status">Status</InputLabel>
+                            <Select
+                                labelId="status"
+                                id="status"
+                                name='status'
+                                value={formValues.status || ''}
+                                label="Age"
+                                onChange={handleSelectChange}
+                            >
+                                <MenuItem value={'Pending'}>Pending</MenuItem>
+                                <MenuItem value={'Accept'}>Accept</MenuItem>
+                                <MenuItem value={'Reject'}>Reject</MenuItem>
+                                <MenuItem value={'Cancel'}>Cancel</MenuItem>
+                                <MenuItem value={'Delivered'}>Delivered</MenuItem>
+                                <MenuItem value={'Completed'}>Completed</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+
+                    <Button variant="contained" style={{ marginTop: "15px" }} onClick={updatedata}>
+                        Save
                     </Button>
                 </Box>
+
             </Modal>
         </>
     );

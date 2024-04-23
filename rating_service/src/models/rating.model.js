@@ -4,11 +4,19 @@ import aggregatePaginate from 'mongoose-aggregate-paginate-v2'
 const RatingSchema = new mongoose.Schema(
     {
         buyer_id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true
         },
         item_id: {
             type: mongoose.Schema.Types.ObjectId,
+            required: true
+        },
+        item_name: {
+            type: String,
+            required: true
+        },
+        user_name: {
+            type: String,
             required: true
         },
         rating: {
@@ -19,6 +27,11 @@ const RatingSchema = new mongoose.Schema(
             type: String,
             required: false
         },
+        status: {
+            type: String,
+            enum: ['active', 'inactive'],
+            default: 'active'
+        }
     },
     {
         timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }

@@ -6,7 +6,7 @@ const Gallery = ({ shopItem }) => {
         <section className="gallery-holder hide-in-mobile">
             <section className="gallery">
                 <div className="image">
-                    <img src={shopItem.cover} alt="product-1" />
+                    <img src={shopItem.image} alt="product-1" />
                 </div>
             </section>
         </section>

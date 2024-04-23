@@ -56,7 +56,7 @@ const Data = {
             name: "Only Naturals for Women",
             price: 180,
             qty: 2,
-            date: "2023-04-28 21:22:10",
+            date: "2023-04-27 21:42:10",
             status: "Pending"
         },
 

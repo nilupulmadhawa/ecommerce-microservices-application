@@ -1,25 +1,23 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 
 import BlogPage from './pages/BlogPage';
-import UserPage from './pages/UserPage';
+import UserPage from './pages/AdminPanel/user/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
-import DashboardAppPage from './pages/DashboardAppPage';
+import ProductsPage from './pages/AdminPanel/product/ProductsPage';
+import DashboardAppPage from './pages/AdminPanel/DashboardAppPage';
 import DashboardLayout from './layout/dashboard/DashboardLayout';
 import SimpleLayout from './layout/simple/SimpleLayout';
 import HomePage from './pages/HomePage';
-import ReviewPage from './pages/ReviewPage';
-import OrderPage from './pages/OrderPage';
+import ReviewPage from './pages/AdminPanel/rating/ReviewPage';
+import OrderPage from './pages/AdminPanel/order/OrderPage';
 import PaymentSuccess from './components/payments/PaymentSuccess';
 import Payments from './components/payments/Payments';
 import PaymentPortal from './components/payments/PaymentPortal';
 import SignInSide from './pages/SignUp';
-import ProductManage from './pages/ProductManage';
+import ProductManage from './pages/AdminPanel/product/ProductManage';
+import ProductCategoryManage from './pages/AdminPanel/product/ProductCategoryManage';
 // import ProductViewPage from './pages/ProductViewPage';
-import UserProfile from './pages/UserProfile';
-import Products from './components/MainPage/Products';
-import TrackOrder from './components/MainPage/TrackOrder';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +32,7 @@ export default function Router() {
                 { path: 'users', element: <UserPage /> },
                 { path: 'products', element: <ProductsPage /> },
                 { path: 'manageproducts', element: <ProductManage /> },
+                { path: 'managecategories', element: <ProductCategoryManage /> },
                 { path: 'blogs', element: <BlogPage /> },
                 { path: 'ratings', element: <ReviewPage /> },
                 { path: 'orders', element: <OrderPage /> },
@@ -60,7 +59,7 @@ export default function Router() {
                     element: <HomePage />,
                 },
                 {
-                    path: '/productview',
+                    path: '/productview/:id',
                     element: <HomePage />,
                 },
                 {
