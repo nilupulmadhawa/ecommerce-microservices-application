@@ -1,8 +1,10 @@
 FROM node:alpine
 
-WORKDIR /app
+WORKDIR /app/auth_service
 COPY package.json .
 RUN npm install
 COPY . .
+
+EXPOSE 8001
 
 CMD ["npm", "start"]

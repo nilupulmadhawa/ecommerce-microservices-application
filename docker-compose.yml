@@ -1,0 +1,92 @@
+version: "3"
+services:
+  nosql-db:
+    image: mvertes/alpine-mongo
+    ports:
+      - "27018:27017"
+    container_name: nosql-db
+    volumes:
+      - ./db/:/data/db
+
+  rabbitmq:
+    image: rabbitmq:alpine
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+
+  auth_service:
+    build:
+      dockerfile: Dockerfile
+      context: ./auth_service
+    container_name: auth_service
+    ports:
+      - "8001:8001"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app
+      - /app/auth_service/node_modules
+
+    env_file:
+      - ./auth_service/.env.dev
+  item_service:
+    build:
+      dockerfile: Dockerfile
+      context: ./item_service
+    container_name: item_service
+    ports:
+      - "8002:8002"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app
+      - /app/item_service/node_modules
+    env_file:
+      - ./item_service/.env.dev
+  order_service:
+    build:
+      dockerfile: Dockerfile
+      context: ./order_service
+    container_name: order_service
+    ports:
+      - "8003:8003"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app/
+      - /app/order_service/node_modules
+    env_file:
+      - ./order_service/.env.dev
+  rating_service:
+    build:
+      dockerfile: Dockerfile
+      context: ./rating_service
+    container_name: rating_service
+    ports:
+      - "8004:8004"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app/
+      - /app/rating_service/node_modules
+    env_file:
+      - ./rating_service/.env.dev
+  nginx-proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ./proxy
+    depends_on:
+      - auth_service
+      - item_service
+      - order_service
+      - rating_service
+    ports:
+      - 80:80
