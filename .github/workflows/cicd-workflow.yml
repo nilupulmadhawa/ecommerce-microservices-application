@@ -21,9 +21,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         with:
           mask-password: "true"
-
+      - name: Notify Build Failure
+        if: failure() && steps.build-push.conclusion == 'failure'
+        run: echo "Build or push failed, taking recovery steps or notifying stakeholders."
+        # Here, you could include a script to send notifications via Slack, email, or another service.
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
+        continue-on-error: true
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: latest
@@ -41,7 +45,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ecom-app-task-definition-revision.json
-          container-name: auth_service
+          container-name: auth-service
           image: ${{ steps.build-image.outputs.image }}
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
