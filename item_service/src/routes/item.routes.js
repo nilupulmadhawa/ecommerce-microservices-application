@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadFile, create, getAll, getById, remove, update, getSellerItems, getProductImage, deleteProductImage} from '../controllers/item';
+import { create, getAll, getById, remove, update, getSellerItems} from '../controllers/item';
 import { celebrate, Segments } from 'celebrate'
 
 
@@ -13,7 +13,7 @@ itemRouter.get('/:id', getById);
 itemRouter.patch('/:id', update);
 itemRouter.delete('/:id', remove);
 itemRouter.get('/seller/:id', getSellerItems);
-itemRouter.post('/upload/images', upload.single('file'),uploadFile);
+// itemRouter.post('/upload/images', upload.single('file'),uploadFile);
 
 
 // itemRouter.post('/', celebrate({ [Segments.BODY]: addLocationSchema }), create);
