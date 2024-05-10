@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:2",
     "containerDefinitions": [
         {
-            "name": "ecommerce-microservices-application",
-            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/ecommerce-microservices-application:latest",
+            "name": "auth_service",
+            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/auth_service:latest",
             "cpu": 0,
             "memory": 1024,
             "portMappings": [
@@ -17,10 +17,8 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -28,8 +26,7 @@
                     "awslogs-group": "/ecs/ecom-app-task-definition",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
+                }
             },
             "systemControls": []
         }
@@ -38,7 +35,7 @@
     "taskRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
+    "revision": 2,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -85,7 +82,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-02T16:53:59.115Z",
+    "registeredAt": "2024-05-10T12:11:50.322Z",
     "registeredBy": "arn:aws:iam::576850044059:root",
     "tags": []
 }
