@@ -26,7 +26,7 @@ app.use(errors())
 
 connectDB();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 8001;
 
 app.listen(port, () => {
     console.log(`Server successfully started on port ${port}`)
