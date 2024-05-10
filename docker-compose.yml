@@ -79,6 +79,17 @@ services:
       - /app/rating_service/node_modules
     env_file:
       - ./rating_service/.env.dev
+  gateway:
+    build:
+      dockerfile: Dockerfile
+      context: ./gateway
+    container_name: gateway
+    ports:
+      - "8000:8000"
+    restart: always
+    volumes:
+      - .:/app/
+      - /app/gateway/node_modules
   nginx-proxy:
     build:
       dockerfile: Dockerfile
