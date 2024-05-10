@@ -1,14 +1,13 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:2",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:3",
     "containerDefinitions": [
         {
             "name": "auth_service",
             "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/auth_service:latest",
             "cpu": 0,
-            "memory": 1024,
             "portMappings": [
                 {
-                    "name": "3001",
+                    "name": "auth_service-3001-tcp",
                     "containerPort": 3001,
                     "hostPort": 3001,
                     "protocol": "tcp",
@@ -16,9 +15,28 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "NODE_ENV",
+                    "value": "development"
+                },
+                {
+                    "name": "JWT_EXPIRE",
+                    "value": "20h"
+                },
+                {
+                    "name": "JWT_SECRET",
+                    "value": "1234567890"
+                },
+                {
+                    "name": "MONGO_URI",
+                    "value": "mongodb+srv://test:test@cluster0.74brjr1.mongodb.net/ema?retryWrites=true&w=majority"
+                }
+            ],
+            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
+            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -26,7 +44,8 @@
                     "awslogs-group": "/ecs/ecom-app-task-definition",
                     "awslogs-region": "us-east-1",
                     "awslogs-stream-prefix": "ecs"
-                }
+                },
+                "secretOptions": []
             },
             "systemControls": []
         }
@@ -35,7 +54,7 @@
     "taskRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 3,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -69,20 +88,18 @@
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2",
-        "FARGATE"
+        "EC2"
     ],
     "requiresCompatibilities": [
-        "EC2",
-        "FARGATE"
+        "EC2"
     ],
     "cpu": "1024",
-    "memory": "3072",
+    "memory": "1024",
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-10T12:11:50.322Z",
+    "registeredAt": "2024-05-10T12:18:56.289Z",
     "registeredBy": "arn:aws:iam::576850044059:root",
     "tags": []
 }
