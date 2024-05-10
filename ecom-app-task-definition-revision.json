@@ -1,25 +1,21 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:7",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:10",
     "containerDefinitions": [
         {
-            "name": "auth_service",
-            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/auth_service:latest",
+            "name": "auth-service",
+            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/auth_service",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "auth_service-3001-tcp",
-                    "containerPort": 3001,
-                    "hostPort": 3001,
+                    "name": "auth-service-8001-tcp",
+                    "containerPort": 8001,
+                    "hostPort": 8001,
                     "protocol": "tcp",
                     "appProtocol": "http"
                 }
             ],
             "essential": true,
             "environment": [
-                {
-                    "name": "NODE_ENV",
-                    "value": "development"
-                },
                 {
                     "name": "JWT_EXPIRE",
                     "value": "20h"
@@ -33,8 +29,10 @@
                     "value": "mongodb+srv://test:test@cluster0.74brjr1.mongodb.net/ema?retryWrites=true&w=majority"
                 }
             ],
+            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
+            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -52,7 +50,7 @@
     "taskRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 7,
+    "revision": 10,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -98,7 +96,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2024-05-10T13:08:04.273Z",
+    "registeredAt": "2024-05-10T21:30:30.301Z",
     "registeredBy": "arn:aws:iam::576850044059:root",
     "tags": []
 }
