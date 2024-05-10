@@ -7,6 +7,7 @@ import routes from './routes/index.routes';
 
 const { errors } = require('celebrate');
 
+const port = process.env.PORT || 3001;
 dotenv.config();
 
 const app = express();
@@ -19,14 +20,16 @@ app.use(express.json({ limit: '1mb' }));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => res.status(200).json({ message: 'Server Up and Running' }));
+app.get('/', (req, res) => {
+    console.log(`Server successfully started on port ${port}`)
+    res.status(200).json({ message: 'Server Up and Running' })
+});
 
 app.use('/api', routes);
 app.use(errors())
 
 connectDB();
 
-const port = process.env.PORT || 3001;
 
 app.listen(port, () => {
     console.log(`Server successfully started on port ${port}`)
