@@ -27,6 +27,10 @@
                 {
                     "name": "MONGO_URI",
                     "value": "mongodb+srv://test:test@cluster0.74brjr1.mongodb.net/ema?retryWrites=true&w=majority"
+                },
+                {
+                    "name": "PORT",
+                    "value": "8001"
                 }
             ],
             "environmentFiles": [],
