@@ -23,6 +23,11 @@ jobs:
         run: |
           npm install
           npm test
+      - name: Check test results
+        if: failure()
+        run: |
+          echo "Tests failed, stopping the workflow."
+          exit 1
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
