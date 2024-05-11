@@ -44,7 +44,7 @@ describe('POST /api/item', () => {
     test('should respond with a 201 status and a success message', async () => {
         const newItem = {
             name: "Test 2 Item",
-            pricse: 2000,
+            price: 2000,
             description: "test item",
             category: catId,
             image: "item.jpg",
