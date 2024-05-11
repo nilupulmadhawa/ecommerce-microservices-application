@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon --exec babel-node src/app.js",
         "start": "babel-node src/app.js",
-        "test": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose"
+        "test": "cross-env NODE_ENV=test jest --detectOpenHandles --verbose --forceExit"
     },
     "author": "",
     "license": "ISC",
