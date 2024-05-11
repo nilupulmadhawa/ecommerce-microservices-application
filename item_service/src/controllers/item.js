@@ -1,10 +1,6 @@
 import asyncHandler from '../middleware/async'
 import { makeResponse } from '../utils/response'
 import Item from '../models/item.model.js';
-import sharp from 'sharp';
-import crypto from 'crypto'
-import { GetObjectCommand } from "@aws-sdk/client-s3"
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 
 export const create = asyncHandler(async (req, res) => {
     try {
@@ -114,69 +110,3 @@ export const getSellerItems = asyncHandler(async (req, res) => {
         });
     }
 });
-
-const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
-
-export const uploadFile = asyncHandler(async (req, res) => {
-    const file = req.file 
-    const image = req.body.name
-
-    const fileBuffer = sharp(file.buffer)
-    .resize({ height: 1920, width: 1080, fit: "contain" })
-    .toBuffer()
-
-    // Configure the upload details to send to S3
-    const fileName = generateFileName()
-    const uploadParams = {
-        Bucket: bucketName,
-        Body: fileBuffer,
-        Key: fileName,
-        ContentType: file.mimetype
-    }
-
-    // Send the upload to S3
-    await s3Client.send(new PutObjectCommand(uploadParams));
-
-    // Save the image name to the database. Any other req.body data can be saved here too but we don't need any other image data.
-    const post = await prisma.posts.create({
-        data: {
-        image,
-        }
-    })
-
-    res.send(post)
-});
-
-export const getProductImage = asyncHandler(async (req, res) => {
-
-    const posts = await prisma.posts.findMany({ orderBy: [{ created: 'desc' }] }) // Get all posts from the database
-  
-    for (let post of posts) { // For each post, generate a signed URL and save it to the post object
-      post.imageUrl = await getSignedUrl(
-        s3Client,
-        new GetObjectCommand({
-          Bucket: bucketName,
-          Key: imageName
-        }),
-        { expiresIn: 60 }// 60 seconds
-      )
-    }
-  
-    res.send(posts)
-  });
-
-  export const deleteProductImage = asyncHandler(async (req, res) => {
-
-    const id = +req.params.id
-    const post = await prisma.posts.findUnique({where: {id}}) 
-  
-    const deleteParams = {
-      Bucket: bucketName,
-      Key: post.imageName,
-    }
-  
-    return s3Client.send(new DeleteObjectCommand(deleteParams))
-  
-    await prisma.posts.delete({where: {id}})
-    res.send(post)
-  });

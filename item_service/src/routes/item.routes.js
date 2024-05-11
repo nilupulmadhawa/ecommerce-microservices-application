@@ -5,10 +5,10 @@ import { celebrate, Segments } from 'celebrate'
 
 import { protect } from '../middleware/auth'
 
-import multer from 'multer'
+// import multer from 'multer'
 
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+// const storage = multer.memoryStorage()
+// const upload = multer({ storage: storage })
 
 const itemRouter = express.Router();
 
@@ -18,9 +18,7 @@ itemRouter.get('/:id', getById);
 itemRouter.patch('/:id', update);
 itemRouter.delete('/:id', remove);
 itemRouter.get('/seller/:id', getSellerItems);
-itemRouter.post('/upload/images', upload.single('file'),uploadFile);
-itemRouter.get('/', getProductImage);
-itemRouter.delete('/image/:id', deleteProductImage);
+
 
 // itemRouter.post('/', celebrate({ [Segments.BODY]: addLocationSchema }), create);
 // itemRouter.get('/', celebrate({ [Segments.QUERY]: itemViewSchema }), getAll);
