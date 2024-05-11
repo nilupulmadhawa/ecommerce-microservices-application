@@ -10,6 +10,22 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Specify your Node.js version here
+
+      - name: Install dependencies and run tests in auth_service
+        working-directory: ./auth_service
+        run: |
+          npm install
+          npm test
+
+      - name: Install dependencies and run tests in item_service
+        working-directory: ./item_service
+        run: |
+          npm install
+          npm test
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
