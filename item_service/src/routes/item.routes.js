@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadFile, create, getAll, getById, remove, update, getSellerItems, getProductImage, deleteProductImage} from '../controllers/item';
+import { uploadFile, create, getAll, getById, remove, update, getSellerItems, getProductImage, deleteProductImage, searchItems} from '../controllers/item';
 import { celebrate, Segments } from 'celebrate'
 
 
@@ -14,11 +14,11 @@ const itemRouter = express.Router();
 
 itemRouter.post('/', create);
 itemRouter.get('/', getAll);
+itemRouter.get('/search', searchItems); 
 itemRouter.get('/:id', getById);
 itemRouter.patch('/:id', update);
 itemRouter.delete('/:id', remove);
 itemRouter.get('/seller/:id', getSellerItems);
-
 
 // itemRouter.post('/', celebrate({ [Segments.BODY]: addLocationSchema }), create);
 // itemRouter.get('/', celebrate({ [Segments.QUERY]: itemViewSchema }), getAll);
