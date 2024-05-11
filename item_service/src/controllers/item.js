@@ -110,3 +110,30 @@ export const getSellerItems = asyncHandler(async (req, res) => {
         });
     }
 });
+
+export const searchItems = async (req, res) => {
+    try {
+        const { q } = req.query; // Get the search query from the URL query string
+        if (!q) {
+            return res.status(400).json({ message: 'No search query provided' });
+        }
+
+        // Regex to find any occurrence of the query string, including numbers
+        const regexPattern = new RegExp(q, 'i'); // 'i' for case insensitive
+
+        // Search query for MongoDB
+        const searchQuery = {
+            $or: [
+                { name: { $regex: regexPattern } },
+                { description: { $regex: regexPattern } }
+            ],
+            status: 'active'
+        };
+
+        const items = await Item.find(searchQuery);
+
+        res.status(200).json(items);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
