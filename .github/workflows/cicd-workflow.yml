@@ -17,6 +17,9 @@ jobs:
 
       - name: Install dependencies and run tests in item_service
         working-directory: ./item_service
+        env:
+          NODE_ENV: test
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           npm install
           npm test
