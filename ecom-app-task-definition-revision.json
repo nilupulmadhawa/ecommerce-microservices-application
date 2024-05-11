@@ -1,0 +1,141 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:576850044059:task-definition/ecom-app-task-definition:21",
+    "containerDefinitions": [
+        {
+            "name": "auth_service",
+            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/auth_service",
+            "cpu": 0,
+            "memory": 1024,
+            "portMappings": [
+                {
+                    "name": "auth_service-8001-tcp",
+                    "containerPort": 8001,
+                    "hostPort": 8001,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true,
+            "environment": [
+                {
+                    "name": "JWT_EXPIRE",
+                    "value": "20h"
+                },
+                {
+                    "name": "PORT",
+                    "value": "8001"
+                },
+                {
+                    "name": "JWT_SECRET",
+                    "value": "1234567890"
+                },
+                {
+                    "name": "MONGO_URI",
+                    "value": "mongodb+srv://test:test@cluster0.74brjr1.mongodb.net/ema?retryWrites=true&w=majority"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "ulimits": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-create-group": "true",
+                    "awslogs-group": "/ecs/ecom-app-task-definition",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                },
+                "secretOptions": []
+            },
+            "systemControls": []
+        },
+        {
+            "name": "item_service",
+            "image": "576850044059.dkr.ecr.us-east-1.amazonaws.com/item_service",
+            "cpu": 0,
+            "memory": 1024,
+            "portMappings": [
+                {
+                    "name": "item_service-8002-tcp",
+                    "containerPort": 8002,
+                    "hostPort": 8002,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": false,
+            "environment": [
+                {
+                    "name": "JWT_EXPIRE",
+                    "value": "20h"
+                },
+                {
+                    "name": "PORT",
+                    "value": "8002"
+                },
+                {
+                    "name": "JWT_SECRET",
+                    "value": "1234567890"
+                },
+                {
+                    "name": "MONGO_URI",
+                    "value": "mongodb+srv://test:test@cluster0.74brjr1.mongodb.net/ema?retryWrites=true&w=majority"
+                }
+            ],
+            "environmentFiles": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "systemControls": []
+        }
+    ],
+    "family": "ecom-app-task-definition",
+    "executionRoleArn": "arn:aws:iam::576850044059:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 21,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "ecs.capability.execution-role-ecr-pull"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "cpu": "1024",
+    "memory": "3072",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2024-05-11T05:49:14.859Z",
+    "registeredBy": "arn:aws:iam::576850044059:root",
+    "tags": []
+}

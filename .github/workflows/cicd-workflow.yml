@@ -71,15 +71,15 @@ jobs:
           docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG ./item_service
           docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
       - name: Amazon ECS task definition - auth_service
+
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ecom-app-task-definition-revision.json
           container-name: auth_service
           image: ${{ steps.build-image.outputs.image }}
-      - name: Amazon ECS task definition - item_service
+      - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def1
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
