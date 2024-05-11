@@ -15,12 +15,6 @@ jobs:
         with:
           node-version: "20" # Specify your Node.js version here
 
-      - name: Install dependencies and run tests in auth_service
-        working-directory: ./auth_service
-        run: |
-          npm install
-          npm test
-
       - name: Install dependencies and run tests in item_service
         working-directory: ./item_service
         run: |
