@@ -62,7 +62,7 @@ jobs:
           container-name: auth_service
           image: ${{ steps.build-image.outputs.image }}
       - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
+        id: task-def1
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ecom-app-task-definition-revision.json
