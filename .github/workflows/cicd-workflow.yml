@@ -13,7 +13,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify your Node.js version here
+          node-version: "20" # Specify your Node.js version here
 
       - name: Install dependencies and run tests in auth_service
         working-directory: ./auth_service
@@ -91,4 +91,3 @@ jobs:
           service: ecom-app-service
           cluster: DevCluster
           wait-for-service-stability: true
-          
