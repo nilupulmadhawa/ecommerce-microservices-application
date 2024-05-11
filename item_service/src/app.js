@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import connectDB from './database';
 import routes from './routes/index.routes';
 import path from 'path';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
 
 const { errors } = require('celebrate');
 
